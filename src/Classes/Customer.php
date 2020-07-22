@@ -14,14 +14,13 @@ class Customer extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
 	**/
-	public function getCustomerCount(){
-	
-		$token = $this->login();
+	public function getCustomerCount(array $c){	
+		$token = $this->login($c);
 
 		if($token['status'] == 0)
 			return $token;
 
-		$url = $this->url."/customers/count/?access_token=".$token['data']->access_token;
+		$url = $c['url']."/customers/count/?access_token=".$token['data']->access_token;
 		
 		return $this->curl($url);
 	}
@@ -32,17 +31,17 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=204
 	**/
-	public function setCustomer(array $a)
+	public function setCustomer(array $c, array $a)
 	{
-		$token = $this->login();
+		$token = $this->login($c);
 
 		if($token['status'] == 0)
 			return $token;
 
-		$url = $this->url."/customers/insert/?access_token=".$token['data']->access_token;
+		$url = $c['url']."/customers/insert/?access_token=".$token['data']->access_token;
 
 		$response = $this->curl($url, [
-			'company_id' => $this->company_id,
+			'company_id' => $c['company_id'],
 			'vat' => $a['vat'], //NIPC
 			'number' => $a['cid'], //SNC
 			'language_id' => $a['language_id'],
@@ -74,15 +73,15 @@ class Customer extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=199 
 	**/
-	public function getCustomerById(int $id)
+	public function getCustomerById(array $c, int $id)
 	{
-		$token = $this->login();
+		$token = $this->login($c);
 
 		if($token['status'] == 0)
 			return $token;
 		
-		$url = $this->url."/customers/getOne/?access_token=".$token['data']->access_token;
-		$response = $this->curl($url, ['company_id' => $this->company_id, 'customer_id' => $id]);
+		$url = $c['url']."/customers/getOne/?access_token=".$token['data']->access_token;
+		$response = $this->curl($url, ['company_id' => $c['company_id'], 'customer_id' => $id]);
 
 		return $response;
 	}
@@ -93,16 +92,16 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=201
 	**/
-	public function getCustomerByVat(string $vat)
+	public function getCustomerByVat(array $c, string $vat)
 	{
 
-		$token = $this->login();
+		$token = $this->login($c);
 
 		if($token['status'] == 0)
 			return $token;
 
-		$url = $this->url."/customers/getByVat/?access_token=".$token['data']->access_token;
-		$response = $this->curl($url, ['company_id' => $this->company_id, 'vat' => $vat]);
+		$url = $c['url']."/customers/getByVat/?access_token=".$token['data']->access_token;
+		$response = $this->curl($url, ['company_id' => $c['company_id'], 'vat' => $vat]);
 
 		return $response;
 	}
@@ -113,18 +112,18 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=205
 	**/
-	public function updateCustomerById(array $a)
+	public function updateCustomerById(array $c, array $a)
 	{
 
-		$token = $this->login();
+		$token = $this->login($c);
 
 		if($token['status'] == 0)
 			return $token;
 
-		$url = $this->url."/customers/update/?access_token=".$token['data']->access_token;
+		$url = $c['url']."/customers/update/?access_token=".$token['data']->access_token;
 
 		$response = $this->curl($url, [
-			'company_id' => $this->company_id,
+			'company_id' => $c['company_id'],
 			'customer_id' => 30259661,
 			'vat' => $a['vat'], //NIPC
 			'number' => $a['cid'], //SNC
