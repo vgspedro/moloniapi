@@ -10,14 +10,14 @@ class Authentication
 	* @return json 
 	* https://www.moloni.pt/dev/?action=getApiTxtDetail&id=3
 	**/
-	public function login(array $c)
+	public function login(array $c = [])
 	{
 		$url = $c['url'].'/grant/?grant_type=password&client_id='.$c['client_id'].'&client_secret='.$c['client_secret'].'&username='.$c['username'].'&password='.$c['password'];
+
 		return $this->curl($url);
 	}
 
-
-	public function curl(string $url, $post = null)
+	protected function curl(string $url, $post = null)
 	{
 
 		$ch = curl_init();

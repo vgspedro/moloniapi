@@ -10,6 +10,9 @@ use VgsPedro\MoloniApi\Authentication;
 
 class GlobalData extends Authentication{
 
+	/** @const access api url */
+	const ACCESS = '/getAll/?access_token=';
+
 	/**
 	* List Countries available in Moloni
 	* @return json 
@@ -18,12 +21,7 @@ class GlobalData extends Authentication{
 	public function getCountries(array $c)
 	{
 
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/countries/getAll/?access_token=".$token['data']->access_token;
+		$url = $c['url'].'/countries'.static::ACCESS.''.$c['token']['access_token'];
 		$response = $this->curl($url);
 
 		return $response;
@@ -37,13 +35,7 @@ class GlobalData extends Authentication{
 	public function getLanguages(array $c)
 	{
 
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/languages/getAll/?access_token=".$token['data']->access_token;
-
+		$url = $c['url'].'/languages'.static::ACCESS.''.$c['token']['access_token'];
 		$response = $this->curl($url);
 
 		return $response;
@@ -57,12 +49,7 @@ class GlobalData extends Authentication{
 	public function getCurrencies(array $c)
 	{
 
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/currencies/getAll/?access_token=".$token['data']->access_token;
+		$url = $c['url'].'/currencies'.static::ACCESS.''.$c['token']['access_token'];
 		$response = $this->curl($url);
 
 		return $response;
@@ -76,12 +63,8 @@ class GlobalData extends Authentication{
 	**/
 	public function getFiscalZones(array $c, int $id)
 	{
-		$token = $this->login($c);
 
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/fiscalZones/getAll/?access_token=".$token['data']->access_token;
+		$url = $c['url'].'/fiscalZones'.static::ACCESS.''.$c['token']['access_token'];
 		$response = $this->curl($url,['country_id' => $id]);
 
 		return $response;

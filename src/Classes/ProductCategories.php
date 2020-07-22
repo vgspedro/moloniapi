@@ -9,22 +9,21 @@ use VgsPedro\MoloniApi\Authentication;
  */
 
 class ProductCategories extends Authentication{
+
+	/** @const entity api url */
+	const ENTITY = '/productCategories/';
+	/** @const access api url */
+	const ACCESS = '/?access_token=';
+
 	/**
-	* Get list of Product Categories in the Company 
+	* List Product Categories in the Company 
 	* @param int $parent_id required
 	* @return json 
 	**/
-	public function getProductCategories(array $c, int $parent_id = 0)
+	public function getProductCategories(array $c = [], int $parent_id = 0)
 	{
-
-		$token = $this->login($c);
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/productCategories/getAll/?access_token=".$token['data']->access_token;
-		
-		$response = $this->curl($url, ['company_id' => $c['company_id'], 'parent_id' => $parent_id]);
-		return $response;
+		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
+		return $this->curl($url, ['company_id' => $c['company_id'], 'parent_id' => $parent_id]);
 	}
 
 	/**
@@ -33,10 +32,10 @@ class ProductCategories extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=190
 	**/
-	public function updateProductCategories(array $pc = [])
+	public function updateProductCategories(array $c = [], array $pc = [])
 	{
-		$m = new Moloni();
-		return $m->updateProductCategories($this->credencials, $pc);
+		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
+		return $this->curl($url, ['company_id' => $c['company_id'], 'product_categories_id' => $product_categories_id]);
 	}
 
 	/**
@@ -45,10 +44,10 @@ class ProductCategories extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=191
 	**/
-	public function deleteProductCategories(int $product_categories_id = 0)
+	public function deleteProductCategories(array $c = [], int $product_categories_id = 0)
 	{
-		$m = new Moloni();
-		return $m->deleteProductCategories($this->credencials, $product_categories_id);
+		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
+		return $this->curl($url, ['company_id' => $c['company_id'], 'product_categories_id' => $product_categories_id]);
 	}
 
 	/**
@@ -57,10 +56,10 @@ class ProductCategories extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=189
 	**/
-	public function setProductCategories(array $pc = [])
+	public function setProductCategories(array $c = [], array $pc = [])
 	{
-		$m = new Moloni();
-		return $m->setProductCategories($this->credencials, $pc);
+		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
+		return $this->curl($url, ['company_id' => $c['company_id'], 'product_categories_id' => $product_categories_id]);
 	}
 
 

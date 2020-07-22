@@ -2,30 +2,29 @@
 
 namespace VgsPedro\MoloniApi\Classes;
 
-use VgsPedro\MoloniApi\Authentication;
+use \VgsPedro\MoloniApi\Authentication;
 
 /**
- * A class which CRUD the Taxes requests
- */
+* A class for CRUD the Taxes requests
+*/
 
 class Taxes extends Authentication{
+
+	/** @const entity api url */
+	const ENTITY = '/taxes/';
+	/** @const access api url */
+	const ACCESS = '/?access_token=';
 
 	/**
 	* List Taxes of Company 
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=262
 	**/
-	public function getTaxes(array $c)
+	public function getTaxes(array $c = [])
 	{
+		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
 
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/taxes/getAll/?access_token=".$token['data']->access_token;
-		$response = $this->curl($url, ['company_id' => $c['company_id']]);
-		return $response;
+		return $this->curl($url, ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -34,15 +33,10 @@ class Taxes extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=263
 	**/
-	public function setTax(array $c, array $t = [])
+	public function setTax(array $c = [], array $t = [])
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/taxes/insert/?access_token=".$token['data']->access_token;
-
+		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
+		
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
 			'name' => $t['name'], 
@@ -65,14 +59,10 @@ class Taxes extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=264
 	**/
-	public function updateTax(array $t = [])
+	public function updateTax(array $c = [], array $t = [])
 	{
-		$token = $this->login($c);
 
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/taxes/update/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
@@ -97,18 +87,11 @@ class Taxes extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=265
 	**/
-	public function deleteTax(int $tax_id = 0)
+	public function deleteTax(array $c =[], int $tax_id = 0)
 	{
-
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/taxes/delete/?access_token=".$token['data']->access_token;
-		$response = $this->curl($url, ['company_id' => $c['company_id'], 'tax_id' => $tax_id]);
-		return $response;
+		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+	
+		return $this->curl($url, ['company_id' => $c['company_id'], 'tax_id' => $tax_id]);
 	}
-
 
 }

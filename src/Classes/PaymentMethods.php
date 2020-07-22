@@ -5,28 +5,25 @@ namespace VgsPedro\MoloniApi\Classes;
 use VgsPedro\MoloniApi\Authentication;
 
 /**
- * A class which CRUD the Payment Methods requests
+ * A class for CRUD the Payment Methods requests
  */
 
 class PaymentMethods extends Authentication{
+
+	/** @const entity api url */
+	const ENTITY = '/paymentMethods/';
+	/** @const access api url */
+	const ACCESS = '/?access_token=';
 
 	/**
 	* List Payment Methods of Company 
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=236
 	**/
-	public function getPaymentMethods(array $c)
+	public function getPaymentMethods(array $c = [])
 	{
-
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/paymentMethods/getAll/?access_token=".$token['data']->access_token;
-		$response = $this->curl($url, ['company_id' => $c['company_id']]);
-
-		return $response;
+		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
+		return $this->curl($url, ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -35,14 +32,10 @@ class PaymentMethods extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=237
 	**/
-	public function setPaymentMethods(array $c, array $pm = [])
+	public function setPaymentMethods(array $c = [], array $pm = [])
 	{
-		$token = $this->login($c);
 
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/paymentMethods/insert/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
 	
 		$response = $this->curl($url,[
 			'company_id' => $c['company_id'],
@@ -59,15 +52,11 @@ class PaymentMethods extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=239
 	**/
-	public function deletePaymentMethods(array $c, int $payment_method_id)
+	public function deletePaymentMethods(array $c = [], int $payment_method_id = 0)
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/paymentMethods/delete/?access_token=".$token['data']->access_token;
 	
+		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+
 		$response = $this->curl($url,[
 			'company_id' => $c['company_id'],
 			'payment_method_id' => 0,//int required $this->getPaymentMethods()
@@ -82,15 +71,9 @@ class PaymentMethods extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=237
 	**/
-	public function updatePaymentMethods(array $c, array $pm = [])
+	public function updatePaymentMethods(array $c = [], array $pm = [])
 	{
-
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/paymentMethods/update/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 	
 		$response = $this->curl($url,[
 			'company_id' => $c['company_id'],

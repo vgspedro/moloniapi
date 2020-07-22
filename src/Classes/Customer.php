@@ -5,23 +5,24 @@ namespace VgsPedro\MoloniApi\Classes;
 use VgsPedro\MoloniApi\Authentication;
 
 /**
- * A class which CRUD the Customer requests
+ * A class for CRUD the Customer requests
  */
 
 class Customer extends Authentication{
+
+	/** @const entity api url */
+	const ENTITY = '/customers/';
+	/** @const access api url */
+	const ACCESS = '/?access_token=';
+
 	/**
 	* Get all Customers of the Company 
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
 	**/
-	public function getCustomerCount(array $c){	
-		$token = $this->login($c);
+	public function getCustomerCount(array $c = []){	
 
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/customers/count/?access_token=".$token['data']->access_token;
-		
+		$url = $c['url'].''.static::ENTITY.'count'.static::ACCESS.''.$c['token']['access_token'];	
 		return $this->curl($url);
 	}
 
@@ -31,14 +32,10 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=204
 	**/
-	public function setCustomer(array $c, array $a)
+	public function setCustomer(array $c = [], array $a = [])
 	{
-		$token = $this->login($c);
 
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/customers/insert/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];	
 
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
@@ -73,14 +70,10 @@ class Customer extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=199 
 	**/
-	public function getCustomerById(array $c, int $id)
+	public function getCustomerById(array $c = [], int $id = 0)
 	{
-		$token = $this->login($c);
+		$url = $c['url'].''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];	
 
-		if($token['status'] == 0)
-			return $token;
-		
-		$url = $c['url']."/customers/getOne/?access_token=".$token['data']->access_token;
 		$response = $this->curl($url, ['company_id' => $c['company_id'], 'customer_id' => $id]);
 
 		return $response;
@@ -92,15 +85,10 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=201
 	**/
-	public function getCustomerByVat(array $c, string $vat)
+	public function getCustomerByVat(array $c = [], string $vat = null)
 	{
+		$url = $c['url'].''.static::ENTITY.'getByVat'.static::ACCESS.''.$c['token']['access_token'];
 
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/customers/getByVat/?access_token=".$token['data']->access_token;
 		$response = $this->curl($url, ['company_id' => $c['company_id'], 'vat' => $vat]);
 
 		return $response;
@@ -112,15 +100,9 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=205
 	**/
-	public function updateCustomerById(array $c, array $a)
+	public function updateCustomerById(array $c = [], array $a = [])
 	{
-
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/customers/update/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];	
 
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
