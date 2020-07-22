@@ -46,10 +46,10 @@ class InvoicingController extends AbstractController
 # src/Service/InvoiceMoloni.php
 
 ```php
-
 namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use \VgsPedro\MoloniApi\Authentication;
 use \VgsPedro\MoloniApi\Classes\Customer;
@@ -66,25 +66,191 @@ class InvoiceMoloni
 {
 
 	private $credencials;
+	private $session;
 
-    public function __construct(ParameterBagInterface $environment){
+    public function __construct(ParameterBagInterface $environment, SessionInterface $session){
 
 		$this->credencials = [];
+
+		$this->session = $session;
 
 		if($environment->get("kernel.environment") == 'prod'){
 			$this->credencials['company_id'] = 5 ; //Change according to specific user //  Company ID, Provided by Moloni
 		 	$this->credencials['url'] = 'https://api.moloni.pt/v1'; // Url to make request, sandbox or live (sandbox APP_ENV=dev or test) (live APP_ENV=prod)
 		}
+		
 		else{
 			$this->credencials['company_id'] = 5 ; //Change according to specific user // Company ID, Provided by Moloni
 		 	$this->credencials['url'] = 'https://api.moloni.pt/sandbox'; // Url to make request, sandbox or live (sandbox APP_ENV=dev or test) (live APP_ENV=prod)
 		}
+		
 		$this->credencials['client_id'] = ''; // Client ID, Provided by Moloni
 		$this->credencials['client_secret'] = ''; // Client Secret, Provided by Moloni
     	$this->credencials['opendoc'] = true; // On generate invoice set to provisory or definitiv
-    	$this->credencials['username'] = 'email@mail.com'; // Username, that allows access to Moloni (login page)
+    	$this->credencials['username'] = 'email@gmail.com'; // Username, that allows access to Moloni (login page)
  		$this->credencials['password'] = 'pass'; // Password, that allows access to Moloni (login page)
+    	$this->credencials['token']['access_token'] = $this->session->get('access_token');
+    	$this->credencials['token']['expires_in'] = $this->session->get('expires_in');
+    	$this->credencials['token']['refresh_token'] = $this->session->get('refresh_token');
     }
+
+	/**
+	* Create a new access token or use the existing one if valid 
+	* @return boolean
+	* https://www.moloni.pt/dev
+	**/
+	public function start(){
+
+   		$now = new \DateTime();
+
+		//Access token expired or not
+		if($this->credencials['token']['access_token'] && $this->credencials['token']['expires_in'] > $now->format('U'))
+			return $this->credencials['token']['access_token'].'-->'. $this->credencials['token']['expires_in'] .' > '. $now->format('U');
+
+		//Access token expired get a new one
+		$token = (new Authentication())
+			->login($this->credencials);
+		
+		if($token['status'] == 0)
+			return null;
+
+   		$this->session->set('access_token', $token['data']->access_token);
+   		//Removed 5 seconds from the current expire value ( 3600 - 5)
+   		//The session expires_in in seconds
+   		$this->session->set('expires_in', $now->format('U') + $token['data']->expires_in - 5 );
+   		$this->session->set('refresh_token', $token['data']->refresh_token);
+
+		//return true;
+		return $this->session->get('access_token');
+	}
+
+	#####
+	## TAXES METHODS
+	#####
+
+	/**
+	* List Taxes of Company 
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=262
+	**/
+	public function getTaxes()
+	{
+		return $this->start() 
+		? 
+			(new Taxes())->getTaxes($this->credencials)
+		:
+			false;
+	}
+
+	/**
+	* Create Tax in the Company 
+	* @param array $t tax information
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=263
+	**/
+	public function setTax(array $t = [])
+	{
+		return $this->start() 
+		?  
+			(new Taxes())->setTaxes($this->credencials, $t)
+		:
+			false;
+	}
+
+	/**
+	* Update Tax by Id
+	* @param array $t Tax information // $this->getTaxes()
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=264
+	**/
+	public function updateTax(array $t = [])
+	{
+		return $this->start()
+		?  
+			(new Taxes())->updateTax($this->credencials, $t)
+		:
+			false;
+	}
+
+	/**
+	* Delete a Tax from the Company 
+	* @param int $tax_id // $this->getTaxes()
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=265
+	**/
+	public function deleteTax(int $tax_id = 0)
+	{
+		return $this->start() 
+		?  
+			(new Taxes())->deleteTax($this->credencials, $tax_id)
+		:
+			false;
+	}
+
+	#####
+	## GLOBALDATA METHODS
+	#####
+
+	/**
+	* List Countries available in Moloni
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=68
+	**/
+	public function getCountries()
+	{
+		return $this->start() 
+		?
+			(new GlobalData())->getCountries($this->credencials)
+		:
+			false;
+	}
+
+	/**
+	* List Languages available in Moloni
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=70
+	**/
+	public function getLanguages()
+	{
+		return $this->start() 
+		?
+			(new GlobalData())->getLanguages($this->credencials)
+		:
+			false;
+	}
+
+	/**
+	* List Currencies available in Moloni
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=101
+	**/
+	public function getCurrencies()
+	{
+		return $this->start() 
+		?
+			(new GlobalData())->getCurrencies($this->credencials)
+		:
+			false;
+	}
+
+	/**
+	* List of Fiscal Zones available in Moloni
+	* @param int $id country_id  // $this->getCountries()
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=69
+	**/
+	public function getFiscalZones(int $id = 0)
+	{
+		return $this->start() 
+		?
+			(new GlobalData())->getFiscalZones($this->credencials, $id)
+		:
+			false;
+	}
+
+	#####
+	## CUSTOMERS METHODS
+	#####
 
 	/**
 	* List Customers of the Company 
@@ -92,8 +258,11 @@ class InvoiceMoloni
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
 	**/
 	public function getCustomerCount(){
-		return (new Customer())
-			->getCustomerCount($this->credencials);
+		return $this->start() 
+		? 
+			(new Customer())->getCustomerCount($this->credencials)
+		:
+			false;
 	}
 
 	/**
@@ -103,8 +272,11 @@ class InvoiceMoloni
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=204
 	**/
 	public function setCustomer(array $a = []){
-		return (new Customer())
-			->setCustomer($this->credencials, $a);
+		return $this->start() 
+		?
+			(new Customer())->setCustomer($this->credencials, $a)
+		:
+			false;
 	}
 
 	/**
@@ -115,8 +287,11 @@ class InvoiceMoloni
 	**/
 	public function getCustomerById(int $id = 0)
 	{
-		return (new Customer())
-			->getCustomerById($this->credencials, $id);
+		return $this->start() 
+		? 
+			(new Customer())->getCustomerById($this->credencials, $id)
+		:
+			false;
 	}
 
 	/**
@@ -128,8 +303,11 @@ class InvoiceMoloni
 	
 	public function getCustomerByVat(string $vat = null)
 	{
-		return (new Customer())
-			->getCustomerByVat($this->credencials, $vat);
+		return $this->start() 
+		? 
+			(new Customer())->getCustomerByVat($this->credencials, $vat)
+		:
+			false;
 	}
 
 	/**
@@ -140,101 +318,17 @@ class InvoiceMoloni
 	**/
 	public function updateCustomerById(array $a = [])
 	{
-		return (new Customer())
-			->updateCustomerById($this->credencials, $a);
+		return $this->start() 
+		?
+			(new Customer())->updateCustomerById($this->credencials, $a)
+		:
+			false;
 	}
 
-	/**
-	* List Taxes of Company 
-	* @return json 
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=262
-	**/
-	public function getTaxes()
-	{
-		return (new Taxes())
-			->getTaxes($this->credencials);
-	}
 
-	/**
-	* Create Tax in the Company 
-	* @param array $t tax information
-	* @return json 
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=263
-	**/
-	public function setTax(array $t = [])
-	{
-		return (new Taxes())
-			->setTaxes($this->credencials, $t);
-	}
-
-	/**
-	* Update Tax by Id
-	* @param array $t Tax information // $this->getTaxes()
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=264
-	**/
-	public function updateTax(array $t = [])
-	{
-		return (new Taxes())
-			->updateTax($this->credencials, $t);
-	}
-
-	/**
-	* Delete a Tax from the Company 
-	* @param int $tax_id // $this->getTaxes()
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=265
-	**/
-	public function deleteTax(int $tax_id = 0)
-	{
-		return (new Taxes())
-			->deleteTax($this->credencials, $tax_id);
-	}
-
-	/**
-	* List Countries available in Moloni
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=68
-	**/
-	public function getCountries()
-	{
-		return (new GlobalData())
-			->getCountries($this->credencials);
-	}
-
-	/**
-	* List Languages available in Moloni
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=70
-	**/
-	public function getLanguages()
-	{
-		return (new GlobalData())
-			->getLanguages($this->credencials);
-	}
-
-	/**
-	* List Currencies available in Moloni
-	* @return json 
-	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=101
-	**/
-	public function getCurrencies()
-	{
-		return (new GlobalData())
-			->getCurrencies($this->credencials);
-	}
-
-	/**
-	* Get list of Fiscal Zones available in Moloni
-	* @param int $id country_id  // $this->getCountries()
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=69
-	**/
-	public function getFiscalZones(int $id = 0)
-	{
-		return (new GlobalData())
-			->getFiscalZones($this->credencials, $id);
-	}
+	#####
+	## PAYMENTMETHODS METHODS
+	#####
 
 	/**
 	* List Payment Methods of Company 
@@ -243,8 +337,11 @@ class InvoiceMoloni
 	**/
 	public function getPaymentMethods()
 	{
-		return (new PaymentMethods())
-			->getPaymentMethods($this->credencials);
+		return $this->start() 
+		?
+			(new PaymentMethods())->getPaymentMethods($this->credencials)
+		:
+			false;
 	}
 
 	/**
@@ -255,8 +352,11 @@ class InvoiceMoloni
 	**/
 	public function setPaymentMethods(array $pm = [])
 	{
-		return (new PaymentMethods())
-			->setPaymentMethods($this->credencials, $pm);
+		return $this->start()
+		?
+			(new PaymentMethods())->setPaymentMethods($this->credencials, $pm)
+		:
+			false;
 	}
 
 	/**
@@ -267,8 +367,11 @@ class InvoiceMoloni
 	**/
 	public function deletePaymentMethods(int $payment_method_id = 0)
 	{
-		return (new PaymentMethods())
-			->deletePaymentMethods($this->credencials, $payment_method_id);
+		return $this->start() 
+		?
+			(new PaymentMethods())->deletePaymentMethods($this->credencials, $payment_method_id)
+		:
+			false;
 	}
 
 	/**
@@ -279,9 +382,17 @@ class InvoiceMoloni
 	**/
 	public function updatePaymentMethods(array $pm = [])
 	{
-		return (new PaymentMethods())
-			->updatePaymentMethods($this->credencials, $pm);
+		return $this->start() 
+		?
+			(new PaymentMethods())->updatePaymentMethods($this->credencials, $pm)
+		:
+			false;
 	}
+
+
+	#####
+	## MATURITYDATES METHODS
+	#####
 
 	/**
 	* List MaturityDates in the Company 
@@ -290,8 +401,11 @@ class InvoiceMoloni
 	**/
 	public function getMaturityDates()
 	{
-		return (new MaturityDates())
-			->getMaturityDates($this->credencials);
+		return $this->start()
+		?
+			(new MaturityDates())->getMaturityDates($this->credencials)
+		:
+			false;
 	}
 
 	/**
@@ -302,8 +416,11 @@ class InvoiceMoloni
 	**/
 	public function updateMaturityDates(array $md = [])
 	{
-		return (new MaturityDates())
-			->updateMaturityDates($this->credencials, $md);
+		return $this->start() 
+		?
+			(new MaturityDates())->updateMaturityDates($this->credencials, $md)
+		:
+			false;
 	}
 
 	/**
@@ -314,8 +431,11 @@ class InvoiceMoloni
 	**/
 	public function deleteMaturityDates(int $maturity_dates_id = 0)
 	{
-		return (new MaturityDates())
-			->deleteMaturityDates($this->credencials, $maturity_dates_id);
+		return $this->start() 
+		?
+			(new MaturityDates())->deleteMaturityDates($this->credencials, $maturity_dates_id)
+		:
+			false;
 	}
 
 	/**
@@ -326,9 +446,16 @@ class InvoiceMoloni
 	**/
 	public function setMaturityDates(array $md = [])
 	{
-		return (new MaturityDates())
-			->setMaturityDates($this->credencials, $md);
+		return $this->start()
+		?
+			(new MaturityDates())->setMaturityDates($this->credencials, $md)
+		:
+			false;
 	}
+
+	#####
+	## DELIVERYMETHODS METHODS
+	#####
 
 	/**
 	* List Delivery Methods in the Company 
@@ -337,8 +464,11 @@ class InvoiceMoloni
 	**/
 	public function getDeliveryMethods()
 	{
-		return (new DeliveryMethods())
-			->getDeliveryMethods($this->credencials);
+		return $this->start()
+		?
+			(new DeliveryMethods())->getDeliveryMethods($this->credencials)
+		:
+			false;
 	}
 
 	/**
@@ -349,8 +479,11 @@ class InvoiceMoloni
 	**/
 	public function updateDeliveryMethods(array $dm = [])
 	{
-		return (new DeliveryMethods())
-			->updateDeliveryMethods($this->credencials, $dm);
+		return $this->start()
+		?
+			(new DeliveryMethods())->updateDeliveryMethods($this->credencials, $dm)
+		:
+			false;
 	}
 
 	/**
@@ -361,8 +494,12 @@ class InvoiceMoloni
 	**/
 	public function deleteDeliveryMethods(int $delivery_methods_id = 0)
 	{
-		return (new DeliveryMethods())
-			->deleteDeliveryMethods($this->credencials, $delivery_methods_id);
+
+		return $this->start()
+		?
+			(new DeliveryMethods())->deleteDeliveryMethods($this->credencials, $delivery_methods_id)
+		:
+			false;
 	}
 
 	/**
@@ -373,22 +510,32 @@ class InvoiceMoloni
 	**/
 	public function setDeliveryMethods(array $dm = [])
 	{
-		return (new DeliveryMethods())
-			->setDeliveryMethods($this->credencials, $dm);
+		return $this->start()
+		?
+			(new DeliveryMethods())->setDeliveryMethods($this->credencials, $dm)
+		:
+			false;
 	}
 
+	#####
+	## PRODUCTCATEGORIES METHODS
+	#####
+
 	/**
-	* List of Product Categories in the Company 
+	* List Product Categories in the Company 
 	* @param int $parent_id required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=188
 	**/
 	public function getProductCategories(int $parent_id = 0)
 	{
-		$m = new Moloni();
-		return (new DeliveryMethods())
-			->getProductCategories($this->credencials, $parent_id);
+		return $this->start()
+		?
+			(new DeliveryMethods())->getProductCategories($this->credencials, $parent_id)
+		:
+			false;
 	}
+
 	/**
 	* Update Product Categories by Id
 	* @param array $pc ProductCategories // $this->getProductCategories() required
@@ -397,8 +544,11 @@ class InvoiceMoloni
 	**/
 	public function updateProductCategories(array $pc = [])
 	{
-		return (new ProductCategories())
-			->updateProductCategories($this->credencials, $pc);
+		return $this->start()
+		?
+			(new ProductCategories())->updateProductCategories($this->credencials, $pc)
+		:
+			false;
 	}
 
 	/**
@@ -409,8 +559,11 @@ class InvoiceMoloni
 	**/
 	public function deleteProductCategories(int $product_categories_id = 0)
 	{
-		return (new ProductCategories())
-			->deleteProductCategories($this->credencials, $product_categories_id);
+		return $this->start()
+		? 
+			(new ProductCategories())->deleteProductCategories($this->credencials, $product_categories_id)
+		:
+			false;
 	}
 
 	/**
@@ -421,9 +574,16 @@ class InvoiceMoloni
 	**/
 	public function setProductCategories(array $pc = [])
 	{
-		return (new ProductCategories())
-			->setProductCategories($this->credencials, $pc);
+		return $this->start()
+		? 
+			(new ProductCategories())->setProductCategories($this->credencials, $pc)
+		:
+			false;
 	}
+
+	#####
+	## PRODUCT METHODS
+	#####
 
 	/**
 	* Get Product by Id
@@ -508,7 +668,7 @@ class InvoiceMoloni
 	}
 
 	/**
-	* Update Product in the Company 
+	* Update~Product in the Company 
 	* @param array $p product required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=195
@@ -565,6 +725,7 @@ class InvoiceMoloni
 			->deleteMeasurementUnits($this->credencials, $unit_id);
 	}
 
+}
 }
 
 ```
