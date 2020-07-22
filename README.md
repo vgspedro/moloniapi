@@ -3,10 +3,13 @@
 
 ## Work in progress.
 
+## How to use
+
+This library is installed via [Composer](http://getcomposer.org/).
+
 composer require vgspedro/moloniapi:dev-master
 
-#### Symfony framework
-
+## Symfony framework
 
 #### Create the Controler
 
@@ -29,7 +32,7 @@ class InvoicingController extends AbstractController
     {
 
         return $this->render('admin/payment/native.html', [
-            'moloni_token' => $moloni->getTaxes(),
+            'moloni' => $moloni->getTaxes(),
             'sf_v' => \Symfony\Component\HttpKernel\Kernel::VERSION,
         ]);
     }
@@ -564,6 +567,71 @@ class InvoiceMoloni
 
 }
 
+```
+
+#### Create a Customer, Tax, Product
+
+```php
+ $customer = [
+            'vat' => 123456789,
+            'language_id' => 1, //$moloni->getLanguages()
+            'cid' => '0',
+            'name' => 'Client Name2',
+            'address' => 'Client Address',
+            'city' => 'Client City',
+            'zip_code' => '0000-000',
+            'country_fiscal_id' => 1, // $moloni->getCountries()
+            'discount' => '0.00',
+            'credit_limit'=> '0.00',
+            'payment_day' => 0,
+            'maturity_date_id' => 871549, //$moloni->getMaturityDates()
+            'qty_copies_document' => 3,
+            'payment_method_id' => 939112, //$moloni->getPaymentMethods()
+            'copies' => [
+                'document_type_id' => 1,
+                'copies' => 3,
+            ],
+            'delivery_method_id' => 973451, //$moloni->deliveryMethods()
+            'salesman_id' => 0
+        ];
+
+        $tax = [
+            'name' => 'Tx.Iva Intermédia 13', 
+            'value' => 13,
+            'type' => 1,
+            'saft_type' => 1,
+            'vat_type' => 'OUT', // ["RED","INT","NOR","ISE","OUT"]"
+            'stamp_tax' => '',
+            'exemption_reason' => '',
+            'fiscal_zone' => 'PT', //$moloni->getFiscalZones($id)
+            'active_by_default' => 0
+        ];
+
+        $product = [
+            'category_id' => 2502976,//int required $this->getProductCategories()
+            'type' => 2,//int required [1 Produto, 2 Serviço, 3 Outro].
+            'name' => 'Viagem ao centro da Terra II',//string required
+            'summary' => '',// string
+            'reference' => '977970041',// string required should be uniq
+            'ean' => '561000',// string
+            'price' => 368.12, //float required
+            'unit_id' => 1218021, //int required
+            'has_stock' => 0, //int required
+            'stock' => 0.0, //float required
+            'minimum_stock' => 0.0, //float required
+            'pos_favorite' => 0, //int
+            'at_product_category' => '', //string
+            'exemption_reason' => 'BK', //string
+            'taxes' => [
+                'tax_id' => 1997575, //int required $this->getTaxes()
+                'value' => 0.84906, //float required
+                'order' => 1, //int required
+                'cumulative' => 0 //int required
+            ],
+            'suppliers' => [],
+            'properties' => [],
+            'wharehouses' => []
+        ];
 ```
 
 #### Create the Template
