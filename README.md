@@ -79,8 +79,8 @@ class InvoiceMoloni
 		$this->credencials['client_id'] = ''; // Client ID, Provided by Moloni
 		$this->credencials['client_secret'] = ''; // Client Secret, Provided by Moloni
     	$this->credencials['opendoc'] = true; // On generate invoice set to provisory or definitiv
-    	$this->credencials['username'] = 'vgspedro@gmail.com'; // Username, that allows access to Moloni (login page)
- 		$this->credencials['password'] = 'ledcpu123'; // Password, that allows access to Moloni (login page)
+    	$this->credencials['username'] = 'email@mail.com'; // Username, that allows access to Moloni (login page)
+ 		$this->credencials['password'] = 'pass'; // Password, that allows access to Moloni (login page)
     }
 
 	/**
