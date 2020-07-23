@@ -2,7 +2,7 @@
 
 namespace VgsPedro\MoloniApi\Classes;
 
-use VgsPedro\MoloniApi\Authentication;
+use \VgsPedro\MoloniApi\Authentication;
 
 /**
  * A class which CRUD the ProductCategories requests

@@ -23,7 +23,6 @@ class Taxes extends Authentication{
 	public function getTaxes(array $c = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-
 		return $this->curl($url, ['company_id' => $c['company_id']]);
 	}
 
@@ -87,7 +86,7 @@ class Taxes extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=265
 	**/
-	public function deleteTax(array $c =[], int $tax_id = 0)
+	public function deleteTax(array $c = [], int $tax_id = 0)
 	{
 		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
 	

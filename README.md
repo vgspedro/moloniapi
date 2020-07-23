@@ -16,36 +16,7 @@ composer require vgspedro/moloniapi:dev-master
 # src/Controler/InvoicingController.php
 
 ```php
-namespace App\Controller;
-
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-use App\Service\InvoiceMoloni;
-
-class InvoicingController extends AbstractController
-{
-    public function index(InvoiceMoloni $moloni)
-    {
-
-        return $this->render('admin/payment/native.html', [
-            'moloni' => $moloni->getTaxes(),
-            'sf_v' => \Symfony\Component\HttpKernel\Kernel::VERSION,
-        ]);
-    }
-
-}
-
-```
-
-#### Create the Service
-
-# src/Service/InvoiceMoloni.php
-
-```php
+<?php
 namespace App\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -88,7 +59,7 @@ class InvoiceMoloni
 		$this->credencials['client_secret'] = ''; // Client Secret, Provided by Moloni
     	$this->credencials['opendoc'] = true; // On generate invoice set to provisory or definitiv
     	$this->credencials['username'] = 'email@gmail.com'; // Username, that allows access to Moloni (login page)
- 		$this->credencials['password'] = 'pass'; // Password, that allows access to Moloni (login page)
+ 		$this->credencials['password'] = 'pass23'; // Password, that allows access to Moloni (login page)
     	$this->credencials['token']['access_token'] = $this->session->get('access_token');
     	$this->credencials['token']['expires_in'] = $this->session->get('expires_in');
     	$this->credencials['token']['refresh_token'] = $this->session->get('refresh_token');
@@ -105,23 +76,27 @@ class InvoiceMoloni
 
 		//Access token expired or not
 		if($this->credencials['token']['access_token'] && $this->credencials['token']['expires_in'] > $now->format('U'))
-			return $this->credencials['token']['access_token'].'-->'. $this->credencials['token']['expires_in'] .' > '. $now->format('U');
-
+			return true;
+		
 		//Access token expired get a new one
 		$token = (new Authentication())
 			->login($this->credencials);
 		
 		if($token['status'] == 0)
 			return null;
-
+   		
    		$this->session->set('access_token', $token['data']->access_token);
    		//Removed 5 seconds from the current expire value ( 3600 - 5)
    		//The session expires_in in seconds
    		$this->session->set('expires_in', $now->format('U') + $token['data']->expires_in - 5 );
    		$this->session->set('refresh_token', $token['data']->refresh_token);
 
-		//return true;
-		return $this->session->get('access_token');
+		//Set the values on the array, on 1st request is neeeded
+		$this->credencials['token']['access_token'] = $this->session->get('access_token');
+		$this->credencials['token']['expires_in'] = $this->session->get('expires_in');
+    	$this->credencials['token']['refresh_token'] = $this->session->get('refresh_token');
+		
+		return true;
 	}
 
 	#####
@@ -594,54 +569,66 @@ class InvoiceMoloni
 	**/
 	public function getProductById(int $product_id = 0, int $with_invisible = 0)
 	{
-		return (new Product())
-			->getProductById($this->credencials, $product_id, $with_invisible);
+		return $this->start()
+		? (new Product())
+			->getProductById($this->credencials, $product_id, $with_invisible)
+		:
+			false;
 	}
 
 	/**
-	* Get list of Products by Reference
+	* List Products by Reference
 	* @param string $reference required // $this->getProductCategories(0)
 	* @param int $qty 
 	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=298
 	**/
-	public function getProductsByReference(string $reference, int $qty = 0, int $offset = 0)
+	public function getProductsByReference(string $reference =  null, int $qty = 0, int $offset = 0)
 	{
-		return (new Product())
-			->getProductsByReference($this->credencials, $reference, $qty, $offset);
+		return $this->start()
+		?
+			(new Product())->getProductsByReference($this->credencials, $reference, $qty, $offset)
+		:
+			false;
 	}
 
 	/**
-	* Get list of Products by EAN
+	* List Products by EAN
 	* @param string $ean required // $this->getProductCategories(0)
 	* @param int $qty 
 	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=299
 	**/
-	public function getProductsByEan(string $ean, int $qty = 0, int $offset = 0)
+	public function getProductsByEan(string $ean = null, int $qty = 0, int $offset = 0)
 	{
-		return (new Product())
-			->getProductsByEan($this->credencials, $ean, $qty, $offset);
+		return $this->start()
+		?
+			(new Product())->getProductsByEan($this->credencials, $ean, $qty, $offset)
+		:
+			false;
 	}
 
 	/**
-	* Get list of Products by name
+	* List Products by name
 	* @param string $name required // $this->getProductCategories(0)
 	* @param int $qty 
 	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=297
 	**/
-	public function getProductsByName(string $name, int $qty = 0, int $offset = 0)
+	public function getProductsByName(string $name = null, int $qty = 0, int $offset = 0)
 	{
-		return (new Product())
-			->getProductsByName($this->credencials, $name, $qty, $offset);
+		return $this->start()
+		?
+			(new Product())->getProductsByName($this->credencials, $name, $qty, $offset)
+		:
+			false;
 	}
 
 	/**
-	* Get list of Products in the Company
+	* List Products in the Company
 	* @param int $category_id required // $this->getProductCategories()
 	* @param int $qty 
 	* @param int $offset
@@ -649,10 +636,13 @@ class InvoiceMoloni
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=192
 	**/
-	public function getProducts(int $category_id, int $qty = 0, int $offset = 0, int $with_invisible = 0)
+	public function getProducts(int $category_id = 0, int $qty = 0, int $offset = 0, int $with_invisible = 0)
 	{
-		return (new Product())
-			->getProducts($this->credencials, $category_id, $qty, $offset, $with_invisible);
+		return $this->start()
+		?
+			(new Product())->getProducts($this->credencials, $category_id, $qty, $offset, $with_invisible)
+		:
+			false;
 	}
 
 	/**
@@ -663,21 +653,31 @@ class InvoiceMoloni
 	**/
 	public function setProduct(array $p = [])
 	{
-		return (new Product())
-			->setProduct($this->credencials, $p);
+		return $this->start()
+		?
+			(new Product())->setProduct($this->credencials, $p)
+		:
+			false;
 	}
 
 	/**
-	* Update~Product in the Company 
+	* Update Product in the Company 
 	* @param array $p product required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=195
 	**/
 	public function updateProduct(array $p = [])
 	{
-		return (new Product())
-			->updateProduct($this->credencials, $p);
+		return $this->start()
+		?
+			(new Product())->updateProduct($this->credencials, $p)
+		:
+			false;
 	}
+
+	#####
+	## MEASUREMENT UNITS METHODS
+	#####
 
 	/**
 	* List of Measurement Units in the Company 
@@ -685,8 +685,11 @@ class InvoiceMoloni
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=266
 	**/
 	public function getMeasurementUnits(){
-		return (new MeasurementUnits())
-			->getMeasurementUnits($this->credencials);
+		return $this->start()
+		?
+			(new MeasurementUnits())->getMeasurementUnits($this->credencials)
+		:
+			false;
 	}
 
 	/**
@@ -697,8 +700,11 @@ class InvoiceMoloni
 	**/
 	public function setMeasurementUnits(array $mu = [])
 	{
-		return (new MeasurementUnits())
-			->setMeasurementUnits($this->credencials, $mu);
+		return $this->start()
+		?
+			(new MeasurementUnits())->setMeasurementUnits($this->credencials, $mu)
+		:
+			false;
 	}
 
 	/**
@@ -709,8 +715,11 @@ class InvoiceMoloni
 	**/
 	public function updateMeasurementUnits(array $mu = [])
 	{
-		return (new MeasurementUnits())
-			->updateMeasurementUnits($this->credencials, $mu);
+		return $this->start()
+		?
+			(new MeasurementUnits())->updateMeasurementUnits($this->credencials, $mu)
+		:
+			false;
 	}
 
 	/**
@@ -721,16 +730,17 @@ class InvoiceMoloni
 	**/
 	public function deleteMeasurementUnits(int $unit_id = 0)
 	{
-		return (new MeasurementUnits())
-			->deleteMeasurementUnits($this->credencials, $unit_id);
+		return $this->start()
+		?
+			(new MeasurementUnits())->deleteMeasurementUnits($this->credencials, $unit_id)
+		:
+			false;
 	}
 
 }
-}
-
 ```
 
-#### Create a Customer, Tax, Product
+#### Create a Customer, Tax, Product, 
 
 ```php
  $customer = [
@@ -810,5 +820,7 @@ class InvoiceMoloni
 # config/routes.yaml
 
 invoice:
+
     path: /admin/invoice
+
     controller: App\Controller\InvoiceController::index

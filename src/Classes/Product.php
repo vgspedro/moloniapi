@@ -2,13 +2,18 @@
 
 namespace VgsPedro\MoloniApi\Classes;
 
-use VgsPedro\MoloniApi\Authentication;
+use \VgsPedro\MoloniApi\Authentication;
 
 /**
  * A class which CRUD the Product requests
  */
 
 class Product extends Authentication{
+
+	/** @const entity api url */
+	const ENTITY = '/taxes/';
+	/** @const access api url */
+	const ACCESS = '/?access_token=';
 
 	/**
 	* Get Product by Id
@@ -17,14 +22,11 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=193
 	**/
-	public function getProductById(array $c, int $product_id, int $with_invisible = 0)
+	public function getProductById(array $c = [], int $product_id = 0, int $with_invisible = 0)
 	{
-		$token = $this->login($c);
 
-		if($token['status'] == 0)
-			return $token;
+		$url = $c['url'].''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];
 		
-		$url = $c['url']."/products/getOne/?access_token=".$token['data']->access_token;
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
 			'product_id' => $product_id,
@@ -34,21 +36,18 @@ class Product extends Authentication{
 	}
 
 	/**
-	* Get list of Products by Reference
+	* List Products by Reference
 	* @param string $reference required // $this->getProductCategories(0)
 	* @param int $qty 
 	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=298
 	**/
-	public function getProductsByReference(array $c, string $reference, int $qty = 0, int $offset = 0)
+	public function getProductsByReference(array $c = [], string $reference = null, int $qty = 0, int $offset = 0)
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
 		
-		$url = $c['url']."/products/getByReference/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'getByReference'.static::ACCESS.''.$c['token']['access_token'];
+
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
 			'reference' => $reference,
@@ -60,21 +59,16 @@ class Product extends Authentication{
 	}
 
 	/**
-	* Get list of Products by EAN
+	* List Products by EAN
 	* @param string $ean required // $this->getProductCategories(0)
 	* @param int $qty 
 	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=299
 	**/
-	public function getProductsByEan(array $c, string $ean, int $qty = 0, int $offset = 0)
+	public function getProductsByEan(array $c = [], string $ean = null, int $qty = 0, int $offset = 0)
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-		
-		$url = $c['url']."/products/getByEAN/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'getByEAN'.static::ACCESS.''.$c['token']['access_token'];
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
 			'ean' => $ean,
@@ -86,21 +80,17 @@ class Product extends Authentication{
 	}
 
 	/**
-	* Get list of Products by name
+	* List Products by name
 	* @param string $name required // $this->getProductCategories(0)
 	* @param int $qty 
 	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=297
 	**/
-	public function getProductsByName(array $c, string $name, int $qty = 0, int $offset = 0)
+	public function getProductsByName(array $c = [], string $name = null, int $qty = 0, int $offset = 0)
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
+		$url = $c['url'].''.static::ENTITY.'getByName'.static::ACCESS.''.$c['token']['access_token'];
 		
-		$url = $c['url']."/products/getByName/?access_token=".$token['data']->access_token;
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
 			'name' => $name,
@@ -120,15 +110,9 @@ class Product extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=192
 	**/
-	public function getProducts(array $c, int $category_id, int $qty = 0, int $offset = 0, int $with_invisible = 0)
+	public function getProducts(array $c = [], int $category_id = 0, int $qty = 0, int $offset = 0, int $with_invisible = 0)
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/products/getAll/?access_token=".$token['data']->access_token;
-		
+		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
 			'category_id' => $category_id,
@@ -146,14 +130,10 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=194
 	**/
-	public function setProduct(array $c, array $p = [])
+	public function setProduct(array $c = [], array $p = [])
 	{
-		$token = $this->login();
 
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/products/insert/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
 
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
@@ -191,14 +171,10 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=195
 	**/
-	public function updateProduct(array $c, array $p = [])
+	public function updateProduct(array $c = [], array $p = [])
 	{
-		$token = $this->login();
 
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/products/update/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 
 		$response = $this->curl($url, [
 

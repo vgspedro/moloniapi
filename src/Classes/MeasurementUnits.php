@@ -2,29 +2,28 @@
 
 namespace VgsPedro\MoloniApi\Classes;
 
-use VgsPedro\MoloniApi\Authentication;
+use \VgsPedro\MoloniApi\Authentication;
 
 /**
- * A class which CRUD the MeasurementUnits requests
+ * A class for CRUD the MeasurementUnits requests
  */
 
 class MeasurementUnits extends Authentication{
 
+	/** @const entity api url */
+	const ENTITY = '/measurementUnits/';
+	/** @const access api url */
+	const ACCESS = '/?access_token=';
+
 	/**
-	* Get list of Measurement Units in the Company 
+	* List of Measurement Units in the Company 
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=266
 	**/
-	public function getMeasurementUnits(array $c)
+	public function getMeasurementUnits(array $c = [])
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/measurementUnits/getAll/?access_token=".$token['data']->access_token;
-		$response = $this->curl($url, ['company_id' => $c['company_id']]);
-		return $response;
+		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
+		return $this->curl($url, ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -33,17 +32,11 @@ class MeasurementUnits extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=267
 	**/
-	public function setMeasurementUnits(array $c, array $mu = [])
+	public function setMeasurementUnits(array $c = [], array $mu = [])
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/measurementUnits/insert/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
 
 		$response = $this->curl($url, [
-
 			'company_id' => $c['company_id'],
 			'name' => $mu['name'],// string required
 			'short_name' => $mu['short_name'],// string required
@@ -58,22 +51,17 @@ class MeasurementUnits extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=268
 	**/
-	public function updateMeasurementUnits(array $c, array $mu = [])
+	public function updateMeasurementUnits(array $c = [], array $mu = [])
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/measurementUnits/update/?access_token=".$token['data']->access_token;
-
+		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
+		
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
 			'unit_id' => 0,// int required $this->getgetMeasurementUnits()
 			'name' => $mu['name'],// string required
 			'short_name' => $mu['short_name'],// string required
 		]);
-
+		
 		return $response;
 	}
 
@@ -83,14 +71,9 @@ class MeasurementUnits extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=269
 	**/
-	public function deleteMeasurementUnits(array $c, int $unit_id)
+	public function deleteMeasurementUnits(array $c = [], int $unit_id = 0)
 	{
-		$token = $this->login($c);
-
-		if($token['status'] == 0)
-			return $token;
-
-		$url = $c['url']."/measurementUnits/delete/?access_token=".$token['data']->access_token;
+		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
 
 		$response = $this->curl($url, [
 			'company_id' => $c['company_id'],
@@ -101,3 +84,5 @@ class MeasurementUnits extends Authentication{
 	}
 
 }
+
+
