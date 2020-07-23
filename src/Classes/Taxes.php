@@ -15,6 +15,8 @@ class Taxes extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
+
+
 	/** @var int id*/
 	private $id;
 
@@ -68,6 +70,7 @@ class Taxes extends Authentication{
 		$url = $this->getCredencials()['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$this->getCredencials()['token']['access_token'];
 		return parent::curl($url, ['company_id' => $this->getCredencials()['company_id'], 'tax_id' => $this->getId()]);
 	}
+
 
 
 	/**
