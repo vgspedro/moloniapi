@@ -18,13 +18,10 @@ class GlobalData extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=68
 	**/
-	public function getCountries(array $c)
+	public function getCountries(array $c = [])
 	{
-
 		$url = $c['url'].'/countries'.static::ACCESS.''.$c['token']['access_token'];
-		$response = $this->curl($url);
-
-		return $response;
+		return parent::curl($url);
 	}
 
 	/**
@@ -32,13 +29,10 @@ class GlobalData extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=70
 	**/
-	public function getLanguages(array $c)
+	public function getLanguages(array $c = [])
 	{
-
 		$url = $c['url'].'/languages'.static::ACCESS.''.$c['token']['access_token'];
-		$response = $this->curl($url);
-
-		return $response;
+		return parent::curl($url);
 	}
 
 	/**
@@ -46,13 +40,10 @@ class GlobalData extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=101
 	**/
-	public function getCurrencies(array $c)
+	public function getCurrencies(array $c = [])
 	{
-
 		$url = $c['url'].'/currencies'.static::ACCESS.''.$c['token']['access_token'];
-		$response = $this->curl($url);
-
-		return $response;
+		return parent::curl($url);
 	}
 
 	/**
@@ -61,13 +52,10 @@ class GlobalData extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=69
 	**/
-	public function getFiscalZones(array $c, int $id)
+	public function getFiscalZones(array $c = [], int $id = 0)
 	{
-
 		$url = $c['url'].'/fiscalZones'.static::ACCESS.''.$c['token']['access_token'];
-		$response = $this->curl($url,['country_id' => $id]);
-
-		return $response;
+		return parent::curl($url, ['country_id' => $id]);
 	}
 
 }

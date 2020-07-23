@@ -15,63 +15,23 @@ class Taxes extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
-
-
-	/** @var int id*/
-	private $id;
-
-	/** @var array $c*/
-	private $c;
-
 	/**
-	 * Sets id
-	 *
-	 * @param int id
-	 *
-	 * @return \Classes\Taxes
-	 */
-	public function setId(int $id) {
-		$this->id = $id;
-		return $this;
-	}
+	Taxes array data structure
 
-	/**
-	 * Gets tax id
-	 *
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    $tax = [
+    	'tax_id' => 0, //int required ON UPDATE only $this->getTaxes()
+        'name' => 'Tx.Iva Intermédia 13', //string required
+        'value' => 13, // int required
+        'type' => 1, // int required
+        'saft_type' => 1, //int required
+        'vat_type' => 'OUT', // string required ["RED","INT","NOR","ISE","OUT"]"
+        'stamp_tax' => '', //string required
+        'exemption_reason' => '', // string required
+        'fiscal_zone' => 'PT', // string required get it from $moloni->getFiscalZones($id)
+        'active_by_default' => 0 // int required
+    ];
 
-	public function setCredencials(array $c) {
-		$this->c = $c;
-		return $this;
-	}
-
-	/**
-	 * Gets tax id
-	 *
-	 * @return int
-	 */
-	public function getCredencials() {
-		return $this->$c;
-	}
-
-
-	/**
-	* Delete a Tax from the Company 
-	* @param int $tax_id // $this->getTaxes($c) required
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=265
-	**/
-	public function deleteTestTax()
-	{
-		$url = $this->getCredencials()['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$this->getCredencials()['token']['access_token'];
-		return parent::curl($url, ['company_id' => $this->getCredencials()['company_id'], 'tax_id' => $this->getId()]);
-	}
-
-
+	*/
 
 	/**
 	* List Taxes of Company 
@@ -81,7 +41,7 @@ class Taxes extends Authentication{
 	public function getTaxes(array $c = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id']]);
+		return parent::curl($url, ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -94,7 +54,7 @@ class Taxes extends Authentication{
 	{
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
 		
-		$response = $this->curl($url, [
+		$response =  parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'name' => $t['name'], 
 			'value' => $t['value'],
@@ -103,7 +63,7 @@ class Taxes extends Authentication{
 			'vat_type' => $t['vat_type'],
 			'stamp_tax' => $t['stamp_tax'],
 			'exemption_reason' => $t['exemption_reason'],
-			'fiscal_zone' => $t['fiscal_zone'], //$moloni->getFiscalZones($id)
+			'fiscal_zone' => $t['fiscal_zone'],
 			'active_by_default' => $t['active_by_default']
 		]);
 
@@ -121,9 +81,9 @@ class Taxes extends Authentication{
 
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 
-		$response = $this->curl($url, [
+		$response =  parent::curl($url, [
 			'company_id' => $c['company_id'],
-			'tax_id' => 1999147,
+			'tax_id' => $t['tax_id'],
 			'name' => $t['name'], 
 			'value' => $t['value'],
 			'type' => $t['type'],
@@ -147,8 +107,7 @@ class Taxes extends Authentication{
 	public function deleteTax(array $c = [], int $tax_id = 0)
 	{
 		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
-	
-		return $this->curl($url, ['company_id' => $c['company_id'], 'tax_id' => $tax_id]);
+		return  parent::curl($url, ['company_id' => $c['company_id'], 'tax_id' => $tax_id]);
 	}
 
 }

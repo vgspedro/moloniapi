@@ -15,6 +15,19 @@ class MaturityDates extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
+
+	/**
+	MaturityDates array data structure
+
+    $md = [
+        'maturity_date_id' => 0, //int required ON UPDATE only $this->getMaturityDates()
+        'name' => 'string',  //string required
+        'days' => 15,  //int required
+        'associated_discount' => 0.0 // float required
+    ];
+
+	**/
+	
 	/**
 	* List MaturityDates in the Company 
 	* @return json 
@@ -22,7 +35,7 @@ class MaturityDates extends Authentication{
 	public function getMaturityDates(array $c = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id']]);
+		return parent::curl($url, ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -33,9 +46,14 @@ class MaturityDates extends Authentication{
 	**/
 	public function updateMaturityDates(array $c = [], array $md = [])
 	{
-
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id']]);
+		return parent::curl($url, [
+			'company_id' => $c['company_id'],
+			'maturity_date_id' => $md['maturity_date_id'], //int required  
+			'name' => $md['name'],  //string required
+			'days' => $md['days'],  //int required
+			'associated_discount' => $md['associated_discount'] // float required
+		]);
 	}
 
 	/**
@@ -47,7 +65,7 @@ class MaturityDates extends Authentication{
 	public function deleteMaturityDates(array $c = [], int $maturity_dates_id = 0)
 	{
 		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id'], 'maturity_dates_id' => $maturity_dates_id]);
+		return parent::curl($url, ['company_id' => $c['company_id'], 'maturity_date_id' => $maturity_dates_id]);
 	}
 
 	/**
@@ -56,10 +74,15 @@ class MaturityDates extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=241
 	**/
-	public function setMaturityDates(array $c = [],array $md = [])
+	public function setMaturityDates(array $c = [], array $md = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id']]);
+		return parent::curl($url, [
+			'company_id' => $c['company_id'],
+			'name' => $md['name'],  //string required
+			'days' => $md['days'],  //int required
+			'associated_discount' => $md['associated_discount'] // float required
+		]);
 	}
 
 }

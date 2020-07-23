@@ -15,6 +15,15 @@ class ProductCategories extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
+	/** Product Categories array data structure
+	$pc = [
+		'category_id' => 0,//int required ON UPDATE only $this->getProductCategories(0)
+		'parent_id' => 0,//int required $this->getProductCategories(0)
+		'name' => 'category name', //string required
+		'description' => 'This category is amazing...', //string
+		'pos_enabled' => 0, //int
+	];
+
 	/**
 	* List Product Categories in the Company 
 	* @param int $parent_id required
@@ -23,7 +32,10 @@ class ProductCategories extends Authentication{
 	public function getProductCategories(array $c = [], int $parent_id = 0)
 	{
 		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id'], 'parent_id' => $parent_id]);
+		return parent::curl($url, [
+			'company_id' => $c['company_id'],
+			'parent_id' => $parent_id
+		]);
 	}
 
 	/**
@@ -35,7 +47,14 @@ class ProductCategories extends Authentication{
 	public function updateProductCategories(array $c = [], array $pc = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id'], 'product_categories_id' => $product_categories_id]);
+		return parent::curl($url, [
+			'company_id' => $c['company_id'],	
+			'category_id' => $pc['category_id'],
+			'parent_id' => $pc['parent_id'],
+			'name' => $pc['name'],
+			'description' => $pc['description'],
+			'pos_enabled' => $pc['pos_enabled']
+		]);
 	}
 
 	/**
@@ -44,10 +63,13 @@ class ProductCategories extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=191
 	**/
-	public function deleteProductCategories(array $c = [], int $product_categories_id = 0)
+	public function deleteProductCategories(array $c = [], int $category_id = 0)
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id'], 'product_categories_id' => $product_categories_id]);
+		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+		return parent::curl($url, [
+			'company_id' => $c['company_id'], 
+			'category_id' => $category_id
+		]);
 	}
 
 	/**
@@ -59,8 +81,13 @@ class ProductCategories extends Authentication{
 	public function setProductCategories(array $c = [], array $pc = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id'], 'product_categories_id' => $product_categories_id]);
+		return parent::curl($url, [
+			'company_id' => $c['company_id'], 	
+			'parent_id' => $pc['parent_id'],
+			'name' => $pc['name'],
+			'description' => $pc['description'],
+			'pos_enabled' => $pc['pos_enabled']
+		]);
 	}
-
 
 }

@@ -11,9 +11,102 @@ use \VgsPedro\MoloniApi\Authentication;
 class Product extends Authentication{
 
 	/** @const entity api url */
-	const ENTITY = '/taxes/';
+	const ENTITY = '/products/';
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
+
+/** Payment array data structure
+$p = [
+
+]
+
+Obrigatório
+product_id int
+
+Obrigatório
+category_id int
+
+Obrigatório
+type int
+
+Obrigatório
+name string
+
+Obrigatório
+summary string
+
+Facultativo
+reference string
+
+Obrigatório
+ean string
+
+Facultativo
+price float
+
+Obrigatório
+unit_id int
+
+Obrigatório
+has_stock int
+
+Obrigatório
+stock float
+
+Obrigatório
+minimum_stock float
+
+Facultativo
+pos_favorite int
+
+Facultativo
+at_product_category string
+
+Facultativo
+exemption_reason string
+
+Facultativo
+taxes array
+
+Facultativo
+tax_id int
+
+Obrigatório
+value float
+
+Obrigatório
+order int
+
+Obrigatório
+cumulative int
+
+Obrigatório
+suppliers array
+
+Facultativo
+supplier_id int
+
+Obrigatório
+cost_price float
+
+Obrigatório
+referenceint
+
+Facultativo
+properties array
+
+Facultativo
+property_id int
+
+Obrigatório
+value string
+
+Obrigatório
+];
+
+
+
+
 
 	/**
 	* Get Product by Id
@@ -27,12 +120,11 @@ class Product extends Authentication{
 
 		$url = $c['url'].''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];
 		
-		$response = $this->curl($url, [
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'product_id' => $product_id,
 			'with_invisible' => $with_invisible
 		]);
-		return $response;
 	}
 
 	/**
@@ -48,14 +140,12 @@ class Product extends Authentication{
 		
 		$url = $c['url'].''.static::ENTITY.'getByReference'.static::ACCESS.''.$c['token']['access_token'];
 
-		$response = $this->curl($url, [
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'reference' => $reference,
 			'qty' => $qty,
 			'offset' => $offset
 		]);
-
-		return $response;
 	}
 
 	/**
@@ -69,14 +159,12 @@ class Product extends Authentication{
 	public function getProductsByEan(array $c = [], string $ean = null, int $qty = 0, int $offset = 0)
 	{
 		$url = $c['url'].''.static::ENTITY.'getByEAN'.static::ACCESS.''.$c['token']['access_token'];
-		$response = $this->curl($url, [
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'ean' => $ean,
 			'qty' => $qty,
 			'offset' => $offset
 		]);
-
-		return $response;
 	}
 
 	/**
@@ -91,18 +179,16 @@ class Product extends Authentication{
 	{
 		$url = $c['url'].''.static::ENTITY.'getByName'.static::ACCESS.''.$c['token']['access_token'];
 		
-		$response = $this->curl($url, [
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'name' => $name,
 			'qty' => $qty,
 			'offset' => $offset
 		]);
-
-		return $response;
 	}
 
 	/**
-	* Get list of Products in the Company
+	* List of Products in the Company
 	* @param int $category_id required // $this->getProductCategories()
 	* @param int $qty 
 	* @param int $offset
@@ -113,15 +199,14 @@ class Product extends Authentication{
 	public function getProducts(array $c = [], int $category_id = 0, int $qty = 0, int $offset = 0, int $with_invisible = 0)
 	{
 		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		$response = $this->curl($url, [
+		
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'category_id' => $category_id,
 			'qty' => $qty,
 			'offset' => $offset,
 			'with_invisible' => $with_invisible
 		]);
-
-		return $response;
 	}
 
 	/**
@@ -135,7 +220,7 @@ class Product extends Authentication{
 
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
 
-		$response = $this->curl($url, [
+		$response = parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'category_id' => $p['category_id'],//int required $this->getProductCategories
 			'type' => $p['type'],//int required
@@ -176,8 +261,7 @@ class Product extends Authentication{
 
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 
-		$response = $this->curl($url, [
-
+		$response = parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'category_id' => $p['category_id'],//int required $this->getProductCategories
 			'product_id' => 58320720, // int required //$this->getPoducts()

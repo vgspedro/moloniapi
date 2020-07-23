@@ -14,16 +14,64 @@ class Customer extends Authentication{
 	const ENTITY = '/customers/';
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
+	
+	/**
+	Customer array data structure
+	$a = [
+		'customer_id' => 0, // int required ON UPDATE only $this->getCustomers()
+		'vat' => '100200300', //string required NIPC 
+		'number' => 'our client reference', // string (max 20) required SNC
+		'name' => 'Name of fiscal number owner', //string required
+		'language_id' => 1, // int required 1=>PT, 2=>EN, 3=>ES
+		'address' => 'Fiscal Address', // string required
+		'zip_code' => 'Fiscal zip code', // string if country_id = 1 then 0000-000
+		'city' => 'Fiscal City, //string required
+		'country_id' =>  0, // int required GlobalData->getCountries()
+		'email' => '',// string
+		'website' => '',// string
+		'phone' => '',// string
+		'fax' => '',// string
+		'contact_name' => '',// string
+		'contact_email' => '',// string
+		'contact_phone' => '',// string
+		'notes' => '',// string
+		'salesman_id' => 0, // int
+		'price_class_id' => 0 , // int
+		'maturity_date_id' => 0, // int required MaturityDates->getMaturityDates()
+		'payment_day' => 0, // int
+		'discount' => 0.0, // float
+		'credit_limit' => 0.0, // float,
+		'copies'=> [
+			'document_type_id' => 0, // int required DocumentType->getDocumentType()
+			'copies' => 3, // int required
+		],
+		'payment_method_id' =>  0, // int required PaymentMethod->getPaymentMethod()
+		'delivery_method_id' => 0, // int,
+		'field_notes' => '',// string
+	]
+	**/
+
 
 	/**
-	* Get all Customers of the Company 
+	* Count all Customers of the Company 
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
 	**/
 	public function getCustomerCount(array $c = []){	
 
 		$url = $c['url'].''.static::ENTITY.'count'.static::ACCESS.''.$c['token']['access_token'];	
-		return $this->curl($url);
+		return  parent::curl($url, ['company_id' => $c['company_id']]);
+	}
+	
+	/**
+	* List Customers of the Company 
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
+	**/
+	public function getCustomers(array $c = []){	
+
+		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];	
+		return  parent::curl($url, ['company_id' => $c['company_id']]); 
 	}
 
 	/**
@@ -37,28 +85,37 @@ class Customer extends Authentication{
 
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];	
 
-		$response = $this->curl($url, [
+		$response =  parent::curl($url, [
 			'company_id' => $c['company_id'],
-			'vat' => $a['vat'], //NIPC
-			'number' => $a['cid'], //SNC
-			'language_id' => $a['language_id'],
+			'vat' => $a['vat'], 
+			'number' => $a['number'],
 			'name' => $a['name'],
+			'language_id' => $a['language_id'],
 			'address' => $a['address'],
+			'zip_code' => $a['zip_code'],
 			'city' => $a['city'],
-			'zip_code' => $a['zip_code'], //if country_id = 1 then 0000-000
-			'discount' => $a['discount'],
-			'credit_limit' => $a['credit_limit'],
-			'payment_day' => $a['payment_day'],
 			'country_id' => $a['country_fiscal_id'],
-			'maturity_date_id' => $a['maturity_date_id'], 
-			'qty_copies_document' => $a['qty_copies_document'],
-			'payment_method_id' => $a['payment_method_id'],
+			'email' => '',
+			'website' => '',
+			'phone' => '',
+			'fax' => '',
+			'contact_name' => '',
+			'contact_email' => '',
+			'contact_phone' => '',
+			'notes' => '',
+			'salesman_id' => $a['salesman_id'], // int
+			'price_class_id' => 0 ,
+			'maturity_date_id' => 0,
+			'payment_day' => 0, 
+			'discount' => 0.0,
+			'credit_limit' => 0.0,
 			'copies'=> [
-				'document_type_id' => $a['copies']['document_type_id'],
-				'copies' => $a['copies']['copies'],
+				'document_type_id' => 0,
+				'copies' => 3,
 			],
-			'delivery_method_id' => $a['delivery_method_id'],
-			'salesman_id' => $a['salesman_id']
+			'payment_method_id' => 0,
+			'delivery_method_id' => 0,
+			'field_notes' => ''
 		]);
 
 		return $response;
@@ -73,10 +130,7 @@ class Customer extends Authentication{
 	public function getCustomerById(array $c = [], int $id = 0)
 	{
 		$url = $c['url'].''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];	
-
-		$response = $this->curl($url, ['company_id' => $c['company_id'], 'customer_id' => $id]);
-
-		return $response;
+		return  parent::curl($url, ['company_id' => $c['company_id'], 'customer_id' => $id]);
 	}
 
 	/**
@@ -88,10 +142,7 @@ class Customer extends Authentication{
 	public function getCustomerByVat(array $c = [], string $vat = null)
 	{
 		$url = $c['url'].''.static::ENTITY.'getByVat'.static::ACCESS.''.$c['token']['access_token'];
-
-		$response = $this->curl($url, ['company_id' => $c['company_id'], 'vat' => $vat]);
-
-		return $response;
+		return  parent::curl($url, ['company_id' => $c['company_id'], 'vat' => $vat]);
 	}
 
 	/**
@@ -104,29 +155,38 @@ class Customer extends Authentication{
 	{
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];	
 
-		$response = $this->curl($url, [
+		$response =  parent::curl($url, [
 			'company_id' => $c['company_id'],
-			'customer_id' => 30259661,
-			'vat' => $a['vat'], //NIPC
-			'number' => $a['cid'], //SNC
-			'language_id' => $a['language_id'], //1=>PT, 2=>EN, 3=>ES
-			'name' => $a['name'],
-			'address' => $a['address'],
-			'city' => $a['city'],
-			'zip_code' => $a['zip_code'], //if country_id = 1 then 0000-000
-			'discount' => $a['discount'],
-			'credit_limit' => $a['credit_limit'],
-			'payment_day' => $a['payment_day'],
-			'country_id' => $a['country_fiscal_id'],
-			'maturity_date_id' => $a['maturity_date_id'], //18253 PP || 18252 30d || 18254 60d || 18255 90d
-			'qty_copies_document' => $a['qty_copies_document'],
-			'payment_method_id' => $a['payment_method_id'], //17236 cash || xxxx paypal
+			'customer_id' => $a['customer_id'], // int required ON UPDATE only $this->getCustomers()
+			'vat' => $a['vat'], //string required NIPC 
+			'number' => $a['number'], // string (max 20) required SNC
+			'name' => $a['name'], //string required
+			'language_id' => $a['language_id'], // int required 1=>PT, 2=>EN, 3=>ES
+			'address' => $a['address'], // string required
+			'zip_code' => $a['zip_code'], // string if country_id = 1 then 0000-000
+			'city' => $a['city'], //string required
+			'country_id' => $a['country_fiscal_id'], // GlobalData->getCountries()
+			'email' => '',// string
+			'website' => '',// string
+			'phone' => '',// string
+			'fax' => '',// string
+			'contact_name' => '',// string
+			'contact_email' => '',// string
+			'contact_phone' => '',// string
+			'notes' => '',// string
+			'salesman_id' => $a['salesman_id'], // int
+			'price_class_id' => 0 , // int
+			'maturity_date_id' => 0, // int required $moloni->getMaturityDates()
+			'payment_day' => 0, // int
+			'discount' => 0.0, // float
+			'credit_limit' => 0.0, // float,
 			'copies'=> [
-				'document_type_id' => $a['copies']['document_type_id'],
-				'copies' => $a['copies']['copies'],
+				'document_type_id' => 0, // int required $moloni->getDocumentType()
+				'copies' => 3, // int required
 			],
-			'delivery_method_id' => $a['delivery_method_id'],
-			'salesman_id' => $a['salesman_id']
+			'payment_method_id' =>  0, // int required $moloni->getPaymentMethod()
+			'delivery_method_id' => 0, // int,
+			'field_notes' => '',// string
 		]);
 
 		return $response;

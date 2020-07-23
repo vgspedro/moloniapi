@@ -15,6 +15,14 @@ class PaymentMethods extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
+	/** PaymentMethods array data structure
+	$pm = [
+		'payment_method_id' => 0,//int required ON UPDATE only $this->getPaymentMethods()
+		'name' => 'payment name', //string required
+		'is_numeric' => 0, // int
+	]
+	**/
+
 	/**
 	* List Payment Methods of Company 
 	* @return json 
@@ -23,7 +31,7 @@ class PaymentMethods extends Authentication{
 	public function getPaymentMethods(array $c = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id']]);
+		return parent::curl($url, ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -34,16 +42,13 @@ class PaymentMethods extends Authentication{
 	**/
 	public function setPaymentMethods(array $c = [], array $pm = [])
 	{
-
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
-	
-		$response = $this->curl($url,[
-			'company_id' => $c['company_id'],
-			'name' => $pm['name'], //string required
-			'is_numeric' => $pm['is_numeric'] //int
-		]);
 
-		return $response;
+		return parent::curl($url,[
+			'company_id' => $c['company_id'],
+			'name' => $pm['name'],
+			'is_numeric' => $pm['is_numeric']
+		]);
 	}
 
 	/**
@@ -54,15 +59,12 @@ class PaymentMethods extends Authentication{
 	**/
 	public function deletePaymentMethods(array $c = [], int $payment_method_id = 0)
 	{
-	
 		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
 
-		$response = $this->curl($url,[
+		return parent::curl($url,[
 			'company_id' => $c['company_id'],
-			'payment_method_id' => 0,//int required $this->getPaymentMethods()
+			'payment_method_id' => $payment_method_id
 		]);
-
-		return $response;
 	}
 
 	/**
@@ -75,14 +77,12 @@ class PaymentMethods extends Authentication{
 	{
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 	
-		$response = $this->curl($url,[
+		return parent::curl($url,[
 			'company_id' => $c['company_id'],
-			'payment_method_id' => 0,//int required $this->getPaymentMethods()
-			'name' => $pm['name'], //string required
-			'is_numeric' => $pm['is_numeric'], //int
+			'payment_method_id' => $pm['payment_method_id'],
+			'name' => $pm['name'],
+			'is_numeric' => $pm['is_numeric']
 		]);
-
-		return $response;
 	}
 
 }
