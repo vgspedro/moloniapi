@@ -868,7 +868,6 @@ class InvoiceMoloni
 			false;
 	}
 
-
 	/**
 	* Get PDF link of DocumentType 
 	* @param int $document_id // required
@@ -884,6 +883,7 @@ class InvoiceMoloni
 	}
 
 }
+
 ```
 
 
@@ -892,7 +892,7 @@ class InvoiceMoloni
 # templates/admin/payment/native.html
 
 ```html
-
+<h2>Result</h2>
 {{dump(moloni)}}
 
 ```
