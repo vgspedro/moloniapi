@@ -11,6 +11,16 @@ composer require vgspedro/moloniapi:dev-master
 
 ## Symfony framework
 
+#### Create the Route
+
+# config/routes.yaml
+
+```
+invoice:
+    path: /admin/invoice
+    controller: App\Controller\InvoiceController::index
+```
+
 #### Create the Controler
 
 # src/Controler/InvoicingController.php
@@ -66,6 +76,7 @@ use \VgsPedro\MoloniApi\Classes\PaymentMethods;
 use \VgsPedro\MoloniApi\Classes\Product;
 use \VgsPedro\MoloniApi\Classes\ProductCategories;
 use \VgsPedro\MoloniApi\Classes\Taxes;
+use \VgsPedro\MoloniApi\Classes\DocumentTypes;
 
 class InvoiceMoloni
 {
@@ -117,7 +128,7 @@ class InvoiceMoloni
 			->login($this->credencials);
 		
 		if($token['status'] == 0)
-			return null;
+			return false;
    		
    		$this->session->set('access_token', $token['data']->access_token);
    		//Removed 5 seconds from the current expire value ( 3600 - 5)
@@ -885,13 +896,3 @@ class InvoiceMoloni
 {{dump(moloni)}}
 
 ```
-
-#### Add the Routes
-
-# config/routes.yaml
-
-invoice:
-
-    path: /admin/invoice
-
-    controller: App\Controller\InvoiceController::index
