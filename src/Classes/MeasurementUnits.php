@@ -16,6 +16,17 @@ class MeasurementUnits extends Authentication{
 	const ACCESS = '/?access_token=';
 
 	/**
+	MeasurementUnits array data structure
+
+    $mu = [
+    	'unit_id' => 0,// int required ON UPDATE only $this->getMeasurementUnits()
+		'name' => 'name of unit EX Metters',// string required
+		'short_name' => 'mt',// string required
+    ];
+
+	*/
+
+	/**
 	* List of Measurement Units in the Company 
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=266
@@ -23,7 +34,7 @@ class MeasurementUnits extends Authentication{
 	public function getMeasurementUnits(array $c = [])
 	{
 		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return $this->curl($url, ['company_id' => $c['company_id']]);
+		return parent::curl($url, ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -36,13 +47,12 @@ class MeasurementUnits extends Authentication{
 	{
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
 
-		$response = $this->curl($url, [
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'name' => $mu['name'],// string required
 			'short_name' => $mu['short_name'],// string required
 		]);
 
-		return $response;
 	}
 
 	/**
@@ -55,14 +65,13 @@ class MeasurementUnits extends Authentication{
 	{
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 		
-		$response = $this->curl($url, [
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
-			'unit_id' => 0,// int required $this->getgetMeasurementUnits()
+			'unit_id' => $mu['unit_id'],// int required $this->getMeasurementUnits()
 			'name' => $mu['name'],// string required
 			'short_name' => $mu['short_name'],// string required
 		]);
-		
-		return $response;
+
 	}
 
 	/**
@@ -75,12 +84,10 @@ class MeasurementUnits extends Authentication{
 	{
 		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
 
-		$response = $this->curl($url, [
+		return parent::curl($url, [
 			'company_id' => $c['company_id'],
-			'unit_id' => 0,// int required $this->getgetMeasurementUnits()
+			'unit_id' => $unit_id,
 		]);
-
-		return $response;
 	}
 
 }

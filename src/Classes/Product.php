@@ -15,98 +15,39 @@ class Product extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
-/** Payment array data structure
-$p = [
-
-]
-
-Obrigatório
-product_id int
-
-Obrigatório
-category_id int
-
-Obrigatório
-type int
-
-Obrigatório
-name string
-
-Obrigatório
-summary string
-
-Facultativo
-reference string
-
-Obrigatório
-ean string
-
-Facultativo
-price float
-
-Obrigatório
-unit_id int
-
-Obrigatório
-has_stock int
-
-Obrigatório
-stock float
-
-Obrigatório
-minimum_stock float
-
-Facultativo
-pos_favorite int
-
-Facultativo
-at_product_category string
-
-Facultativo
-exemption_reason string
-
-Facultativo
-taxes array
-
-Facultativo
-tax_id int
-
-Obrigatório
-value float
-
-Obrigatório
-order int
-
-Obrigatório
-cumulative int
-
-Obrigatório
-suppliers array
-
-Facultativo
-supplier_id int
-
-Obrigatório
-cost_price float
-
-Obrigatório
-referenceint
-
-Facultativo
-properties array
-
-Facultativo
-property_id int
-
-Obrigatório
-value string
-
-Obrigatório
-];
-
-
-
-
+	/** Payment array data structure
+	$p = [
+        'product_id' => 0,// int required ON UPDATE only $this->getProducts()
+        'category_id' => 2518332,// int required $moloni->getProductCategories()
+        'type' => 1,// int required [1 => Produto , 2 => Serviço , 3 => Outros]
+        'name' => 'Prduct name',// string required
+        'summary' => 'A product summary',// string 
+        'reference' => '#123',//string required should be unique
+        'ean' => '1234',// string
+        'price' => 5.1,// float required
+        'unit_id' => 1222821 ,// int required $moloni->getMeasurementunits()
+        'has_stock' => 0,// int required
+        'stock' => 0.0,//float required
+        'minimum_stock' => 0.0,// float
+        'pos_favorite' => 0,// int
+        'at_product_category' => '',// string [M: mercadorias, P: matérias-primas, subsidiárias e de consumo, A: produtos acabados e intermédios, S: subprodutos, desperdícios e refugos, T: produtos e trabalhos em curso]
+        'exemption_reason' => '',// string required
+        'taxes' => [ //array not required 
+            'tax_id' => 1999735,// int $moloni->getTaxes()
+            'value' => 1.0, //float required
+            'order' => 1,// int required
+            'cumulative' => 1,// int required
+        ],
+        'suppliers' => [ //array not required 
+                'supplier_id' => 0,// int required $moloni->getSuppliers()
+                'cost_price'=> 4.1 , // float required
+                'referenceint' => 0, //int 
+        ],  
+        'properties' => [ //array not required 
+            'property_id' => 0,// int required
+            'value' => '',// string required
+        ]
+    ];
 
 	/**
 	* Get Product by Id
@@ -222,29 +163,23 @@ Obrigatório
 
 		$response = parent::curl($url, [
 			'company_id' => $c['company_id'],
-			'category_id' => $p['category_id'],//int required $this->getProductCategories
-			'type' => $p['type'],//int required
-			'name' => $p['name'],//string required
-			'summary' => $p['summary'],// string
-			'reference' => $p['reference'],// string required
-			'ean' => $p['ean'],// string
-			'price' => $p['price'], //float required
-			'unit_id' => $p['unit_id'], //int required
-			'has_stock' => $p['has_stock'], //int required
-			'stock' => $p['stock'], //float required
-			'minimum_stock' => $p['minimum_stock'], //float required
-			'pos_favorite' => $p['pos_favorite'], //int
-			'at_product_category' => $p['at_product_category'], //string  [M: mercadorias, P: matérias-primas, subsidiárias e de consumo, A: produtos acabados e intermédios, S: subprodutos, desperdícios e refugos, T: produtos e trabalhos em curso]
-			'exemption_reason' => $p['exemption_reason'], //string
-			'taxes' => [],
-/*				'tax_id' => $p['taxes']['tax_id'], //int required $this->getTaxes()
- 				'value' => $p['taxes']['value'], //float required
-				'order' => $p['taxes']['order'], //int required
-				'cumulative' => $p['taxes']['cumulative'] //int required
-			],*/
-			'suppliers' => [],
-			'properties' => [],
-			'wharehouses' => []
+		    'category_id' => $p['category_id'],
+		    'type' => $p['type'],
+		    'name' => $p['name'],
+		    'summary' => $p['summary'], 
+		    'reference' => $p['reference'],
+		    'ean' => $p['ean'],
+		    'price' => $p['price'],
+		    'unit_id' => $p['unit_id'] ,
+		    'has_stock' => $p['has_stock'],
+		    'stock' => $p['stock'],
+		    'minimum_stock' => $p['minimum_stock'],
+		    'pos_favorite' => $p['pos_favorite'],
+		    'at_product_category' => $p['at_product_category'],
+		    'exemption_reason' => $p['exemption_reason'],
+		    'taxes' => [],//$p['taxes'],
+		    'suppliers' => [],// $p['suppliers'],  
+		    'properties' => []// $p['properties']
 		]);
 
 		return $response;
@@ -258,38 +193,47 @@ Obrigatório
 	**/
 	public function updateProduct(array $c = [], array $p = [])
 	{
-
 		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
 
 		$response = parent::curl($url, [
 			'company_id' => $c['company_id'],
-			'category_id' => $p['category_id'],//int required $this->getProductCategories
-			'product_id' => 58320720, // int required //$this->getPoducts()
-			'type' => $p['type'],// int required
-			'name' => $p['name'],// string required
-			'summary' => $p['summary'],// string
-			'reference' => $p['reference'],// string required
-			'ean' => $p['ean'],// string
-			'price' => $p['price'],// float required
-			'unit_id' => $p['unit_id'],// int required
-			'has_stock' => $p['has_stock'],// int required
-			'stock' => $p['stock'],// float required
-			'minimum_stock' => $p['minimum_stock'],// float required
-			'pos_favorite' => $p['pos_favorite'],// int
-			'at_product_category' => $p['at_product_category'],// string  [M: mercadorias, P: matérias-primas, subsidiárias e de consumo, A: produtos acabados e intermédios, S: subprodutos, desperdícios e refugos, T: produtos e trabalhos em curso]
-			'exemption_reason' => $p['exemption_reason'],// string
-			'taxes' => [
-				'tax_id' => $p['taxes']['tax_id'], //int required $this->getTaxes()
- 				'value' => $p['taxes']['value'], //float required
-				'order' => $p['taxes']['order'], //int required
-				'cumulative' => $p['taxes']['cumulative'] //int required
-			],
-			'suppliers' => [],
-			'properties' => [],
-			'wharehouses' => []
+			'category_id' => $p['category_id'],
+			'product_id' => $p['product_id'],
+		    'type' => $p['type'],
+		    'name' => $p['name'],
+		    'summary' => $p['summary'], 
+		    'reference' => $p['reference'],
+		    'ean' => $p['ean'],
+		    'price' => $p['price'],
+		    'unit_id' => $p['unit_id'] ,
+		    'has_stock' => $p['has_stock'],
+		    'stock' => $p['stock'],
+		    'minimum_stock' => $p['minimum_stock'],
+		    'pos_favorite' => $p['pos_favorite'],
+		    'at_product_category' => $p['at_product_category'],
+		    'exemption_reason' => $p['exemption_reason'],
+		    'taxes' => [],// $p['taxes'],
+		    'suppliers' => [],// $p['suppliers'],  
+		    'properties' => [] //$p['properties']
 		]);
-
+		
 		return $response;
+	}
+
+
+	/**
+	* Delete Product by Id
+	* @param int $product_id required // $this->getProducts()
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=196
+	**/
+	public function deleteProduct(array $c = [], int $product_id = 0)
+	{
+		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+		return parent::curl($url, [
+			'company_id' => $c['company_id'],
+			'product_id' => $product_id,
+		]);
 	}
 
 }

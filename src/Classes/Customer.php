@@ -25,7 +25,7 @@ class Customer extends Authentication{
 		'language_id' => 1, // int required 1=>PT, 2=>EN, 3=>ES
 		'address' => 'Fiscal Address', // string required
 		'zip_code' => 'Fiscal zip code', // string if country_id = 1 then 0000-000
-		'city' => 'Fiscal City, //string required
+		'city' => 'Fiscal City', //string required
 		'country_id' =>  0, // int required GlobalData->getCountries()
 		'email' => '',// string
 		'website' => '',// string
@@ -85,7 +85,7 @@ class Customer extends Authentication{
 
 		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];	
 
-		$response =  parent::curl($url, [
+		$response = parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'vat' => $a['vat'], 
 			'number' => $a['number'],
@@ -123,7 +123,7 @@ class Customer extends Authentication{
 
 	/**
 	* Get Customer by Id
-	* @param int $id Customer Id // $this->getCustomerByVat(string $vat)
+	* @param int $id Customer Id // $this->getCustomers()
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=199 
 	**/
@@ -190,6 +190,22 @@ class Customer extends Authentication{
 		]);
 
 		return $response;
+	}
+
+
+	/**
+	* Delete Customer by Id
+	* @param int $id Customer Id // $this->getCustomers()
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=206
+	**/
+	public function deleteCustomer(array $c = [], int $id = 0)
+	{
+		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];	
+		return parent::curl($url, [
+			'company_id' => $c['company_id'],
+			'customer_id' => $id
+		]);
 	}
 
 }
