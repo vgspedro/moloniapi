@@ -94,28 +94,28 @@ class Customer extends Authentication{
 			'address' => $a['address'],
 			'zip_code' => $a['zip_code'],
 			'city' => $a['city'],
-			'country_id' => $a['country_fiscal_id'],
-			'email' => '',
-			'website' => '',
-			'phone' => '',
-			'fax' => '',
-			'contact_name' => '',
-			'contact_email' => '',
-			'contact_phone' => '',
-			'notes' => '',
+			'country_id' => $a['country_id'],
+			'email' => $a['email'],
+			'website' => $a['website'],
+			'phone' => $a['phone'],
+			'fax' => $a['fax'],
+			'contact_name' => $a['contact_name'],
+			'contact_email' => $a['contact_email'],
+			'contact_phone' => $a['contact_phone'],
+			'notes' => $a['notes'],
 			'salesman_id' => $a['salesman_id'], // int
-			'price_class_id' => 0 ,
-			'maturity_date_id' => 0,
-			'payment_day' => 0, 
-			'discount' => 0.0,
-			'credit_limit' => 0.0,
+			'price_class_id' => $a['price_class_id'] ,
+			'maturity_date_id' => $a['maturity_date_id'],
+			'payment_day' => $a['payment_day'], 
+			'discount' => $a['discount'],
+			'credit_limit' => $a['credit_limit'],
 			'copies'=> [
-				'document_type_id' => 0,
-				'copies' => 3,
+				'document_type_id' => $a['copies']['document_type_id'],
+				'copies' => $a['copies']['copies']
 			],
-			'payment_method_id' => 0,
-			'delivery_method_id' => 0,
-			'field_notes' => ''
+			'payment_method_id' => $a['payment_method_id'],
+			'delivery_method_id' => $a['delivery_method_id'],
+			'field_notes' => $a['field_notes']
 		]);
 
 		return $response;
@@ -158,35 +158,35 @@ class Customer extends Authentication{
 		$response =  parent::curl($url, [
 			'company_id' => $c['company_id'],
 			'customer_id' => $a['customer_id'], // int required ON UPDATE only $this->getCustomers()
-			'vat' => $a['vat'], //string required NIPC 
-			'number' => $a['number'], // string (max 20) required SNC
-			'name' => $a['name'], //string required
-			'language_id' => $a['language_id'], // int required 1=>PT, 2=>EN, 3=>ES
-			'address' => $a['address'], // string required
-			'zip_code' => $a['zip_code'], // string if country_id = 1 then 0000-000
-			'city' => $a['city'], //string required
-			'country_id' => $a['country_fiscal_id'], // GlobalData->getCountries()
-			'email' => '',// string
-			'website' => '',// string
-			'phone' => '',// string
-			'fax' => '',// string
-			'contact_name' => '',// string
-			'contact_email' => '',// string
-			'contact_phone' => '',// string
-			'notes' => '',// string
+			'vat' => $a['vat'],
+			'number' => $a['number'],
+			'name' => $a['name'],
+			'language_id' => $a['language_id'],
+			'address' => $a['address'],
+			'zip_code' => $a['zip_code'],
+			'city' => $a['city'],
+			'country_id' => $a['country_id'],
+			'email' => $a['email'],
+			'website' => $a['website'],
+			'phone' => $a['phone'],
+			'fax' => $a['fax'],
+			'contact_name' => $a['contact_name'],
+			'contact_email' => $a['contact_email'],
+			'contact_phone' => $a['contact_phone'],
+			'notes' => $a['notes'],
 			'salesman_id' => $a['salesman_id'], // int
-			'price_class_id' => 0 , // int
-			'maturity_date_id' => 0, // int required $moloni->getMaturityDates()
-			'payment_day' => 0, // int
-			'discount' => 0.0, // float
-			'credit_limit' => 0.0, // float,
+			'price_class_id' => $a['price_class_id'] ,
+			'maturity_date_id' => $a['maturity_date_id'],
+			'payment_day' => $a['payment_day'], 
+			'discount' => $a['discount'],
+			'credit_limit' => $a['credit_limit'],
 			'copies'=> [
-				'document_type_id' => 0, // int required $moloni->getDocumentType()
-				'copies' => 3, // int required
+				'document_type_id' => $a['copies']['document_type_id'],
+				'copies' => $a['copies']['copies']
 			],
-			'payment_method_id' =>  0, // int required $moloni->getPaymentMethod()
-			'delivery_method_id' => 0, // int,
-			'field_notes' => '',// string
+			'payment_method_id' => $a['payment_method_id'],
+			'delivery_method_id' => $a['delivery_method_id'],
+			'field_notes' => $a['field_notes']
 		]);
 
 		return $response;

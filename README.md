@@ -40,6 +40,9 @@ class InvoicingController extends AbstractController
     public function index(InvoiceMoloni $moloni)
     {
       return $this->render('admin/payment/native.html', [
+      	
+		//Call the methods from the Service $moloni;
+
       	'moloni' => [
       		'moloni_get_taxes' => $moloni->getTaxes(),
       		'moloni_set_taxes' => $moloni->setTax($tax),
@@ -837,7 +840,7 @@ class InvoiceMoloni
 	public function getAllDocumentTypes(){
 		return $this->start()
 		?
-			(new DocumentsType())->getAllDocumentTypes($this->credencials)
+			(new DocumentTypes())->getAllDocumentTypes($this->credencials)
 		:
 			false;
 	}
@@ -850,7 +853,7 @@ class InvoiceMoloni
 	public function getDocumentTypes(array $dt = []){
 		return $this->start()
 		?
-			(new DocumentsType())->getDocumentTypes($this->credencials, $dt)
+			(new DocumentTypes())->getDocumentTypes($this->credencials, $dt)
 		:
 			false;
 	}
@@ -863,7 +866,7 @@ class InvoiceMoloni
 	public function getDocumentType(array $dt = []){
 		return $this->start()
 		?
-			(new DocumentsType())->getDocumentType($this->credencials, $dt)
+			(new DocumentTypes())->getDocumentType($this->credencials, $dt)
 		:
 			false;
 	}
@@ -877,7 +880,7 @@ class InvoiceMoloni
 	public function getPDFLink(int $document_id = 0){
 		return $this->start()
 		?
-			(new DocumentsType())->getPDFType($this->credencials, $document_id)
+			(new DocumentTypes())->getPDFLink($this->credencials, $document_id)
 		:
 			false;
 	}
