@@ -31,14 +31,14 @@ class InvoicingController extends AbstractController
     {
       return $this->render('admin/payment/native.html', [
       	'moloni' => [
-           	'moloni_get_taxes' => $moloni->getTaxes(),
-            'moloni_set_taxes' => $moloni->setTax($tax),
-            'moloni_update_taxes' => $moloni->updateTax($tax_up),
-            'moloni_delete' => $moloni->deleteTax(2000939),
-            'moloni_get_countries' => $moloni->getCountries(),
-            'moloni_get_lamguages' => $moloni->getLanguages(),
-            'moloni_get_curremcies' => $moloni->getCurrencies(),
-            'moloni_get_fiscal_zones' => $moloni->getFiscalZones(1)
+      		'moloni_get_taxes' => $moloni->getTaxes(),
+      		'moloni_set_taxes' => $moloni->setTax($tax),
+      		'moloni_update_taxes' => $moloni->updateTax($tax_up),
+      		'moloni_delete_tax' => $moloni->deleteTax(2000939),
+      		'moloni_get_countries' => $moloni->getCountries(),
+      		'moloni_get_languages' => $moloni->getLanguages(),
+      		'moloni_get_currencies' => $moloni->getCurrencies(),
+      		'moloni_get_fiscal_zones' => $moloni->getFiscalZones(1)
             ]
         ]);
     }
