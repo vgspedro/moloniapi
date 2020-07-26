@@ -18,138 +18,135 @@ class InvoiceReceipts extends Authentication{
 	/**
 	InvoiceReceipts array data structure
 
-    $tax = [
-    	'tax_id' => 0, //int required ON UPDATE only $this->getTaxes()
-        'name' => 'Tx.Iva Intermédia 13', //string required
-        'value' => 13, // int required
-        'type' => 1, // int required
-        'saft_type' => 1, //int required
-        'vat_type' => 'OUT', // string required ["RED","INT","NOR","ISE","OUT"]"
-        'stamp_tax' => '', //string required
-        'exemption_reason' => '', // string required
-        'fiscal_zone' => 'PT', // string required get it from $moloni->getFiscalZones($id)
-        'active_by_default' => 0 // int required
-    ];
-	*/
+	/*
+	$ir_get_one = [
+		'document_id' => 0, // int
+		'customer_id' => 0, // int
+		'supplier_id' => 0, // int
+		'salesman_id' => 0, // int
+		'document_set_id' => 0, // int
+		'number' => 0, // int
+		'date' => 0, // int
+		'expiration_date' => 0, // int
+		'year' => 0, // int
+		'your_reference' => 0, // int
+		'our_reference' => 0, // int
+	];
 
-/*
-$ir_get_one = [
-	'document_id' => 0, // int
-	'intcustomer_id' => 0, // int
-	'supplier_id' => 0, // int
+
+
+
+	$id = [
+	'document_id' => // int required ON UPDATE $this->getInvoiceReceipts
+	'date' => '2020-07-30', // date required
+	'expiration_date' => '2020-07-30', // date required
+	'maturity_date_id' => 0,// int
+	'document_set_id' => 0, // int required
+	'customer_id' => 0, // int required
+	'alternate_address_id' => 0, // int
+	'our_reference string' => 'ref', // string
+	'your_reference string' => 0, // string
+	'financial_discount' => 0.0, // float
+	'eac_id' => 0, // int
 	'salesman_id' => 0, // int
-	'document_set_id' => 0, // int
-	'number' => 0, // int
-	'date' => 0, // int
-	'expiration_date' => 0, // int
-	'year' => 0, // int
-	'your_reference' => 0, // int
-	'our_reference' => 0, // int
-];
-
-
-$id = [
-'document_id' => // int required ON UPDATE $this->getInvoiceReceipts
-'date' => '2020-07-30', // date required
-'expiration_date' => '2020-07-30', // date required
-'maturity_date_id' => 0,// int
-'document_set_id' => 0, // int required
-'customer_id int' => 0, // int required
-'alternate_address_id' => 0, // int
-'our_reference string' => 'ref', // string
-'your_reference string' => 0, // string
-'financial_discount' => 0.0, // float
-'eac_id' => 0, // int
-'salesman_id' => 0, // int
-'salesman_commission' => 0.0, // float
-'special_discount' => 0.0, // float float
-'associated_documents'  => [ // array
-	'associated_id int' => 0.0, // int required
-	'value' => 0.0, // float required
-	],
-'related_documents_notes' => 'doc notes', // string
-'products' => [ // array required
-	'product_id' => 0, // int required
-	'name' => 'name', // string required
-	'summary' => 'summary', // string
-	'qty' => 0.0, // float required
-	'price' => 5.0, // float required
-	'discount' => 5.0, // float
-	'deduction_id' => 0, //int
-	'order' => 0, //int
-	'origin_id' => 0, //int
-	'exemption_reason' => 0, // string
-	'warehouse_id' => 0, //int
-
-	'taxes' => [ //array
-		'tax_id' => 0, //int required
-		'value' => 0.0, // float
-		'order' => 0, //int
-		'cumulative' => 0, //int
-	],
-	'child_products' => [ //array
-		'product_id' => 0, //int required
-		'name' => 'name', // string required
-		'summary' => 'c_p summary', // string
-		'qty' => 0.0, // float required
-		'price float' => 0.0, // float required
-		'discount' => 0.0, // float
-		'deduction_id' => 0, // int
-		'order' => 0, // int
-		'origin_id' => 0, // int
-		'exemption_reason' => '', // string
-		'warehouse_id' => 0, // int
-		
-		'properties' => [ //array
-			'title' => '', // string
-			'value' => '', // string
+	'salesman_commission' => 0.0, // float
+	'special_discount' => 0.0, // float float
+	'associated_documents'  => [ // array
+		'associated_id int' => 0.0, // int required
+		'value' => 0.0, // float required
 		],
-		'taxes' => [ // array
-			'tax_id' => 0, // int required
+	'related_documents_notes' => 'doc notes', // string
+	'products' => [ // array required
+		'product_id' => 0, // int required
+		'name' => 'name', // string required
+		'summary' => 'summary', // string
+		'qty' => 0.0, // float required
+		'price' => 5.0, // float required
+		'discount' => 5.0, // float
+		'deduction_id' => 0, //int
+		'order' => 0, //int
+		'origin_id' => 0, //int
+		'exemption_reason' => 0, // string
+		'warehouse_id' => 0, //int
+
+		'taxes' => [ //array
+			'tax_id' => 0, //int required
 			'value' => 0.0, // float
+			'order' => 0, //int
+			'cumulative' => 0, //int
+		],
+		'child_products' => [ //array
+			'product_id' => 0, //int required
+			'name' => 'name', // string required
+			'summary' => 'c_p summary', // string
+			'qty' => 0.0, // float required
+			'price float' => 0.0, // float required
+			'discount' => 0.0, // float
+			'deduction_id' => 0, // int
 			'order' => 0, // int
-			'cumulative' => 0, // int
-		]
+			'origin_id' => 0, // int
+			'exemption_reason' => '', // string
+			'warehouse_id' => 0, // int
+			
+			'properties' => [ //array
+				'title' => '', // string
+				'value' => '', // string
+			],
+			'taxes' => [ // array
+				'tax_id' => 0, // int required
+				'value' => 0.0, // float
+				'order' => 0, // int
+				'cumulative' => 0, // int
+			]
+		],
 	],
-],
-'payments' => [ //array required
-	'payment_method_id' => 0, // int required
-	'date' => '2020-07-30 00:00:01', // datetime required
-	'value ' => 0.0, // float required
-'notes' => 'p notes', // string
-],
-'exchange_currency_id' => 0, //  int
-'exchange_rate' => 0.0, //  float
-'delivery_method_id' => 0, //  int
-'delivery_datetime' => '2020-07-30', //  date
-'delivery_departure_address' => '', //  string
-'delivery_departure_city' => '', //  string
-'delivery_departure_zip_code' => '', //  string
-'delivery_departure_country' => 0, //  int
-'delivery_destination_address' => '', //  string
-'delivery_destination_city' => '', //  string
-'delivery_destination_zip_code' => '', //  string
-'delivery_destination_country' => 0, //  int
-'vehicle_id' => 0, //  int
-'vehicle_name' => 0, //  string
-'vehicle_number_plate' => '00-00-TT', //  string
-'notes' => '', //  string
-'status' => '', //  int
-'generate_mb_reference' => '', // int
-]
+	'payments' => [ //array required
+		'payment_method_id' => 0, // int required
+		'date' => '2020-07-30 00:00:01', // datetime required
+		'value ' => 0.0, // float required
+	'notes' => 'p notes', // string
+	],
+	'exchange_currency_id' => 0, //  int
+	'exchange_rate' => 0.0, //  float
+	'delivery_method_id' => 0, //  int
+	'delivery_datetime' => '2020-07-30', //  date
+	'delivery_departure_address' => '', //  string
+	'delivery_departure_city' => '', //  string
+	'delivery_departure_zip_code' => '', //  string
+	'delivery_departure_country' => 0, //  int
+	'delivery_destination_address' => '', //  string
+	'delivery_destination_city' => '', //  string
+	'delivery_destination_zip_code' => '', //  string
+	'delivery_destination_country' => 0, //  int
+	'vehicle_id' => 0, //  int
+	'vehicle_name' => 0, //  string
+	'vehicle_number_plate' => '00-00-TT', //  string
+	'notes' => '', //  string
+	'status' => '', //  int
+	'generate_mb_reference' => '', // int
+	]
 
+	*/
+ 	private $id;
 
+    public function getId()
+    {
+        return $this->id;
+    }
 
-
+    public function setId(int $id = 0)
+    {
+        $this->id = $id;
+    }
 
 	/**
 	* List InvoiceReceipts of Company 
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=374
 	**/
-	public function getInvoiceReceipts(array $c = [])
+	public function getInvoiceReceipts()
 	{
-		return parent::curl(parent::getPath('getAll'), ['company_id' => $c['company_id']]);
+		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
 	}
 
 	/**
@@ -158,9 +155,12 @@ $id = [
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=375
 	**/
-	public function getInvoiceReceipt(array $c = [], int $invoice_receipt_id = 0)
+	public function getInvoiceReceipt()
 	{
-		return  parent::curl(parent::getPath('getOne'), ['company_id' => $c['company_id'], 'invoice_receipt_id' => $invoice_receipt_id]);
+		return  parent::curl(parent::getPath('getOne'), [
+			'company_id' => parent::getCompanyId(),
+			'invoice_receipt_id' => $this->getId()
+		]);
 	}
 
 	/**
@@ -173,7 +173,7 @@ $id = [
 	{
 
 		return parent::curl(parent::getPath('insert'), [
-			'company_id' => $c['company_id'],
+			'company_id' => parent::getCompanyId(),
 			'name' => $t['name'], 
 			'value' => $t['value'],
 			'type' => $t['type'],
@@ -196,7 +196,7 @@ $id = [
 	{
 
 		return parent::curl(parent::getPath('update'), [
-			'company_id' => $c['company_id'],
+			'company_id' => parent::getCompanyId(),
 			'tax_id' => $t['tax_id'],
 			'name' => $t['name'], 
 			'value' => $t['value'],
@@ -217,10 +217,12 @@ $id = [
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=378
 	**/
-	public function deleteInvoiceReceipt(array $c = [], int $document_id  = 0)
+	public function deleteInvoiceReceipt()
 	{
-
-		return  parent::curl(parent::getPath('delete'), ['company_id' => $c['company_id'], 'document_id' => $document_id ]);
+		return  parent::curl(parent::getPath('delete'), [
+			'company_id' => parent::getCompanyId(),
+			'invoice_receipt_id' => $this->getId()
+		]);
 	}
 
 }
