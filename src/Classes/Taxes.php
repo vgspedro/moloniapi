@@ -150,9 +150,7 @@ class Taxes extends Authentication{
 	**/
 	public function getTaxes()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, ['company_id' => parent::getCompanyId()]);
+		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
 	}
 
 	/**
@@ -162,9 +160,7 @@ class Taxes extends Authentication{
 	**/
 	public function setTax()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(), 
 			'value' => $this->getValue(),
@@ -174,7 +170,7 @@ class Taxes extends Authentication{
 			'stamp_tax' => $this->getStampTax(),
 			'exemption_reason' => $this->getExemptionReason(),
 			'fiscal_zone' => $this->getFiscalZone(),
-			'active_by_default' => $this->getActivByDefault()
+			'active_by_default' => $this->getActiveByDefault()
 		]);
 
 	}
@@ -186,9 +182,8 @@ class Taxes extends Authentication{
 	**/
 	public function updateTax()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+	
+		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'tax_id' => $this->getId(),
 			'name' => $this->getName(), 
@@ -199,7 +194,7 @@ class Taxes extends Authentication{
 			'stamp_tax' => $this->getStampTax(),
 			'exemption_reason' => $this->getExemptionReason(),
 			'fiscal_zone' => $this->getFiscalZone(),
-			'active_by_default' => $this->getActivByDefault()
+			'active_by_default' => $this->getActiveByDefault()
 		]);
 
 	}
@@ -211,9 +206,8 @@ class Taxes extends Authentication{
 	**/
 	public function deleteTax()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
 
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
 			'tax_id' => $this->getId()
 		]);

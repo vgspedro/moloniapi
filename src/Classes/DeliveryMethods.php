@@ -52,9 +52,7 @@ class DeliveryMethods extends Authentication{
 	**/
 	public function getDeliveryMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, ['company_id' => parent::getCompanyId()]);
+		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
 	}
 
 	/**
@@ -64,9 +62,8 @@ class DeliveryMethods extends Authentication{
 	**/
 	public function updateDeliveryMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
-	
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),
 			'delivery_method_id' => $this->getId()
@@ -80,9 +77,8 @@ class DeliveryMethods extends Authentication{
 	**/
 	public function deleteDeliveryMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
-		
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(), 
 			'delivery_method_id' => $this->getId()
 		]);
@@ -95,9 +91,7 @@ class DeliveryMethods extends Authentication{
 	**/
 	public function setDeliveryMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
-		
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName()
 		]);

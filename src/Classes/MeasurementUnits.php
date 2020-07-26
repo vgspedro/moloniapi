@@ -68,9 +68,7 @@ class MeasurementUnits extends Authentication{
 	**/
 	public function getMeasurementUnits()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, ['company_id' => parent::getCompanyId() ]);
+		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId() ]);
 	}
 
 	/**
@@ -80,9 +78,7 @@ class MeasurementUnits extends Authentication{
 	**/
 	public function setMeasurementUnits()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),// string required
 			'short_name' => $this->getShortName()// string required
@@ -97,9 +93,7 @@ class MeasurementUnits extends Authentication{
 	**/
 	public function updateMeasurementUnits()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
-		
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'unit_id' => $this->getId(),// int required $this->getMeasurementUnits()
 			'name' => $this->getName(),// string required
@@ -115,9 +109,7 @@ class MeasurementUnits extends Authentication{
 	**/
 	public function deleteMeasurementUnits()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
 			'unit_id' => $this->getId()
 		]);

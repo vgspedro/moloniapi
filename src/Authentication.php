@@ -90,6 +90,16 @@ class Authentication
     }
 
 
+
+    /**
+    *Get the current path for request
+    *@param string action 
+    *@return string 
+    **/
+    protected function getPath(string $action){
+        return  $this->getUrl().''.static::ENTITY.''.$action.''.static::ACCESS.''.$this->getAccessToken();
+    }
+
 	/**
 	* Get Tokens to allow data transaction of Company
 	* @return json 

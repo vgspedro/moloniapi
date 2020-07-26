@@ -421,9 +421,8 @@ class Product extends Authentication{
 	**/
 	public function getProductById()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getOne'.static::ACCESS.''.parent::getAccessToken();	
-		
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('getOne'), [
 			'company_id' => parent::getCompanyId(),
 			'product_id' => $this->getId(),
 			'with_invisible' => $this->getWithInvisible()
@@ -437,9 +436,7 @@ class Product extends Authentication{
 	**/
 	public function getProductsByReference()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getByReference'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('getByReference'), [
 			'company_id' => parent::getCompanyId(),
 			'reference' => $this->getReference(),
 			'qty' => $this->getQty(),
@@ -454,9 +451,7 @@ class Product extends Authentication{
 	**/
 	public function getProductsByEan()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getByEAN'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('getByEAN'), [
 			'company_id' => parent::getCompanyId(),
 			'ean' => $this->getEan(),
 			'qty' => $this->getQty(),
@@ -471,9 +466,8 @@ class Product extends Authentication{
 	**/
 	public function getProductsByName()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getByName'.static::ACCESS.''.parent::getAccessToken();
-		
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('getByName'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),
 			'qty' => $this->getQty(),
@@ -488,9 +482,8 @@ class Product extends Authentication{
 	**/
 	public function getProducts()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
-		
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('getAll'), [
 			'company_id' => parent::getCompanyId(),
 			'category_id' => $this->getCategoryId(),
 			'qty' => $this->getQty(),
@@ -506,9 +499,7 @@ class Product extends Authentication{
 	**/
 	public function setProduct()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 		    'category_id' => $this->getCategoryId(),
 		    'type' => $this->getType(),
@@ -537,9 +528,7 @@ class Product extends Authentication{
 	**/
 	public function updateProduct()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
 			'category_id' => $this->getCategoryId(),
 			'product_id' => $this->getId(),
@@ -570,9 +559,7 @@ class Product extends Authentication{
 	**/
 	public function deleteProduct()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
 			'product_id' => $this->getId()
 		]);

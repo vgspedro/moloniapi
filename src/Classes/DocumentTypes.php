@@ -44,9 +44,7 @@ class DocumentTypes extends Authentication{
 	**/
 	public function getAllDocumentTypes(array $c = [], int $language_id = 0)
 	{
-		$url = $c['url'].''.static::ENTITY.'getAllDocumentTypes'.static::ACCESS.''.$c['token']['access_token'];
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('getAllDocumentTypes'), [
 			'company_id' => $c['company_id'],
 			'language_id' => $language_id
 		]);
@@ -60,9 +58,7 @@ class DocumentTypes extends Authentication{
 	**/
 	public function getDocumentTypes(array $c = [], array $dt = [])
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('getAll'), [
 			'company_id' => $c['company_id'],
 			'qty' => $dt['qty'], //int,
     		'offset' => $dt['offset'], //int
@@ -87,9 +83,8 @@ class DocumentTypes extends Authentication{
 	**/
 	public function getDocumentType(array $c = [], array $dt = [])
 	{
-		$url = $c['url'].''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];
 
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('getOne'), [
 			'company_id' => $c['company_id'],
 			'qty' => $dt['qty'], //int,
 			'document_id' => $dt['document_id'],//int
@@ -115,9 +110,7 @@ class DocumentTypes extends Authentication{
 	**/
 	public function getPDFLink(array $c = [], int $document_id = 0)
 	{
-		$url = $c['url'].''.static::ENTITY.'getPDFLink'.static::ACCESS.''.$c['token']['access_token'];
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('getPDFLink'), [
 			'company_id' => $c['company_id'],
 			'document_id' => $document_id
 		]);

@@ -92,8 +92,7 @@ class ProductCategories extends Authentication{
 	**/
 	public function getProductCategories()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('getAll'), [
 			'company_id' => parent::getCompanyId(),
 			'parent_id' => $this->getParentId()
 		]);
@@ -106,8 +105,8 @@ class ProductCategories extends Authentication{
 	**/
 	public function updateProductCategories()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),	
 			'category_id' => $this->getId(),
 			'parent_id' => $this->getParentId(),
@@ -124,8 +123,7 @@ class ProductCategories extends Authentication{
 	**/
 	public function deleteProductCategories()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(), 
 			'category_id' => $this->getId(),
 		]);
@@ -138,8 +136,7 @@ class ProductCategories extends Authentication{
 	**/
 	public function setProductCategories()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(), 	
 			'parent_id' => $this->getParentId(),
 			'name' => $this->getName(),

@@ -67,9 +67,7 @@ class PaymentMethods extends Authentication{
 	**/
 	public function getPaymentMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, ['company_id' => parent::getCompanyId() ]);
+		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId() ]);
 	}
 
 	/**
@@ -79,9 +77,7 @@ class PaymentMethods extends Authentication{
 	**/
 	public function setPaymentMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url,[
+		return parent::curl(parent::getPath('insert'),[
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),
 			'is_numeric' => $this->getIsMumeric()
@@ -95,9 +91,7 @@ class PaymentMethods extends Authentication{
 	**/
 	public function deletePaymentMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url,[
+		return parent::curl(parent::getPath('delete'),[
 			'company_id' => parent::getCompanyId(),
 			'payment_method_id' => $this->getId()
 		]);
@@ -110,9 +104,7 @@ class PaymentMethods extends Authentication{
 	**/
 	public function updatePaymentMethods()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
-	
-		return parent::curl($url,[
+		return parent::curl(parent::getPath('update'),[
 			'company_id' => parent::getCompanyId(),
 			'payment_method_id' => $this->getId(),
 			'name' => $this->getName(),

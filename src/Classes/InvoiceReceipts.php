@@ -149,8 +149,7 @@ $id = [
 	**/
 	public function getInvoiceReceipts(array $c = [])
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return parent::curl($url, ['company_id' => $c['company_id']]);
+		return parent::curl(parent::getPath('getAll'), ['company_id' => $c['company_id']]);
 	}
 
 	/**
@@ -161,8 +160,7 @@ $id = [
 	**/
 	public function getInvoiceReceipt(array $c = [], int $invoice_receipt_id = 0)
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];
-		return  parent::curl($url, ['company_id' => $c['company_id'], 'invoice_receipt_id' => $invoice_receipt_id]);
+		return  parent::curl(parent::getPath('getOne'), ['company_id' => $c['company_id'], 'invoice_receipt_id' => $invoice_receipt_id]);
 	}
 
 	/**
@@ -173,9 +171,8 @@ $id = [
 	**/
 	public function setInvoiceReceipt(array $c = [], array $ir = [])
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
-		
-		$response = parent::curl($url, [
+
+		return parent::curl(parent::getPath('insert'), [
 			'company_id' => $c['company_id'],
 			'name' => $t['name'], 
 			'value' => $t['value'],
@@ -187,8 +184,6 @@ $id = [
 			'fiscal_zone' => $t['fiscal_zone'],
 			'active_by_default' => $t['active_by_default']
 		]);
-
-		return $response;
 	}
 
 	/**
@@ -200,9 +195,7 @@ $id = [
 	public function updateInvoiceReceipt(array $c = [], array $ir = [])
 	{
 
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
-
-		$response =  parent::curl($url, [
+		return parent::curl(parent::getPath('update'), [
 			'company_id' => $c['company_id'],
 			'tax_id' => $t['tax_id'],
 			'name' => $t['name'], 
@@ -216,7 +209,6 @@ $id = [
 			'active_by_default' => $t['active_by_default']
 		]);
 
-		return $response;
 	}
 
 	/**
@@ -227,8 +219,8 @@ $id = [
 	**/
 	public function deleteInvoiceReceipt(array $c = [], int $document_id  = 0)
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
-		return  parent::curl($url, ['company_id' => $c['company_id'], 'document_id' => $document_id ]);
+
+		return  parent::curl(parent::getPath('delete'), ['company_id' => $c['company_id'], 'document_id' => $document_id ]);
 	}
 
 }

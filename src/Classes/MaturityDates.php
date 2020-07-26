@@ -82,9 +82,7 @@ class MaturityDates extends Authentication{
 	**/
 	public function getMaturityDates()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, ['company_id' => parent::getCompanyId()]);
+		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
 	}
 
 	/**
@@ -95,9 +93,8 @@ class MaturityDates extends Authentication{
 	**/
 	public function updateMaturityDates()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
-		
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'maturity_date_id' => $this->getId(), //int required  
 			'name' => $this->getName(),  //string required
@@ -114,9 +111,7 @@ class MaturityDates extends Authentication{
 	**/
 	public function deleteMaturityDates()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
-
-		return parent::curl($url, [
+		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
 			'maturity_date_id' => $this->getId()
 		]);
@@ -130,9 +125,8 @@ class MaturityDates extends Authentication{
 	**/
 	public function setMaturityDates()
 	{
-		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
-		
-		return parent::curl($url, [
+
+		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),  //string required
 			'days' => $this->getDays(),  //int required
