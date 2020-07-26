@@ -23,65 +23,100 @@ class PaymentMethods extends Authentication{
 	]
 	**/
 
+	private $id;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id = 0)
+    {
+        $this->id = $id;
+    }
+
+    private $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
+    }
+
+    private $is_numeric;
+
+    public function getIsNumeric()
+    {
+        return $this->is_numeric;
+    }
+
+    public function setIsNumeric(int $is_numeric = 0)
+    {
+        $this->is_numeric = $is_numeric;
+    }
+
+
 	/**
 	* List Payment Methods of Company 
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=236
 	**/
-	public function getPaymentMethods(array $c = [])
+	public function getPaymentMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return parent::curl($url, ['company_id' => $c['company_id']]);
+		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
+
+		return parent::curl($url, ['company_id' => parent::getCompanyId() ]);
 	}
 
 	/**
 	* Create Payment Methods
-	* @param array $pm Payment Methods
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=237
 	**/
-	public function setPaymentMethods(array $c = [], array $pm = [])
+	public function setPaymentMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
 
 		return parent::curl($url,[
-			'company_id' => $c['company_id'],
-			'name' => $pm['name'],
-			'is_numeric' => $pm['is_numeric']
+			'company_id' => parent::getCompanyId(),
+			'name' => $this->getName(),
+			'is_numeric' => $this->getIsMumeric()
 		]);
 	}
 
 	/**
 	* Delete Payment Methods from the Company 
-	* @param int $payment_method_id // $this->getPaymentMethods()
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=239
 	**/
-	public function deletePaymentMethods(array $c = [], int $payment_method_id = 0)
+	public function deletePaymentMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
 
 		return parent::curl($url,[
-			'company_id' => $c['company_id'],
-			'payment_method_id' => $payment_method_id
+			'company_id' => parent::getCompanyId(),
+			'payment_method_id' => $this->getId()
 		]);
 	}
 
 	/**
 	* Update PaymentMethods by Id
-	* @param array $pm PaymentMethods // $this->getPaymentMethods()
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=237
 	**/
-	public function updatePaymentMethods(array $c = [], array $pm = [])
+	public function updatePaymentMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
 	
 		return parent::curl($url,[
-			'company_id' => $c['company_id'],
-			'payment_method_id' => $pm['payment_method_id'],
-			'name' => $pm['name'],
-			'is_numeric' => $pm['is_numeric']
+			'company_id' => parent::getCompanyId(),
+			'payment_method_id' => $this->getId(),
+			'name' => $this->getName(),
+			'is_numeric' => $this->getIsMumeric()
 		]);
 	}
 

@@ -20,60 +20,86 @@ class DeliveryMethods extends Authentication{
 		'delivery_method_id' => 0,//int required ON UPDATE only $this->getDeliveryMethods()
 		'name' => 'delivery name', //string required
 	]
+	*/
+
+  private $id;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id = 0)
+    {
+        $this->id = $id;
+    }
+
+    private $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
+    }
 
 	/**
 	* List Delivery Methods in the Company 
 	* @return json 
 	**/
-	public function getDeliveryMethods(array $c = [])
+	public function getDeliveryMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return parent::curl($url, ['company_id' => $c['company_id']]);
+		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
+
+		return parent::curl($url, ['company_id' => parent::getCompanyId()]);
 	}
 
 	/**
 	* Update Delivery Methods by Id
-	* @param array $dm Delivery Methods // $this->getDeliveryMethods() required
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=251
 	**/
-	public function updateDeliveryMethods(array $c = [], array $dm = [])
+	public function updateDeliveryMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
+	
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'name' => $dm['name'],
-			'delivery_method_id' => $dm['delivery_method_id']
+			'company_id' => parent::getCompanyId(),
+			'name' => $this->getName(),
+			'delivery_method_id' => $this->getId()
 		]);
 	}
 
 	/**
 	* Delete Delivery Methods from the Company 
-	* @param int $delivery_method_id // $this->getDeliveryMethods() required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=252
 	**/
-	public function deleteDeliveryMethods(array $c = [], int $delivery_method_id = 0)
+	public function deleteDeliveryMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
+		
 		return parent::curl($url, [
-			'company_id' => $c['company_id'], 
-			'delivery_method_id' => $delivery_method_id
+			'company_id' => parent::getCompanyId(), 
+			'delivery_method_id' => $this->getId()
 		]);
 	}
 
 	/**
 	* Create Delivery Methods by Id
-	* @param array $dm Delivery Methods // $this->getDeliveryMethods() required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=250
 	**/
-	public function setDeliveryMethods(array $c = [], array $dm = [])
+	public function setDeliveryMethods()
 	{
-		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
+		
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'name' => $dm['name']
+			'company_id' => parent::getCompanyId(),
+			'name' => $this->getName()
 		]);
 	}
 

@@ -27,15 +27,64 @@ class MaturityDates extends Authentication{
     ];
 
 	**/
+
+    private $id;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id = 0)
+    {
+        $this->id = $id;
+    }
+
+    private $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
+    }
+
+    private $days;
+
+    public function getDays()
+    {
+        return $this->days;
+    }
+
+    public function setDays(int $days = 0)
+    {
+        $this->days = $days;
+    }
+
+    private $associated_discount;
+
+    public function getAssociatedDiscount()
+    {
+        return $this->associated_discount;
+    }
+
+    public function setAssociatedDiscount(float $associated_discount = 0.0)
+    {
+        $this->associated_discount = $associated_discount;
+    }
 	
 	/**
 	* List MaturityDates in the Company 
 	* @return json 
 	**/
-	public function getMaturityDates(array $c = [])
+	public function getMaturityDates()
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return parent::curl($url, ['company_id' => $c['company_id']]);
+		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
+
+		return parent::curl($url, ['company_id' => parent::getCompanyId()]);
 	}
 
 	/**
@@ -44,15 +93,16 @@ class MaturityDates extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=242
 	**/
-	public function updateMaturityDates(array $c = [], array $md = [])
+	public function updateMaturityDates()
 	{
-		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
+		
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'maturity_date_id' => $md['maturity_date_id'], //int required  
-			'name' => $md['name'],  //string required
-			'days' => $md['days'],  //int required
-			'associated_discount' => $md['associated_discount'] // float required
+			'company_id' => parent::getCompanyId(),
+			'maturity_date_id' => $this->getId(), //int required  
+			'name' => $this->getName(),  //string required
+			'days' => $this->getDays(),  //int required
+			'associated_discount' => $this->getAssociatedDiscount() // float required
 		]);
 	}
 
@@ -62,10 +112,14 @@ class MaturityDates extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=243
 	**/
-	public function deleteMaturityDates(array $c = [], int $maturity_dates_id = 0)
+	public function deleteMaturityDates()
 	{
-		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
-		return parent::curl($url, ['company_id' => $c['company_id'], 'maturity_date_id' => $maturity_dates_id]);
+		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
+
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
+			'maturity_date_id' => $this->getId()
+		]);
 	}
 
 	/**
@@ -74,14 +128,15 @@ class MaturityDates extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=241
 	**/
-	public function setMaturityDates(array $c = [], array $md = [])
+	public function setMaturityDates()
 	{
-		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
+		
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'name' => $md['name'],  //string required
-			'days' => $md['days'],  //int required
-			'associated_discount' => $md['associated_discount'] // float required
+			'company_id' => parent::getCompanyId(),
+			'name' => $this->getName(),  //string required
+			'days' => $this->getDays(),  //int required
+			'associated_discount' => $this->getAssociatedDiscount() // float required
 		]);
 	}
 

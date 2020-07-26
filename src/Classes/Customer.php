@@ -59,8 +59,9 @@ class Customer extends Authentication{
 	**/
 	public function getCustomerCount(array $c = []){	
 
-		$url = $c['url'].''.static::ENTITY.'count'.static::ACCESS.''.$c['token']['access_token'];	
-		return  parent::curl($url, ['company_id' => $c['company_id']]);
+		$url = parent::getUrl().''.static::ENTITY.'count'.static::ACCESS.''.parent::getAccessToken();
+
+		return  parent::curl($url, ['company_id' => parent::getCompanyId()]);
 	}
 	
 	/**
@@ -70,8 +71,9 @@ class Customer extends Authentication{
 	**/
 	public function getCustomers(array $c = []){	
 
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];	
-		return  parent::curl($url, ['company_id' => $c['company_id']]); 
+		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
+
+		return  parent::curl($url, ['company_id' => parent::getCompanyId()]); 
 	}
 
 	/**
@@ -83,10 +85,10 @@ class Customer extends Authentication{
 	public function setCustomer(array $c = [], array $a = [])
 	{
 
-		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];	
+		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
 
-		$response = parent::curl($url, [
-			'company_id' => $c['company_id'],
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
 			'vat' => $a['vat'], 
 			'number' => $a['number'],
 			'name' => $a['name'],
@@ -117,8 +119,6 @@ class Customer extends Authentication{
 			'delivery_method_id' => $a['delivery_method_id'],
 			'field_notes' => $a['field_notes']
 		]);
-
-		return $response;
 	}
 
 	/**
@@ -129,8 +129,12 @@ class Customer extends Authentication{
 	**/
 	public function getCustomerById(array $c = [], int $id = 0)
 	{
-		$url = $c['url'].''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];	
-		return  parent::curl($url, ['company_id' => $c['company_id'], 'customer_id' => $id]);
+		$url = parent::getUrl().''.static::ENTITY.'getOne'.static::ACCESS.''.parent::getAccessToken();	
+
+		return  parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
+			'customer_id' => $id
+		]);
 	}
 
 	/**
@@ -141,8 +145,9 @@ class Customer extends Authentication{
 	**/
 	public function getCustomerByVat(array $c = [], string $vat = null)
 	{
-		$url = $c['url'].''.static::ENTITY.'getByVat'.static::ACCESS.''.$c['token']['access_token'];
-		return  parent::curl($url, ['company_id' => $c['company_id'], 'vat' => $vat]);
+		$url = parent::getUrl().''.static::ENTITY.'getByVat'.static::ACCESS.''.parent::getAccessToken();
+
+		return  parent::curl($url, ['company_id' => parent::getCompanyId(), 'vat' => $vat]);
 	}
 
 	/**
@@ -153,10 +158,10 @@ class Customer extends Authentication{
 	**/
 	public function updateCustomerById(array $c = [], array $a = [])
 	{
-		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];	
+		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
 
-		$response =  parent::curl($url, [
-			'company_id' => $c['company_id'],
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
 			'customer_id' => $a['customer_id'], // int required ON UPDATE only $this->getCustomers()
 			'vat' => $a['vat'],
 			'number' => $a['number'],
@@ -189,7 +194,6 @@ class Customer extends Authentication{
 			'field_notes' => $a['field_notes']
 		]);
 
-		return $response;
 	}
 
 
@@ -201,9 +205,9 @@ class Customer extends Authentication{
 	**/
 	public function deleteCustomer(array $c = [], int $id = 0)
 	{
-		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];	
+		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
+			'company_id' => parent::getCompanyId(),
 			'customer_id' => $id
 		]);
 	}

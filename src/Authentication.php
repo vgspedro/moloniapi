@@ -4,15 +4,101 @@ namespace VgsPedro\MoloniApi;
 
 class Authentication
 {
+
+	private $company_id;
+
+    public function getCompanyId()
+    {
+        return $this->company_id;
+    }
+
+    public function setCompanyId(int $company_id = 0)
+    {
+        $this->company_id = $company_id;
+    }
+
+ 	private $access_token;
+
+    public function getAccessToken()
+    {
+        return $this->access_token;
+    }
+
+    public function setAccessToken(string $access_token = null)
+    {
+        $this->access_token = $access_token;
+    }
+
+ 	private $url;
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url = null)
+    {
+        $this->url = $url;
+    }
+
+	private $client_id;
+
+    public function getClientId()
+    {
+        return $this->client_id;
+    }
+
+    public function setClientId(string $client_id = null)
+    {
+        $this->client_id = $client_id;
+    }
+
+ 	private $password;
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password = null)
+    {
+        $this->password = $password;
+    }
+
+ 	private $username;
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username = null)
+    {
+        $this->username = $username;
+    }
+
+	private $client_secret;
+
+    public function getClientSecret()
+    {
+        return $this->client_secret;
+    }
+
+    public function setClientSecret(string $client_secret = null)
+    {
+        $this->client_secret = $client_secret;
+    }
+
+
 	/**
 	* Get Tokens to allow data transaction of Company
-	* @param array $credencials
 	* @return json 
 	* https://www.moloni.pt/dev/?action=getApiTxtDetail&id=3
 	**/
-	public function login(array $c = [])
+
+	public function login()
 	{
-		$url = $c['url'].'/grant/?grant_type=password&client_id='.$c['client_id'].'&client_secret='.$c['client_secret'].'&username='.$c['username'].'&password='.$c['password'];
+		$url = $this->getUrl().'/grant/?grant_type=password&client_id='.$this->getClientId().'&client_secret='.$this->getClientSecret().'&username='.$this->getUsername().'&password='.$this->getPassword();
 
 		return $this->curl($url);
 	}

@@ -15,6 +15,7 @@ class Product extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
+
 	/** Payment array data structure
 	$p = [
         'product_id' => 0,// int required ON UPDATE only $this->getProducts()
@@ -48,6 +49,368 @@ class Product extends Authentication{
             'value' => '',// string required
         ]
     ];
+*/
+
+    private $id;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id = 0)
+    {
+        $this->id = $id;
+    }
+
+    private $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
+    }
+
+    private $with_invisible;
+
+    public function getWithInvisible()
+    {
+        return $this->with_invisible;
+    }
+
+    public function setWithInvisible(int $with_invisible = 0)
+    {
+        $this->with_invisible = $with_invisible;
+    }
+    
+    private $reference;
+
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference = null)
+    {
+        $this->reference = $reference;
+    }
+
+    private $qty;
+
+    public function getQty()
+    {
+        return $this->qty;
+    }
+
+    public function setQty(int $qty = 0)
+    {
+        $this->qty = $qty;
+    }
+    
+    private $offset;
+
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    public function setOffset(int $offset = 0)
+    {
+        $this->offset = $offset;
+    }
+    
+    private $ean;
+
+    public function getEan()
+    {
+        return $this->ean;
+    }
+
+    public function setEan(string $ean = null)
+    {
+        $this->ean = $ean;
+    }
+
+    private $pos_favorite;
+
+    public function getPosFavorite()
+    {
+        return $this->pos_favorite;
+    }
+
+    public function setPosFavorite(int $pos_favorite = 0)
+    {
+        $this->pos_favorite = $pos_favorite;
+    }
+
+ 	private $category_id;
+
+    public function getCategoryId()
+    {
+        return $this->category_id;
+    }
+
+    public function setCategoryId(int $category_id = 0)
+    {
+        $this->category_id = $category_id;
+    }
+    
+    private $type;
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type = null)
+    {
+        $this->type = $type;
+    }
+
+    private $summary;
+
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(string $summary = null)
+    {
+        $this->summary = $summary;
+    }
+
+    private $price;
+
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price = 0.0)
+    {
+        $this->price = $price;
+    }
+
+ 	private $unit_id;
+
+    public function getUnitId()
+    {
+        return $this->unit_id;
+    }
+
+    public function setUnitId(int $unit_id = 0)
+    {
+        $this->unit_id = $unit_id;
+    }
+
+ 	private $has_stock;
+
+    public function getHasStock()
+    {
+        return $this->has_stock;
+    }
+
+    public function setHasStock(int $has_stock = 0)
+    {
+        $this->has_stock = $has_stock;
+    }
+
+    private $stock;
+
+    public function getStock()
+    {
+        return $this->stock;
+    }
+
+    public function setStock(float $stock = 0.0)
+    {
+        $this->stock = $stock;
+    }
+
+    private $minimum_stock;
+    
+    public function getMinimumStock()
+    {
+        return $this->minimum_stock;
+    }
+
+    public function setMinimumStock(float $minimum_stock = 0.0)
+    {
+        $this->minimum_stock = $minimum_stock;
+    }
+
+ 	private $at_product_category;
+
+    public function getAtProductCategory()
+    {
+        return $this->at_product_category;
+    }
+
+    public function setAtProductCategory(string $at_product_category = null)
+    {
+        $this->at_product_category = $at_product_category;
+    }
+
+ 	private $exemption_reason;
+
+    public function getExemptionReason()
+    {
+        return $this->exemption_reason;
+    }
+
+    public function setExemptionReason(string $exemption_reason = null)
+    {
+        $this->exemption_reason = $exemption_reason;
+    }
+
+	private $taxes_tax_id;
+
+	public function getTaxesTaxId()
+	{
+        return $this->taxes_tax_id;
+    }
+ 	public function setTaxesTaxId(int $taxes_tax_id = 0)
+    {
+        $this->taxes_tax_id = $taxes_tax_id;
+    }
+
+	private $taxes_value;
+
+	public function getTaxesValue()
+	{
+        return $this->taxes_value;
+    }
+
+    public function setTaxesValue(float $taxes_value = 0.0)
+    {
+        $this->taxes_value = $taxes_value;
+    }
+
+	private $taxes_order;
+
+	public function getTaxesOrder()
+	{
+        return $this->taxes_order;
+    }
+
+	public function setTaxesOrder(int $taxes_order = 0)
+    {
+        $this->taxes_order = $taxes_order;
+    }
+
+	private $taxes_cumulative;
+
+	public function getTaxesCumulative()
+	{
+        return $this->taxes_cumulative;
+    }
+
+	public function setTaxesCumulative(int $taxes_cumulative = 0)
+    {
+        $this->taxes_cumulative = $taxes_cumulative;
+    }
+
+	private $suppliers_supplier_id;
+
+	public function getSuppliersSupplierId()
+	{
+        return $this->suppliers_supplier_id;
+    }
+
+	public function setSuppliersSupplierId(int $suppliers_supplier_id = 0)
+    {
+        $this->suppliers_supplier_id = $suppliers_supplier_id;
+    }
+
+	private $suppliers_cost_price;
+
+	public function getSuppliersCostPrice()
+	{
+        return $this->suppliers_cost_price;
+    }
+
+	public function setSuppliersCostPrice(float $suppliers_cost_price = 0)
+    {
+        $this->suppliers_cost_price = $suppliers_cost_price;
+    }
+
+	private $suppliers_reference_int;
+
+	public function getSuppliersReferenceInt()
+	{
+        return $this->suppliers_reference_int;
+    }
+
+	public function setSuppliersReferenceInt(int $suppliers_reference_int = 0)
+    {
+        $this->suppliers_reference_int = $suppliers_reference_int;
+    }
+
+	private $properties_property_id;
+
+	public function getPropertiesPropertyId()
+	{
+        return $this->properties_property_id;
+    }
+
+	public function setPropertiesPropertyId(int $properties_property_id = 0)
+    {
+        $this->properties_property_id = $properties_property_id;
+    }
+
+	private $properties_value;
+
+	public function getPropertiesValue()
+	{
+        return $this->properties_value;
+    }
+
+	public function setPropertiesValue(string $properties_value = null)
+    {
+        $this->properties_value = $properties_value;
+    }
+
+
+    //If the product has Taxes build the array to update or insert
+	private function hasTaxes(){
+		return $this->getTaxesTaxId() > 0 ?
+			[
+				'tax_id' => $this->getTaxesTaxId(),
+            	'value' => $this->getTaxesValue(),
+            	'order' => $this->getTaxesOrder(),
+            	'cumulative' => $this->getTaxesCumulative()
+			]
+		:	
+			[];
+	} 
+
+    //If the product has Suppliers build the array to update or insert
+	private function hasSuppliers(){
+		
+		return $this->getSuppliersSupplierId() > 0 ?
+			[
+				'supplier_id' => $this->getSuppliersSupplierId(),
+            	'cost_price' => $this->getSuppliersCostPrice(),
+            	'referenceint' => $this->getSuppliersReferenceInt()
+			]
+		:	
+			[];
+	} 
+
+    //If the product has Properties build the array to update or insert
+	private function hasProperties(){
+		return $this->getPropertiesPropertyId() > 0 ?
+			[
+   			'property_id' => $this->getPropertiesPropertyId(),
+   			 'value' =>  $this->getPropertiesValue()
+			]
+		:	
+			[];
+	} 
 
 	/**
 	* Get Product by Id
@@ -56,183 +419,162 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=193
 	**/
-	public function getProductById(array $c = [], int $product_id = 0, int $with_invisible = 0)
+	public function getProductById()
 	{
-
-		$url = $c['url'].''.static::ENTITY.'getOne'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'getOne'.static::ACCESS.''.parent::getAccessToken();	
 		
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'product_id' => $product_id,
-			'with_invisible' => $with_invisible
+			'company_id' => parent::getCompanyId(),
+			'product_id' => $this->getId(),
+			'with_invisible' => $this->getWithInvisible()
 		]);
 	}
 
 	/**
 	* List Products by Reference
-	* @param string $reference required // $this->getProductCategories(0)
-	* @param int $qty 
-	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=298
 	**/
-	public function getProductsByReference(array $c = [], string $reference = null, int $qty = 0, int $offset = 0)
+	public function getProductsByReference()
 	{
-		
-		$url = $c['url'].''.static::ENTITY.'getByReference'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'getByReference'.static::ACCESS.''.parent::getAccessToken();
 
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'reference' => $reference,
-			'qty' => $qty,
-			'offset' => $offset
+			'company_id' => parent::getCompanyId(),
+			'reference' => $this->getReference(),
+			'qty' => $this->getQty(),
+			'offset' => $this->getOffset()
 		]);
 	}
 
 	/**
 	* List Products by EAN
-	* @param string $ean required // $this->getProductCategories(0)
-	* @param int $qty 
-	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=299
 	**/
-	public function getProductsByEan(array $c = [], string $ean = null, int $qty = 0, int $offset = 0)
+	public function getProductsByEan()
 	{
-		$url = $c['url'].''.static::ENTITY.'getByEAN'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'getByEAN'.static::ACCESS.''.parent::getAccessToken();
+
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'ean' => $ean,
-			'qty' => $qty,
-			'offset' => $offset
+			'company_id' => parent::getCompanyId(),
+			'ean' => $this->getEan(),
+			'qty' => $this->getQty(),
+			'offset' => $this->getOffset()
 		]);
 	}
 
 	/**
 	* List Products by name
-	* @param string $name required // $this->getProductCategories(0)
-	* @param int $qty 
-	* @param int $offset
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=297
 	**/
-	public function getProductsByName(array $c = [], string $name = null, int $qty = 0, int $offset = 0)
+	public function getProductsByName()
 	{
-		$url = $c['url'].''.static::ENTITY.'getByName'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'getByName'.static::ACCESS.''.parent::getAccessToken();
 		
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'name' => $name,
-			'qty' => $qty,
-			'offset' => $offset
+			'company_id' => parent::getCompanyId(),
+			'name' => $this->getName(),
+			'qty' => $this->getQty(),
+			'offset' => $this->getOffset()
 		]);
 	}
 
 	/**
 	* List of Products in the Company
-	* @param int $category_id required // $this->getProductCategories()
-	* @param int $qty 
-	* @param int $offset
-	* @param int $with_invisible
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=192
 	**/
-	public function getProducts(array $c = [], int $category_id = 0, int $qty = 0, int $offset = 0, int $with_invisible = 0)
+	public function getProducts()
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
 		
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'category_id' => $category_id,
-			'qty' => $qty,
-			'offset' => $offset,
-			'with_invisible' => $with_invisible
+			'company_id' => parent::getCompanyId(),
+			'category_id' => $this->getCategoryId(),
+			'qty' => $this->getQty(),
+			'offset' => $this->getOffset(),
+			'with_invisible' => $this->getWithInvisible()
 		]);
 	}
 
 	/**
 	* Create Product in the Company 
-	* @param array $p product
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=194
 	**/
-	public function setProduct(array $c = [], array $p = [])
+	public function setProduct()
 	{
+		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
 
-		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
-
-		$response = parent::curl($url, [
-			'company_id' => $c['company_id'],
-		    'category_id' => $p['category_id'],
-		    'type' => $p['type'],
-		    'name' => $p['name'],
-		    'summary' => $p['summary'], 
-		    'reference' => $p['reference'],
-		    'ean' => $p['ean'],
-		    'price' => $p['price'],
-		    'unit_id' => $p['unit_id'] ,
-		    'has_stock' => $p['has_stock'],
-		    'stock' => $p['stock'],
-		    'minimum_stock' => $p['minimum_stock'],
-		    'pos_favorite' => $p['pos_favorite'],
-		    'at_product_category' => $p['at_product_category'],
-		    'exemption_reason' => $p['exemption_reason'],
-		    'taxes' => [],//$p['taxes'],
-		    'suppliers' => [],// $p['suppliers'],  
-		    'properties' => []// $p['properties']
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
+		    'category_id' => $this->getCategoryId(),
+		    'type' => $this->getType(),
+		    'name' => $this->getName(),
+		    'summary' => $this->getSummary(), 
+		    'reference' => $this->getReference(),
+		    'ean' => $this->getEan(),
+		    'price' => $this->getPrice(),
+		    'unit_id' => $this->getUnitId(),
+		    'has_stock' => $this->getHasStock(),
+		    'stock' => $this->getStock(),
+		    'minimum_stock' => $this->getMinimumStock(),
+		    'pos_favorite' => $this->getPosFavorite(),
+		    'at_product_category' => $this->getAtProductCategory(),
+		    'exemption_reason' => $this->getExemptionReason(),
+		    'taxes' => $this->hasTaxes(),
+		    'suppliers' => $this->hasSuppliers(),  
+		    'properties' => $this->hasProperties()
 		]);
-
-		return $response;
 	}
 
 	/**
-	* UpdateProduct in the Company 
-	* @param array $p product
+	* Update Product in the Company 
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=195
 	**/
-	public function updateProduct(array $c = [], array $p = [])
+	public function updateProduct()
 	{
-		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
 
-		$response = parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'category_id' => $p['category_id'],
-			'product_id' => $p['product_id'],
-		    'type' => $p['type'],
-		    'name' => $p['name'],
-		    'summary' => $p['summary'], 
-		    'reference' => $p['reference'],
-		    'ean' => $p['ean'],
-		    'price' => $p['price'],
-		    'unit_id' => $p['unit_id'] ,
-		    'has_stock' => $p['has_stock'],
-		    'stock' => $p['stock'],
-		    'minimum_stock' => $p['minimum_stock'],
-		    'pos_favorite' => $p['pos_favorite'],
-		    'at_product_category' => $p['at_product_category'],
-		    'exemption_reason' => $p['exemption_reason'],
-		    'taxes' => [],// $p['taxes'],
-		    'suppliers' => [],// $p['suppliers'],  
-		    'properties' => [] //$p['properties']
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
+			'category_id' => $this->getCategoryId(),
+			'product_id' => $this->getId(),
+		    'type' => $this->getType(),
+		    'name' => $this->getName(),
+		    'summary' => $this->getSummary(), 
+		    'reference' => $this->getReference(),
+		    'ean' => $this->getEan(),
+		    'price' => $this->getPrice(),
+		    'unit_id' => $this->getUnitId(),
+		    'has_stock' => $this->getHasStock(),
+		    'stock' => $this->getStock(),
+		    'minimum_stock' => $this->getMinimumStock(),
+		    'pos_favorite' => $this->getPosFavorite(),
+		    'at_product_category' => $this->getAtProductCategory(),
+		    'exemption_reason' => $this->getExemptionReason(),
+			'taxes' => $this->hasTaxes(),
+		    'suppliers' => $this->hasSuppliers(),  
+		    'properties' => $this->hasProperties()
 		]);
 		
-		return $response;
 	}
-
 
 	/**
 	* Delete Product by Id
-	* @param int $product_id required // $this->getProducts()
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=196
 	**/
-	public function deleteProduct(array $c = [], int $product_id = 0)
+	public function deleteProduct()
 	{
-		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
+
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'product_id' => $product_id,
+			'company_id' => parent::getCompanyId(),
+			'product_id' => $this->getId()
 		]);
 	}
 

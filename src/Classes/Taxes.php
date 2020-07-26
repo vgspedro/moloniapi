@@ -33,81 +33,190 @@ class Taxes extends Authentication{
 
 	*/
 
+	private $active_by_default;
+
+    public function getActiveByDefault()
+    {
+        return $this->active_by_default;
+    }
+
+    public function setActiveByDefault(int $active_by_default = 0)
+    {
+        $this->active_by_default = $active_by_default;
+    }
+
+
+	private $fiscal_zone;
+
+    public function getFiscalZone()
+    {
+        return $this->fiscal_zone;
+    }
+
+    public function setFiscalZone(string $fiscal_zone = null)
+    {
+        $this->fiscal_zone = $fiscal_zone;
+    }
+
+
+	private $exemption_reason;
+
+    public function getExemptionReason()
+    {
+        return $this->exemption_reason;
+    }
+
+    public function setExemptionReason(string $exemption_reason = null)
+    {
+        $this->exemption_reason = $exemption_reason;
+    }
+
+	private $type;
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type = 0)
+    {
+        $this->type = $type;
+    }
+
+	private $saft_type;
+
+    public function getSaftType()
+    {
+        return $this->saft_type;
+    }
+
+    public function setSaftType(int $saft_type = 0)
+    {
+        $this->saft_type = $saft_type;
+    }
+
+	private $vat_type;
+
+    public function getVatType()
+    {
+        return $this->vat_type;
+    }
+
+    public function setVatType(int $vat_type = 0)
+    {
+        $this->vat_type = $vat_type;
+    }
+
+	private $stamp_tax;
+
+    public function getStampTax()
+    {
+        return $this->stamp_tax;
+    }
+
+    public function setStampTax(string $stamp_tax = null)
+    {
+        $this->stamp_tax = $stamp_tax;
+    }
+
+    private $id;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id = 0)
+    {
+        $this->id = $id;
+    }
+
+    private $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
+    }
+
 	/**
 	* List Taxes of Company 
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=262
 	**/
-	public function getTaxes(array $c = [])
+	public function getTaxes()
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
-		return parent::curl($url, ['company_id' => $c['company_id']]);
+		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
+
+		return parent::curl($url, ['company_id' => parent::getCompanyId()]);
 	}
 
 	/**
 	* Create Tax in the Company 
-	* @param array $t Tax // This->getTaxes($c) required
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=263
 	**/
-	public function setTax(array $c = [], array $t = [])
+	public function setTax()
 	{
-		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
-		
-		$response =  parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'name' => $t['name'], 
-			'value' => $t['value'],
-			'type' => $t['type'],
-			'saft_type' => $t['saft_type'],
-			'vat_type' => $t['vat_type'],
-			'stamp_tax' => $t['stamp_tax'],
-			'exemption_reason' => $t['exemption_reason'],
-			'fiscal_zone' => $t['fiscal_zone'],
-			'active_by_default' => $t['active_by_default']
+		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
+
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
+			'name' => $this->getName(), 
+			'value' => $this->getValue(),
+			'type' => $this->getType(),
+			'saft_type' => $this->getSaftType(),
+			'vat_type' => $this->getVatType(),
+			'stamp_tax' => $this->getStampTax(),
+			'exemption_reason' => $this->getExemptionReason(),
+			'fiscal_zone' => $this->getFiscalZone(),
+			'active_by_default' => $this->getActivByDefault()
 		]);
 
-		return $response;
 	}
 
 	/**
 	* Update Tax by Id
-	* @param array $t Tax information // $this->getTaxes($c) required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=264
 	**/
-	public function updateTax(array $c = [], array $t = [])
+	public function updateTax()
 	{
+		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
 
-		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
-
-		$response =  parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'tax_id' => $t['tax_id'],
-			'name' => $t['name'], 
-			'value' => $t['value'],
-			'type' => $t['type'],
-			'saft_type' => $t['saft_type'],
-			'vat_type' => $t['vat_type'],
-			'stamp_tax' => $t['stamp_tax'],
-			'exemption_reason' => $t['exemption_reason'],
-			'fiscal_zone' => $t['fiscal_zone'], //$this->getFiscalZones($id)
-			'active_by_default' => $t['active_by_default']
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
+			'tax_id' => $this->getId(),
+			'name' => $this->getName(), 
+			'value' => $this->getValue(),
+			'type' => $this->getType(),
+			'saft_type' => $this->getSaftType(),
+			'vat_type' => $this->getVatType(),
+			'stamp_tax' => $this->getStampTax(),
+			'exemption_reason' => $this->getExemptionReason(),
+			'fiscal_zone' => $this->getFiscalZone(),
+			'active_by_default' => $this->getActivByDefault()
 		]);
 
-		return $response;
 	}
 
 	/**
 	* Delete a Tax from the Company 
-	* @param int $tax_id // $this->getTaxes($c) required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=265
 	**/
-	public function deleteTax(array $c = [], int $tax_id = 0)
+	public function deleteTax()
 	{
-		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
-		return  parent::curl($url, ['company_id' => $c['company_id'], 'tax_id' => $tax_id]);
+		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
+
+		return parent::curl($url, [
+			'company_id' => parent::getCompanyId(),
+			'tax_id' => $this->getId()
+		]);
 	}
 
 }

@@ -10,17 +10,29 @@ use \VgsPedro\MoloniApi\Authentication;
 
 class GlobalData extends Authentication{
 
+    private $country_id;
+
+    public function getCountryId()
+    {
+        return $this->country_id;
+    }
+
+    public function setCountryId(int $country_id = 0)
+    {
+        $this->country_id = $country_id;
+    }
+
 	/** @const access api url */
 	const ACCESS = '/getAll/?access_token=';
-
 	/**
+	
 	* List Countries available in Moloni
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=68
 	**/
-	public function getCountries(array $c = [])
+	public function getCountries()
 	{
-		$url = $c['url'].'/countries'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().'/countries'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url);
 	}
 
@@ -29,9 +41,9 @@ class GlobalData extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=70
 	**/
-	public function getLanguages(array $c = [])
+	public function getLanguages()
 	{
-		$url = $c['url'].'/languages'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().'/languages'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url);
 	}
 
@@ -40,22 +52,21 @@ class GlobalData extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=101
 	**/
-	public function getCurrencies(array $c = [])
+	public function getCurrencies()
 	{
-		$url = $c['url'].'/currencies'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().'/currencies'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url);
 	}
 
 	/**
 	* Get list of Fiscal Zones available in Moloni
-	* @param int $id country_id  // $this->getCountries()
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=69
 	**/
-	public function getFiscalZones(array $c = [], int $id = 0)
+	public function getFiscalZones()
 	{
-		$url = $c['url'].'/fiscalZones'.static::ACCESS.''.$c['token']['access_token'];
-		return parent::curl($url, ['country_id' => $id]);
+		$url = parent::getUrl().'/fiscalZones'.static::ACCESS.''.parent::getAccessToken();
+		return parent::curl($url, ['country_id' => $this->getCountryId()]);
 	}
 
 }

@@ -23,70 +23,128 @@ class ProductCategories extends Authentication{
 		'description' => 'This category is amazing...', //string
 		'pos_enabled' => 0, //int
 	];
+	*/
+	
+	private $id;
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id = 0)
+    {
+        $this->id = $id;
+    }
+
+	private $parent_id;
+
+    public function getParentId()
+    {
+        return $this->parent_id;
+    }
+
+    public function setParentId(int $parent_id = 0)
+    {
+        $this->parent_id = $parent_id;
+    }
+
+    private $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
+    }
+
+    private $description;
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description = null)
+    {
+        $this->description = $description;
+    }
+
+	private $pos_enabled;
+
+    public function getPosEnabled()
+    {
+        return $this->pos_enabled;
+    }
+
+    public function setPosEnabled(int $pos_enabled = 0)
+    {
+        $this->pos_enabled = $pos_enabled;
+    }
+
 
 	/**
 	* List Product Categories in the Company 
-	* @param int $parent_id required
 	* @return json 
 	**/
-	public function getProductCategories(array $c = [], int $parent_id = 0)
+	public function getProductCategories()
 	{
-		$url = $c['url'].''.static::ENTITY.'getAll'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'getAll'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],
-			'parent_id' => $parent_id
+			'company_id' => parent::getCompanyId(),
+			'parent_id' => $this->getParentId()
 		]);
 	}
 
 	/**
 	* Update Product Categories by Id
-	* @param array $pc ProductCategories // $this->getProductCategories() required
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=190
 	**/
-	public function updateProductCategories(array $c = [], array $pc = [])
+	public function updateProductCategories()
 	{
-		$url = $c['url'].''.static::ENTITY.'update'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'update'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url, [
-			'company_id' => $c['company_id'],	
-			'category_id' => $pc['category_id'],
-			'parent_id' => $pc['parent_id'],
-			'name' => $pc['name'],
-			'description' => $pc['description'],
-			'pos_enabled' => $pc['pos_enabled']
+			'company_id' => parent::getCompanyId(),	
+			'category_id' => $this->getId(),
+			'parent_id' => $this->getParentId(),
+			'name' => $this->getName(),
+			'description' => $this->getDescription(),
+			'pos_enabled' => $this->getPosEnabled()
 		]);
 	}
 
 	/**
 	* Delete Product Categories from the Company 
-	* @param int $product_categories_id // $this->getProductCategories() required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=191
 	**/
-	public function deleteProductCategories(array $c = [], int $category_id = 0)
+	public function deleteProductCategories()
 	{
-		$url = $c['url'].''.static::ENTITY.'delete'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'delete'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url, [
-			'company_id' => $c['company_id'], 
-			'category_id' => $category_id
+			'company_id' => parent::getCompanyId(), 
+			'category_id' => $this->getId(),
 		]);
 	}
 
 	/**
 	* Create Product Categories by Id
-	* @param array $pc ProductCategories // $this->getProductCategories() required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=189
 	**/
-	public function setProductCategories(array $c = [], array $pc = [])
+	public function setProductCategories()
 	{
-		$url = $c['url'].''.static::ENTITY.'insert'.static::ACCESS.''.$c['token']['access_token'];
+		$url = parent::getUrl().''.static::ENTITY.'insert'.static::ACCESS.''.parent::getAccessToken();
 		return parent::curl($url, [
-			'company_id' => $c['company_id'], 	
-			'parent_id' => $pc['parent_id'],
-			'name' => $pc['name'],
-			'description' => $pc['description'],
-			'pos_enabled' => $pc['pos_enabled']
+			'company_id' => parent::getCompanyId(), 	
+			'parent_id' => $this->getParentId(),
+			'name' => $this->getName(),
+			'description' => $this->getDescription(),
+			'pos_enabled' => $this->getPosEnabled()
 		]);
 	}
 
