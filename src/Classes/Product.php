@@ -528,7 +528,7 @@ class Product extends Authentication{
 	**/
 	public function updateProduct()
 	{
-		return parent::curl(parent::getPath('delete'), [
+		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'category_id' => $this->getCategoryId(),
 			'product_id' => $this->getId(),
