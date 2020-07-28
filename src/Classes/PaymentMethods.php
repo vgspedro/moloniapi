@@ -16,7 +16,7 @@ class PaymentMethods extends Authentication{
 	const ACCESS = '/?access_token=';
 
 	/** PaymentMethods array data structure
-	$pm = [
+	[
 		'payment_method_id' => 0,//int required ON UPDATE only $this->getPaymentMethods()
 		'name' => 'payment name', //string required
 		'is_numeric' => 0, // int
@@ -65,9 +65,11 @@ class PaymentMethods extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=236
 	**/
-	public function getPaymentMethods()
+	public function getAll()
 	{
-		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId() ]);
+		return parent::curl(parent::getPath('getAll'), [
+			'company_id' => parent::getCompanyId()
+		]);
 	}
 
 	/**
@@ -75,7 +77,7 @@ class PaymentMethods extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=237
 	**/
-	public function setPaymentMethods()
+	public function insert()
 	{
 		return parent::curl(parent::getPath('insert'),[
 			'company_id' => parent::getCompanyId(),
@@ -89,7 +91,7 @@ class PaymentMethods extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=239
 	**/
-	public function deletePaymentMethods()
+	public function delete()
 	{
 		return parent::curl(parent::getPath('delete'),[
 			'company_id' => parent::getCompanyId(),
@@ -102,7 +104,7 @@ class PaymentMethods extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=237
 	**/
-	public function updatePaymentMethods()
+	public function update()
 	{
 		return parent::curl(parent::getPath('update'),[
 			'company_id' => parent::getCompanyId(),

@@ -16,13 +16,13 @@ class DeliveryMethods extends Authentication{
 	const ACCESS = '/?access_token=';
 
 	/** DeliveryMethods array data structure
-	$dm = [
+	[
 		'delivery_method_id' => 0,//int required ON UPDATE only $this->getDeliveryMethods()
 		'name' => 'delivery name', //string required
 	]
 	*/
 
-  private $id;
+	private $id;
 
     public function getId()
     {
@@ -46,13 +46,17 @@ class DeliveryMethods extends Authentication{
         $this->name = $name;
     }
 
+
+
 	/**
 	* List Delivery Methods in the Company 
 	* @return json 
 	**/
-	public function getDeliveryMethods()
+	public function getAll()
 	{
-		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
+		return parent::curl(parent::getPath('getAll'), [
+			'company_id' => parent::getCompanyId()
+		]);
 	}
 
 	/**
@@ -60,9 +64,8 @@ class DeliveryMethods extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=251
 	**/
-	public function updateDeliveryMethods()
+	public function update()
 	{
-
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),
@@ -75,9 +78,8 @@ class DeliveryMethods extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=252
 	**/
-	public function deleteDeliveryMethods()
+	public function delete()
 	{
-
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(), 
 			'delivery_method_id' => $this->getId()
@@ -89,7 +91,7 @@ class DeliveryMethods extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=250
 	**/
-	public function setDeliveryMethods()
+	public function insert()
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),

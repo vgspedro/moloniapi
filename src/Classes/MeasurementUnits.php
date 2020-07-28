@@ -17,9 +17,8 @@ class MeasurementUnits extends Authentication{
 
 	/**
 	MeasurementUnits array data structure
-
-    $mu = [
-    	'unit_id' => 0,// int required ON UPDATE only $this->getMeasurementUnits()
+    [
+    	'unit_id' => 0,// int required ON UPDATE only
 		'name' => 'name of unit EX Metters',// string required
 		'short_name' => 'mt',// string required
     ];
@@ -66,9 +65,11 @@ class MeasurementUnits extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=266
 	**/
-	public function getMeasurementUnits()
+	public function getAll()
 	{
-		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId() ]);
+		return parent::curl(parent::getPath('getAll'), [
+			'company_id' => parent::getCompanyId()
+		]);
 	}
 
 	/**
@@ -76,7 +77,7 @@ class MeasurementUnits extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=267
 	**/
-	public function setMeasurementUnits()
+	public function insert()
 	{
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
@@ -91,7 +92,7 @@ class MeasurementUnits extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=268
 	**/
-	public function updateMeasurementUnits()
+	public function update()
 	{
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
@@ -107,7 +108,7 @@ class MeasurementUnits extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=269
 	**/
-	public function deleteMeasurementUnits()
+	public function delete()
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),

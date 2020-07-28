@@ -16,7 +16,7 @@ class ProductCategories extends Authentication{
 	const ACCESS = '/?access_token=';
 
 	/** Product Categories array data structure
-	$pc = [
+	[
 		'category_id' => 0,//int required ON UPDATE only $this->getProductCategories(0)
 		'parent_id' => 0,//int required $this->getProductCategories(0)
 		'name' => 'category name', //string required
@@ -90,7 +90,7 @@ class ProductCategories extends Authentication{
 	* List Product Categories in the Company 
 	* @return json 
 	**/
-	public function getProductCategories()
+	public function getAll()
 	{
 		return parent::curl(parent::getPath('getAll'), [
 			'company_id' => parent::getCompanyId(),
@@ -103,9 +103,8 @@ class ProductCategories extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=190
 	**/
-	public function updateProductCategories()
+	public function update()
 	{
-
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),	
 			'category_id' => $this->getId(),
@@ -121,7 +120,7 @@ class ProductCategories extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=191
 	**/
-	public function deleteProductCategories()
+	public function delete()
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(), 
@@ -134,7 +133,7 @@ class ProductCategories extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=189
 	**/
-	public function setProductCategories()
+	public function insert()
 	{
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(), 	

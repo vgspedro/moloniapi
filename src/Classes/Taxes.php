@@ -45,7 +45,6 @@ class Taxes extends Authentication{
         $this->active_by_default = $active_by_default;
     }
 
-
 	private $fiscal_zone;
 
     public function getFiscalZone()
@@ -57,7 +56,6 @@ class Taxes extends Authentication{
     {
         $this->fiscal_zone = $fiscal_zone;
     }
-
 
 	private $exemption_reason;
 
@@ -148,9 +146,11 @@ class Taxes extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=262
 	**/
-	public function getTaxes()
+	public function getAll()
 	{
-		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
+		return parent::curl(parent::getPath('getAll'), [
+            'company_id' => parent::getCompanyId()
+        ]);
 	}
 
 	/**
@@ -158,7 +158,7 @@ class Taxes extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=263
 	**/
-	public function setTax()
+	public function insert()
 	{
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
@@ -180,9 +180,8 @@ class Taxes extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=264
 	**/
-	public function updateTax()
+	public function update()
 	{
-	
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'tax_id' => $this->getId(),
@@ -204,9 +203,8 @@ class Taxes extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=265
 	**/
-	public function deleteTax()
+	public function delete()
 	{
-
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
 			'tax_id' => $this->getId()

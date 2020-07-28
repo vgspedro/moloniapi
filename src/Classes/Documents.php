@@ -18,13 +18,13 @@ class Documents extends Authentication{
 	/**
 	DocumentType array data structure
 
-    $dt = [
+    [
     	'qty' => 50, //int,
     	'offset' => 0, //int
     	'document_id' => 0, //int ONLY IN $this->getDocument()
         'customer_id' => 0, // int Customer->getCustomers()
         'supplier_id' => 0, // int Supplier->getSuppliers()
-        'salesman_id' => 0, //int Salesman->getSalesmens()
+        'salesman_id' => 0, //int Salesman->getSalesman()
         'document_set_id' => 0, // int
         'number' => 0, //int
         'date' => '', // date
@@ -34,8 +34,6 @@ class Documents extends Authentication{
     	'our_reference' => '' // string
     ];
 	*/
-
-
 
     private $our_reference;
 
@@ -85,7 +83,6 @@ class Documents extends Authentication{
         $this->expiration_date = $expiration_date;
     }
 
-
     private $date;
 
     public function getDate()
@@ -122,7 +119,6 @@ class Documents extends Authentication{
         $this->document_set_id = $document_set_id;
     }
 
-
 	private $salesman_id;
 
     public function getSalesmanId()
@@ -134,7 +130,6 @@ class Documents extends Authentication{
     {
         $this->salesman_id = $salesman_id;
     }
-
 
 	private $supplier_id;
 
@@ -148,7 +143,6 @@ class Documents extends Authentication{
         $this->supplier_id = $supplier_id;
     }
 
-
 	private $customer_id;
 
     public function getCustomerId()
@@ -160,7 +154,6 @@ class Documents extends Authentication{
     {
         $this->customer_id = $customer_id;
     }
-
 
 	private $offset;
 
@@ -186,7 +179,6 @@ class Documents extends Authentication{
         $this->qty = $qty;
     }
 
-
 	private $id;
 
     public function getId()
@@ -198,7 +190,6 @@ class Documents extends Authentication{
     {
         $this->id = $id;
     }
-
 
 	/**
 	* List All DocumentTypes 
@@ -218,7 +209,7 @@ class Documents extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=227
 	**/
-	public function getDocumentTypes()
+	public function getAll()
 	{
 		return parent::curl(parent::getPath('getAll'), [
 			'company_id' => parent::getCompanyId(),
@@ -226,7 +217,7 @@ class Documents extends Authentication{
     		'offset' => $this->getOffset(), //int
         	'customer_id' => $this->getCustomerId(), // int Customer->getCustomers()
        		'supplier_id' => $this->getSupplierId(), // int Supplier->getSuppliers()
-        	'salesman' => $this->getSalesman(), //int Salesman-getSalesmens()
+        	'salesman_id' => $this->getSalesmanId(), //int Salesman-getSalesmens()
         	'document_set_id' => $this->getDocumentSetId(), // int Document->getDocuments()
         	'number' => $this->getNumber(), //int
         	'date' => $this->getDate(), // date
@@ -242,9 +233,8 @@ class Documents extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=228
 	**/
-	public function getDocumentType()
+	public function getById()
 	{
-
 		return parent::curl(parent::getPath('getOne'), [
 			'company_id' => parent::getCompanyId(),
 			'qty' => $this->getQty(), //int,
@@ -252,7 +242,7 @@ class Documents extends Authentication{
     		'offset' => $this->getOffset(), //int
             'customer_id' => $this->getCustomerId(), // int Customer->getCustomers()
             'supplier_id' => $this->getSupplierId(), // int Supplier->getSuppliers()
-            'salesman' => $this->getSalesman(), //int Salesman-getSalesmens()
+            'salesman_id' => $this->getSalesmanId(), //int Salesman-getSalesmens()
             'document_set_id' => $this->getDocumentSetId(), // int Document->getDocuments()
             'number' => $this->getNumber(), //int
             'date' => $this->getDate(), // date

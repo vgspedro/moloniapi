@@ -15,9 +15,8 @@ class Product extends Authentication{
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
-
 	/** Payment array data structure
-	$p = [
+	[
         'product_id' => 0,// int required ON UPDATE only $this->getProducts()
         'category_id' => 2518332,// int required $moloni->getProductCategories()
         'type' => 1,// int required [1 => Produto , 2 => Serviço , 3 => Outros]
@@ -34,7 +33,7 @@ class Product extends Authentication{
         'at_product_category' => '',// string [M: mercadorias, P: matérias-primas, subsidiárias e de consumo, A: produtos acabados e intermédios, S: subprodutos, desperdícios e refugos, T: produtos e trabalhos em curso]
         'exemption_reason' => '',// string required
         'taxes' => [ //array not required 
-            'tax_id' => 1999735,// int $moloni->getTaxes()
+            'tax_id' => 1999735,// int required
             'value' => 1.0, //float required
             'order' => 1,// int required
             'cumulative' => 1,// int required
@@ -374,10 +373,9 @@ class Product extends Authentication{
         $this->properties_value = $properties_value;
     }
 
-
     //If the product has Taxes build the array to update or insert
 	private function hasTaxes(){
-		return $this->getTaxesTaxId() > 0 ?
+		return $this->getTaxesTaxId() > 0 && $this->getTaxesValue() > 0 && $this->getTaxesOrder() && $this->getTaxesCumulative() > 0 ?
 			[
 				'tax_id' => $this->getTaxesTaxId(),
             	'value' => $this->getTaxesValue(),
@@ -419,9 +417,8 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=193
 	**/
-	public function getProductById()
+	public function getById()
 	{
-
 		return parent::curl(parent::getPath('getOne'), [
 			'company_id' => parent::getCompanyId(),
 			'product_id' => $this->getId(),
@@ -434,7 +431,7 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=298
 	**/
-	public function getProductsByReference()
+	public function getByReference()
 	{
 		return parent::curl(parent::getPath('getByReference'), [
 			'company_id' => parent::getCompanyId(),
@@ -449,7 +446,7 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=299
 	**/
-	public function getProductsByEan()
+	public function getByEan()
 	{
 		return parent::curl(parent::getPath('getByEAN'), [
 			'company_id' => parent::getCompanyId(),
@@ -464,9 +461,8 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=297
 	**/
-	public function getProductsByName()
+	public function getByName()
 	{
-
 		return parent::curl(parent::getPath('getByName'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),
@@ -480,9 +476,8 @@ class Product extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=192
 	**/
-	public function getProducts()
+	public function getAll()
 	{
-
 		return parent::curl(parent::getPath('getAll'), [
 			'company_id' => parent::getCompanyId(),
 			'category_id' => $this->getCategoryId(),
@@ -497,7 +492,7 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=194
 	**/
-	public function setProduct()
+	public function insert()
 	{
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
@@ -526,7 +521,7 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=195
 	**/
-	public function updateProduct()
+	public function update()
 	{
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
@@ -557,7 +552,7 @@ class Product extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=196
 	**/
-	public function deleteProduct()
+	public function delete()
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),

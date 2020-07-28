@@ -19,8 +19,8 @@ class MaturityDates extends Authentication{
 	/**
 	MaturityDates array data structure
 
-    $md = [
-        'maturity_date_id' => 0, //int required ON UPDATE only $this->getMaturityDates()
+    [
+        'maturity_date_id' => 0, //int required ON UPDATE only
         'name' => 'string',  //string required
         'days' => 15,  //int required
         'associated_discount' => 0.0 // float required
@@ -80,20 +80,20 @@ class MaturityDates extends Authentication{
 	* List MaturityDates in the Company 
 	* @return json 
 	**/
-	public function getMaturityDates()
+	public function getAll()
 	{
-		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
+		return parent::curl(parent::getPath('getAll'), [
+			'company_id' => parent::getCompanyId()
+		]);
 	}
 
 	/**
 	* Update PaymentMethods by Id
-	* @param array $md MaturityDates // $this->getMaturityDates()
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=242
 	**/
-	public function updateMaturityDates()
+	public function update()
 	{
-
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
 			'maturity_date_id' => $this->getId(), //int required  
@@ -105,11 +105,10 @@ class MaturityDates extends Authentication{
 
 	/**
 	* Delete Maturity Dates from the Company 
-	* @param int $maturity_dates_id // $this->getPaymentMethods()
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=243
 	**/
-	public function deleteMaturityDates()
+	public function delete()
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
@@ -119,13 +118,11 @@ class MaturityDates extends Authentication{
 
 	/**
 	* Update MaturityDates by Id
-	* @param array $md MaturityDates // $this->getMaturityDates()
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=241
 	**/
-	public function setMaturityDates()
+	public function insert()
 	{
-
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),  //string required

@@ -17,7 +17,7 @@ class Customer extends Authentication{
 	
 	/**
 	Customer array data structure
-	$a = [
+	[
 		'customer_id' => 0, // int required ON UPDATE only $this->getCustomers()
 		'vat' => '100200300', //string required
 		'number' => 'our client reference', // string (max 20) required
@@ -394,9 +394,11 @@ class Customer extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
 	**/
-	public function getCustomerCount(){	
-
-		return parent::curl(parent::getPath('count'), ['company_id' => parent::getCompanyId()]);
+	public function getCounter()
+    {	
+		return parent::curl(parent::getPath('count'), [
+            'company_id' => parent::getCompanyId()
+        ]);
 	}
 	
 	/**
@@ -404,8 +406,8 @@ class Customer extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
 	**/
-	public function getCustomers(){	
-
+	public function getAll()
+    {
 		return parent::curl(parent::getPath('getAll'), [
 			'company_id' => parent::getCompanyId()
 		]); 
@@ -416,7 +418,7 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=204
 	**/
-	public function setCustomer()
+	public function insert()
 	{
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
@@ -458,7 +460,7 @@ class Customer extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=199 
 	**/
-	public function getCustomerById()
+	public function getById()
 	{
 		return parent::curl(parent::getPath('getOne'), [
 			'company_id' => parent::getCompanyId(),
@@ -471,7 +473,7 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=201
 	**/
-	public function getCustomerByVat()
+	public function getByVat()
 	{
 		return  parent::curl(parent::getPath('getByVat'), [
 			'company_id' => parent::getCompanyId(),
@@ -484,7 +486,7 @@ class Customer extends Authentication{
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=205
 	**/
-	public function updateCustomerById()
+	public function update()
 	{
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
@@ -526,7 +528,7 @@ class Customer extends Authentication{
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=206
 	**/
-	public function deleteCustomer()
+	public function delete()
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
