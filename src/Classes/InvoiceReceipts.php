@@ -18,24 +18,6 @@ class InvoiceReceipts extends Authentication{
 	/**
 	InvoiceReceipts array data structure
 
-	/*
-	$ir_get_one = [
-		'document_id' => 0, // int
-		'customer_id' => 0, // int
-		'supplier_id' => 0, // int
-		'salesman_id' => 0, // int
-		'document_set_id' => 0, // int
-		'number' => 0, // int
-		'date' => 0, // int
-		'expiration_date' => 0, // int
-		'year' => 0, // int
-		'your_reference' => 0, // int
-		'our_reference' => 0, // int
-	];
-
-
-
-
 	$id = [
 	'document_id' => // int required ON UPDATE $this->getInvoiceReceipts
 	'date' => '2020-07-30', // date required
@@ -139,6 +121,259 @@ class InvoiceReceipts extends Authentication{
         $this->id = $id;
     }
 
+
+ 	private $value;
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setValue(float $value = 0.0)
+    {
+        $this->value = $value;
+    }
+
+    private $our_reference;
+
+    public function getOurReference()
+    {
+        return $this->our_reference;
+    }
+
+    public function setOurReference(string $our_reference = null)
+    {
+        $this->our_reference = $our_reference;
+    }
+
+    private $your_reference;
+
+    public function getYourReference()
+    {
+        return $this->your_reference;
+    }
+
+    public function setYourReference(string $your_reference = null)
+    {
+        $this->your_reference = $your_reference;
+    }
+
+    private $year;
+
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year = 0)
+    {
+        $this->year = $year;
+    }
+
+    private $expiration_date;
+
+    public function getExpirationDate()
+    {
+        return $this->expiration_date;
+    }
+
+    public function setExpirationDate(string $expiration_date = null)
+    {
+        $this->expiration_date = $expiration_date;
+    }
+
+ 	private $qty;
+
+    public function getQty()
+    {
+        return $this->qty;
+    }
+
+    public function setQty(int $qty = 0)
+    {
+        $this->qty = $qty;
+    }
+    
+    private $offset;
+
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    public function setOffset(int $offset = 0)
+    {
+        $this->offset = $offset;
+    }
+
+    private $date;
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function setDate(string $date = null)
+    {
+        $this->date = $date;
+    }
+
+	private $number;
+
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number = 0)
+    {
+        $this->number = $number;
+    }
+
+	private $document_set_id;
+
+    public function getDocumentSetId()
+    {
+        return $this->document_set__id;
+    }
+
+    public function setDocumentSetId(int $document_set_id = 0)
+    {
+        $this->document_set_id = $document_set_id;
+    }
+
+	private $salesman_id;
+
+    public function getSalesmanId()
+    {
+        return $this->salesman_id;
+    }
+
+    public function setSalesmanId(int $salesman_id = 0)
+    {
+        $this->salesman_id = $salesman_id;
+    }
+
+	private $supplier_id;
+
+    public function getSupplierId()
+    {
+        return $this->supplier_id;
+    }
+
+    public function setSupplierId(int $supplier_id = 0)
+    {
+        $this->supplier_id = $supplier_id;
+    }
+
+	private $customer_id;
+
+    public function getCustomerId()
+    {
+        return $this->customer_id;
+    }
+
+    public function setCustomerId(int $customer_id = 0)
+    {
+        $this->customer_id = $customer_id;
+    }
+
+	private $maturity_date_id;
+
+    public function getMaturityDateId()
+    {
+        return $this->maturity_date_id;
+    }
+
+    public function setMaturityDateId(int $maturity_date_id = 0)
+    {
+        $this->maturity_date_id = $maturity_date_id;
+    }
+
+	private $alternate_address_id;
+
+    public function getAlternateAddressId()
+    {
+        return $this->alternate_address_id;
+    }
+
+    public function setAlternateAddressId(int $alternate_address_id = 0)
+    {
+        $this->alternate_address_id = $alternate_address_id;
+    }
+
+	private $financial_discount;
+
+    public function getFinancialDiscount()
+    {
+        return $this->financial_discount;
+    }
+
+    public function setFinancialDiscount(float $financial_discount = 0.0)
+    {
+        $this->financial_discount = $financial_discount;
+    }
+
+	private $eac_id;
+
+    public function getEacId()
+    {
+        return $this->eac_id;
+    }
+
+    public function setEacId(int $eac_id = 0)
+    {
+        $this->eac_id = $eac_id;
+    }
+
+	private $salesman_commission;
+
+    public function getSalesmanCommission()
+    {
+        return $this->salesman_commission;
+    }
+
+    public function setSalesmanCommission(float $salesman_commission = 0.0)
+    {
+        $this->salesman_commission = $salesman_commission;
+    }
+
+	private $special_discount;
+
+    public function getSpecialDiscount()
+    {
+        return $this->special_discount;
+    }
+
+    public function setSpecialDiscount(float $special_discount = 0.0)
+    {
+        $this->special_discount = $special_discount;
+    }
+
+
+	/**
+	* Count InvoiceReceiptss of the Company 
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=379
+	**/
+	public function getInvoiceReceiptsCount()
+	{
+		return parent::curl(parent::getPath('count'), [
+			'company_id' => parent::getCompanyId(),
+        	'customer_id' => $this->getCustomerId(), // int
+       		'supplier_id' => $this->getSupplierId(), // int
+        	'salesman_id' => $this->getSalesmanId(), //int
+        	'document_set_id' => $this->getDocumentSetId(), // int
+        	'number' => $this->getNumber(), //int
+        	'date' => $this->getDate(), // date
+        	'expiration_date' => $this->getExpirationDate(), // date
+        	'year' => $this->getYear(), // int
+        	'your_reference' => $this->getYourReference(), // string
+    		'our_reference' => $this->getOurReference() // string
+		]);
+	}
+
+
 	/**
 	* List InvoiceReceipts of Company 
 	* @return json 
@@ -146,74 +381,89 @@ class InvoiceReceipts extends Authentication{
 	**/
 	public function getInvoiceReceipts()
 	{
-		return parent::curl(parent::getPath('getAll'), ['company_id' => parent::getCompanyId()]);
+		return parent::curl(parent::getPath('getAll'), [
+			'company_id' => parent::getCompanyId(), //int required
+			'qty' => $this->getQty(), //int
+			'offset' => $this->getOffset(), //int
+			'customer_id' => $this->getCustomerId(), // int
+       		'supplier_id' => $this->getSupplierId(), // int
+        	'salesman_id' => $this->getSalesmanId(), //int
+        	'document_set_id' => $this->getDocumentSetId(), // int
+        	'number' => $this->getNumber(), //int
+        	'date' => $this->getDate(), // date
+        	'expiration_date' => $this->getExpirationDate(), // date
+        	'year' => $this->getYear(), // int
+        	'your_reference' => $this->getYourReference(), // string
+    		'our_reference' => $this->getOurReference() // string
+		]);
 	}
 
 	/**
-	* Get a InvoiceReceipts by Id 
-	* @param int $tax_id // $this->getInvoiceReceipts() required
+	* Get a InvoiceReceipt by Id 
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=375
 	**/
 	public function getInvoiceReceipt()
 	{
 		return  parent::curl(parent::getPath('getOne'), [
-			'company_id' => parent::getCompanyId(),
-			'invoice_receipt_id' => $this->getId()
+			'company_id' => parent::getCompanyId(), //int required
+			'document_id' => $this->getId(), //int
+			'customer_id' => $this->getCustomerId(), // int
+       		'supplier_id' => $this->getSupplierId(), // int
+        	'salesman_id' => $this->getSalesmanId(), //int
+        	'document_set_id' => $this->getDocumentSetId(), // int
+        	'number' => $this->getNumber(), //int
+        	'date' => $this->getDate(), // date
+        	'expiration_date' => $this->getExpirationDate(), // date
+        	'year' => $this->getYear(), // int
+        	'your_reference' => $this->getYourReference(), // string
+    		'our_reference' => $this->getOurReference() // string
 		]);
 	}
+
 
 	/**
 	* Create InvoiceReceipts in the Company 
-	* @param array $ir InvoiceReceipts
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=376
 	**/
-	public function setInvoiceReceipt(array $c = [], array $ir = [])
+	public function setInvoiceReceipt()
 	{
-
 		return parent::curl(parent::getPath('insert'), [
-			'company_id' => parent::getCompanyId(),
-			'name' => $t['name'], 
-			'value' => $t['value'],
-			'type' => $t['type'],
-			'saft_type' => $t['saft_type'],
-			'vat_type' => $t['vat_type'],
-			'stamp_tax' => $t['stamp_tax'],
-			'exemption_reason' => $t['exemption_reason'],
-			'fiscal_zone' => $t['fiscal_zone'],
-			'active_by_default' => $t['active_by_default']
+			'company_id' => parent::getCompanyId(), //int required
+			'date' => $this->getDate(), // date required
+        	'expiration_date' => $this->getExpirationDate(), // date required
+        	'maturity_date_id' => $this->getMaturityDateId(), //int
+        	'document_set_id' => $this->getDocumentSetId(), // int required
+        	'customer_id' => $this->getCustomerId(), // int required
+			'alternate_address_id' => getAlternateAddressId(), // int
+			'your_reference' => $this->getYourReference(), // string
+    		'our_reference' => $this->getOurReference() // string
+    		'financial_discount' => $this->getFinancialDiscount(), // float
+			'eac_id' => $this->getEacId(), // int
+			'salesman_id' => $this->getSalesmanId(), // int
+			'salesman_commission' => $this->getSalesmanCommission(), // float
+			'special_discount' => $this->getSpecialDiscount(), // float
+
 		]);
 	}
 
 	/**
-	* Update InvoiceReceipts
-	* @param array $ir InvoiceReceipts
+	* Update InvoiceReceipts by Id
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=377
 	**/
-	public function updateInvoiceReceipt(array $c = [], array $ir = [])
+	public function updateInvoiceReceipt()
 	{
 
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
-			'tax_id' => $t['tax_id'],
-			'name' => $t['name'], 
-			'value' => $t['value'],
-			'type' => $t['type'],
-			'saft_type' => $t['saft_type'],
-			'vat_type' => $t['vat_type'],
-			'stamp_tax' => $t['stamp_tax'],
-			'exemption_reason' => $t['exemption_reason'],
-			'fiscal_zone' => $t['fiscal_zone'], //$this->getFiscalZones($id)
-			'active_by_default' => $t['active_by_default']
 		]);
 
 	}
 
 	/**
 	* Delete a Tax from the Company 
-	* @param int $tax_id // $this->getTaxes($c) required
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=378
 	**/
@@ -221,8 +471,26 @@ class InvoiceReceipts extends Authentication{
 	{
 		return  parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
-			'invoice_receipt_id' => $this->getId()
+			'document_id' => $this->getId()
 		]);
 	}
+
+	/**
+	* Generates a new ATM reference associated with this document, at the requested amount.
+	* You need to have an ATM reference generation system set up in the company, and the document in question must be closed (status = 1).
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=438
+	**/
+	public function generateMBReference()
+	{
+		return  parent::curl(parent::getPath('generateMBReference'), [
+			'company_id' => parent::getCompanyId(), //int required
+			'document_id' => $this->getId(), // int required
+			'value' => $this->getValue(), // float required
+		]);
+	}
+
+
+
 
 }
