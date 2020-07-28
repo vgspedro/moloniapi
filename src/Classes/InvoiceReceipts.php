@@ -234,7 +234,7 @@ class InvoiceReceipts extends Authentication{
 
     public function getDocumentSetId()
     {
-        return $this->document_set__id;
+        return $this->document_set_id;
     }
 
     public function setDocumentSetId(int $document_set_id = 0)
@@ -750,7 +750,7 @@ class InvoiceReceipts extends Authentication{
         	'customer_id' => $this->getCustomerId(), // int required
 			'alternate_address_id' => getAlternateAddressId(), // int
 			'your_reference' => $this->getYourReference(), // string
-    		'our_reference' => $this->getOurReference() // string
+    		'our_reference' => $this->getOurReference(), // string
     		'financial_discount' => $this->getFinancialDiscount(), // float
 			'eac_id' => $this->getEacId(), // int
 			'salesman_id' => $this->getSalesmanId(), // int
@@ -765,6 +765,7 @@ class InvoiceReceipts extends Authentication{
 				'value' => $this->getPaymentValue(), // float required
 				'notes' => $this->getPaymentNotes(), // string
 			],
+
 
 			'exchange_currency_id' => $this->getExchangeCurrencyId(), //int
 			'exchange_rate' => $this->getExchangeRate(), //float 
@@ -805,7 +806,7 @@ class InvoiceReceipts extends Authentication{
         	'customer_id' => $this->getCustomerId(), // int required
 			'alternate_address_id' => getAlternateAddressId(), // int
 			'your_reference' => $this->getYourReference(), // string
-    		'our_reference' => $this->getOurReference() // string
+    		'our_reference' => $this->getOurReference(), // string
     		'financial_discount' => $this->getFinancialDiscount(), // float
 			'eac_id' => $this->getEacId(), // int
 			'salesman_id' => $this->getSalesmanId(), // int

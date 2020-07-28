@@ -5,22 +5,22 @@ namespace VgsPedro\MoloniApi\Classes;
 use \VgsPedro\MoloniApi\Authentication;
 
 /**
- * A class for CRUD the Customer requests
+ * A class for CRUD the Suppliers requests
  */
 
-class Customer extends Authentication{
+class Suppliers extends Authentication{
 
 	/** @const entity api url */
-	const ENTITY = '/customers/';
+	const ENTITY = '/suppliers/';
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 	
 	/**
-	Customer array data structure
+	Supplier array data structure
 	[
-		'customer_id' => 0, // int required ON UPDATE only $this->getCustomers()
+		'supplier_id' => 0, // int required ON UPDATE only 
 		'vat' => '100200300', //string required
-		'number' => 'our client reference', // string (max 20) required
+		'number' => 'our reference', // string (max 20) required
 		'name' => 'Name of fiscal number owner', //string required
 		'language_id' => 1, // int required 1=>PT, 2=>EN, 3=>ES
 		'address' => 'Fiscal Address', // string required
@@ -35,16 +35,11 @@ class Customer extends Authentication{
 		'contact_email' => '',// string
 		'contact_phone' => '',// string
 		'notes' => '',// string
-		'salesman_id' => 0, // int
 		'price_class_id' => 0 , // int
 		'maturity_date_id' => 0, // int required MaturityDates->getMaturityDates()
-		'payment_day' => 0, // int
 		'discount' => 0.0, // float
 		'credit_limit' => 0.0, // float,
-		'copies'=> [
-			'document_type_id' => 0, // int required DocumentType->getDocumentType()
-			'copies' => 3, // int required
-		],
+        'qty_copies_document' => 0, // int required
 		'payment_method_id' =>  0, // int required PaymentMethod->getPaymentMethod()
 		'delivery_method_id' => 0, // int,
 		'field_notes' => '',// string
@@ -257,30 +252,6 @@ class Customer extends Authentication{
         $this->notes = $notes;
     }
 
-	private $salesman_id;
-
-    public function getSalesmanId()
-    {
-        return $this->salesman_id;
-    }
-
-    public function setSalesmanId(int $salesman_id = 0)
-    {
-        $this->salesman_id = $salesman_id;
-    }
-
-	private $price_class_id;
-
-    public function getPriceClassId()
-    {
-        return $this->price_class_id;
-    }
-
-    public function setPriceClassId(int $price_class_id = 0)
-    {
-        $this->price_class_id = $price_class_id;
-    }
-
 	private $maturity_date_id;
 
     public function getMaturityDateId()
@@ -291,18 +262,6 @@ class Customer extends Authentication{
     public function setMaturityDateId(int $maturity_date_id = 0)
     {
         $this->maturity_date_id = $maturity_date_id;
-    }
-
-	private $payment_day;
-
-    public function getPaymentDay()
-    {
-        return $this->payment_day;
-    }
-
-    public function setPaymentDay(int $payment_day = 0)
-    {
-        $this->payment_day = $payment_day;
     }
 
 	private $discount;
@@ -329,28 +288,16 @@ class Customer extends Authentication{
         $this->credit_limit = $credit_limit;
     }
 
-	private $copies_document_type_id;
+	private $qty_copies_document;
 
-    public function getCopiesDocumentTypeId()
+    public function getQtyCopiesDocument()
     {
-        return $this->copies_document_type_id;
+        return $this->qty_copies_document;
     }
 
-    public function setCopiesDocumentTypeId(int $copies_document_type_id = 0)
+    public function setQtyCopiesDocument(int $qty_copies_document = 0)
     {
-        $this->copies_document_type_id = $copies_document_type_id;
-    }
-
-	private $copies_copies;
-
-    public function getCopiesCopies()
-    {
-        return $this->copies_copies;
-    }
-
-    public function setCopiesCopies(int $copies_copies = 3)
-    {
-        $this->copies_copies = $copies_copies;
+        $this->qty_copies_document = $qty_copies_document;
     }
 
 	private $payment_method_id;
@@ -390,9 +337,9 @@ class Customer extends Authentication{
     }
 
 	/**
-	* Count all Customers of the Company 
+	* Count all Supplier of the Company 
 	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=311
 	**/
 	public function getCounter()
     {	
@@ -402,9 +349,9 @@ class Customer extends Authentication{
 	}
 	
 	/**
-	* List Customers of the Company 
+	* List Supplier of the Company 
 	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=207
 	**/
 	public function getAll()
     {
@@ -414,61 +361,55 @@ class Customer extends Authentication{
 	}
 
 	/**
-	* Create a new Customer in the Company 
+	* Create Supplier in the Company 
 	* @return json 
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=204
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=213
 	**/
 	public function insert()
 	{
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 			'vat' => $this->getVat(), 
-			'number' => $this->getNumber(),
-			'name' => $this->getName(),
-			'language_id' => $this->getLanguageId(),
-			'address' => $this->getAddress(),
-			'zip_code' => $this->getZipCode(),
-			'city' => $this->getCity(),
-			'country_id' => $this->getCountryId(),
-			'email' => $this->getEmail(),
-			'website' => $this->getWebsite(),
-			'phone' => $this->getPhone(),
-			'fax' => $this->getFax(),
-			'contact_name' => $this->getContactName(),
-			'contact_email' => $this->getContactEmail(),
-			'contact_phone' => $this->getContactPhone(),
-			'notes' => $this->getNotes(),
-			'salesman_id' => $this->getSalesmanId(),
-			'price_class_id' => $this->getPriceClassId(),
-			'maturity_date_id' => $this->getMaturityDateId(),
-			'payment_day' => $this->getPaymentDay(),
-			'discount' => $this->getDiscount(),
-			'credit_limit' => $this->getCreditLimit(),
-			'copies'=> [
-				'document_type_id' => $this->getCopiesDocumentTypeId(),
-				'copies' => $this->getCopiesCopies()
-			],
-			'payment_method_id' => $this->getPaymentMethodId(),
-			'delivery_method_id' => $this->getDeliveryMethodId(),
-			'field_notes' => $this->getFieldNotes()
+            'number' => $this->getNumber(),
+            'name' => $this->getName(),
+            'language_id' => $this->getLanguageId(),
+            'address' => $this->getAddress(),
+            'zip_code' => $this->getZipCode(),
+            'city' => $this->getCity(),
+            'country_id' => $this->getCountryId(),
+            'email' => $this->getEmail(),
+            'website' => $this->getWebsite(),
+            'phone' => $this->getPhone(),
+            'fax' => $this->getFax(),
+            'contact_name' => $this->getContactName(),
+            'contact_email' => $this->getContactEmail(),
+            'contact_phone' => $this->getContactPhone(),
+            'notes' => $this->getNotes(),
+            'maturity_date_id' => $this->getMaturityDateId(),
+            'discount' => $this->getDiscount(),
+            'credit_limit' => $this->getCreditLimit(),
+            'qty_copies_document' => $this->getQtyCopiesDocument(),
+            'payment_method_id' => $this->getPaymentMethodId(),
+            'delivery_method_id' => $this->getDeliveryMethodId(),
+            'field_notes' => $this->getFieldNotes()
 		]);
 	}
 
 	/**
-	* Get Customer by Id
+	* Get Supplier by Id
 	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=199 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=208 
 	**/
 	public function getById()
 	{
 		return parent::curl(parent::getPath('getOne'), [
 			'company_id' => parent::getCompanyId(),
-			'customer_id' => $this->getId()
+			'supplier_id' => $this->getId()
 		]);
 	}
 
 	/**
-	* Get Customer by Vat
+	* Get Supplier by Vat
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=201
 	**/
@@ -481,15 +422,15 @@ class Customer extends Authentication{
 	}
 
 	/**
-	* Update Customer by Id
+	* Update Supplier by Id
 	* @return json 
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=205
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=214
 	**/
 	public function update()
 	{
 		return parent::curl(parent::getPath('update'), [
 			'company_id' => parent::getCompanyId(),
-			'customer_id' => $this->getId(),
+			'supplier_id' => $this->getId(),
 			'vat' => $this->getVat(), 
 			'number' => $this->getNumber(),
 			'name' => $this->getName(),
@@ -506,16 +447,10 @@ class Customer extends Authentication{
 			'contact_email' => $this->getContactEmail(),
 			'contact_phone' => $this->getContactPhone(),
 			'notes' => $this->getNotes(),
-			'salesman_id' => $this->getSalesmanId(),
-			'price_class_id' => $this->getPriceClassId(),
 			'maturity_date_id' => $this->getMaturityDateId(),
-			'payment_day' => $this->getPaymentDay(),
 			'discount' => $this->getDiscount(),
 			'credit_limit' => $this->getCreditLimit(),
-			'copies'=> [
-				'document_type_id' => $this->getCopiesDocumentTypeId(),
-				'copies' => $this->getCopiesCopies()
-			],
+			'qty_copies_document' => $this->getQtyCopiesDocument(),
 			'payment_method_id' => $this->getPaymentMethodId(),
 			'delivery_method_id' => $this->getDeliveryMethodId(),
 			'field_notes' => $this->getFieldNotes()
@@ -523,15 +458,15 @@ class Customer extends Authentication{
 	}
 
 	/**
-	* Delete Customer by Id
+	* Delete Supplier by Id
 	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=206
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=215
 	**/
 	public function delete()
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
-			'customer_id' => $this->getId()
+			'supplier_id' => $this->getId()
 		]);
 	}
 
