@@ -44,14 +44,22 @@ class InvoicingController extends AbstractController
 		//Call the methods from the Service $moloni;
 
       	'moloni' => [
-      		'moloni_get_taxes' => $moloni->getTaxes(),
-      		'moloni_set_taxes' => $moloni->setTax($tax),
-      		'moloni_update_taxes' => $moloni->updateTax($tax_up),
-      		'moloni_delete_tax' => $moloni->deleteTax(2000939),
-      		'moloni_get_countries' => $moloni->getCountries(),
-      		'moloni_get_languages' => $moloni->getLanguages(),
-      		'moloni_get_currencies' => $moloni->getCurrencies(),
-      		'moloni_get_fiscal_zones' => $moloni->getFiscalZones(1)
+      		  'moloni_get_customers' => $moloni->getCustomers(),
+                'moloni_get_delivery_methods' => $moloni->getDeliveryMethods(),
+                'moloni_get_all_document_types' => $moloni->getAllDocumentTypes(1),
+                'moloni_get_document_types' => $moloni->getDocumentTypes(),
+                'moloni_get_countries' => $moloni->getCountries(),
+                'moloni_get_languages' => $moloni->getLanguages(),
+                'moloni_get_currencies' => $moloni->getCurrencies(),
+                'moloni_get_fiscal_zones' => $moloni->getFiscalZones(1),
+                'moloni_get_invoice_receipts' => $moloni->getInvoiceReceipts(),
+                'moloni_get_maturity_dates' => $moloni->getMaturityDates(),
+                'moloni_get_measurement_units' => $moloni->getMeasurementUnits(),
+                'moloni_get_payments' => $moloni->getPaymentMethods(),
+                'moloni_get_products' => $moloni->getProducts(2542872),
+                'moloni_get_product_categories' => $moloni->getProductCategories(0),
+                'moloni_get_suppliers' => $moloni->getSuppliers(),
+                'moloni_get_taxes' => $moloni->getTaxes()
             ]
         ]);
     }
@@ -81,6 +89,8 @@ use \VgsPedro\MoloniApi\Classes\ProductCategories;
 use \VgsPedro\MoloniApi\Classes\Taxes;
 use \VgsPedro\MoloniApi\Classes\Documents;
 use \VgsPedro\MoloniApi\Classes\InvoiceReceipts;
+use \VgsPedro\MoloniApi\Classes\Suppliers;
+
 
 class InvoiceMoloni
 {
@@ -1420,25 +1430,308 @@ class InvoiceMoloni
 			return false;
 	}
 
-	#####
+		#####
 	## DOCUMENTS  METHODS
 	#####
 
 	/**
 	* List of All Document Types in the Company 
+	* @param int $language_id Language required
 	* @return json 
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=226
 	**/
-	public function getAllDocumentTypes()
+	public function getAllDocumentTypes(int $language_id = 1)
 	{
 		if($this->start()){
 			$d = new Documents();
 			$d->setCompanyId($this->credencials['company_id']);
 			$d->setAccessToken($this->credencials['token']['access_token']);
 			$d->setUrl($this->credencials['url']);
-			$d->setLanguageId(1);
+			$d->setLanguageId($language_id);
 
 			return $d->getAllDocumentTypes();
+		}
+		else
+			return false;
+	}
+
+	/**
+	* List Document Types in the Company 
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=227
+	**/
+	public function getDocumentTypes(array $p = []){
+		
+		if($this->start()){
+			$d = new Documents();
+			$d->setCompanyId($this->credencials['company_id']);
+			$d->setAccessToken($this->credencials['token']['access_token']);
+			$d->setUrl($this->credencials['url']);
+			$d->setQty(isset($p['qty']) ? $p['qty'] : 0); //int,
+    		$d->setOffset(isset($p['offset']) ? $p['offset'] : 0); //int
+        	$d->setCustomerId(isset($p['customer_id']) ? $p['customer_id'] : 0); // int
+       		$d->setSupplierId(isset($p['supplier']) ? $p['supplier_id'] : 0); // int
+        	$d->setSalesmanId(isset($p['salesman_id']) ? $p['salesman_id'] : 0); //int
+        	$d->setDocumentSetId(isset($p['document_set_id']) ? $p['document_set_id'] : 0); // int
+        	$d->setNumber(isset($p['number']) ? $p['number'] : 0); //int
+        	$d->setDate(isset($p['date']) ? $p['date'] : 0); // date
+        	$d->setExpirationDate(isset($p['expiration_date']) ? $p['expiration_date'] : 0); // date
+        	$d->setYear(isset($p['year']) ? $p['year'] : 0); // int
+        	$d->setYourReference(isset($p['your_reference']) ? $p['your_reference'] : null); // string
+    		$d->setOurReference(isset($p['your_reference']) ? $p['your_reference'] : null); // string
+			
+			return $d->getAll();
+		}
+		else
+			return false;
+
+	}
+
+	/**
+	* Get Document Type in the Company 
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=228
+	**/
+	public function getDocumentType(array $p = []){
+		if($this->start()){
+			$d = new Documents();
+			$d->setCompanyId($this->credencials['company_id']);
+			$d->setAccessToken($this->credencials['token']['access_token']);
+			$d->setUrl($this->credencials['url']);
+			$d->setId(isset($p['id']) ? $p['id'] : 0); //int
+    		$d->setCustomerId(isset($p['customer_id']) ? $p['customer_id'] : 0); // int
+       		$d->setSupplierId(isset($p['supplier']) ? $p['supplier_id'] : 0); // int
+        	$d->setSalesmanId(isset($p['salesman_id']) ? $p['salesman_id'] : 0); //int
+        	$d->setDocumentSetId(isset($p['document_set_id']) ? $p['document_set_id'] : 0); // int
+        	$d->setNumber(isset($p['number']) ? $p['number'] : 0); //int
+        	$d->setDate(isset($p['date']) ? $p['date'] : 0); // date
+        	$d->setExpirationDate(isset($p['expiration_date']) ? $p['expiration_date'] : 0); // date
+        	$d->setYear(isset($p['year']) ? $p['year'] : 0); // int
+        	$d->setYourReference(isset($p['your_reference']) ? $p['your_reference'] : null); // string
+    		$d->setOurReference(isset($p['your_reference']) ? $p['your_reference'] : null); // string
+
+			return $d->getById();
+		}
+		else
+			return false;
+	}
+
+	/**
+	* Get PDF link of DocumentType 
+	* @param int $document_id // required
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=278
+	**/
+	public function getPDFLink(int $document_id = 0){
+
+		if($this->start()){
+			$d = new Documents();
+			$d->setCompanyId($this->credencials['company_id']);
+			$d->setAccessToken($this->credencials['token']['access_token']);
+			$d->setUrl($this->credencials['url']);
+			$d->setId($document_id);//int
+			
+			return $d->getPDFLink();
+		}
+		else
+			return false;
+	}
+
+	#####
+	## SUPPLIERS METHODS
+	#####
+
+	/**
+	* Count Suppliers of the Company 
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
+	**/
+	public function getSupplierCount()
+	{
+		if($this->start()){
+			$c = new Suppliers();
+			$c->setAccessToken($this->credencials['token']['access_token']);
+			$c->setUrl($this->credencials['url']);
+			$c->setCompanyId($this->credencials['company_id']);
+
+			return $c->getCounter();
+		}
+		else
+			return false;
+	}
+
+
+	/**
+	* List Suppliers of the Company 
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=306
+	**/
+	public function getSuppliers()
+	{
+		if($this->start()){
+			$c = new Suppliers();
+			$c->setAccessToken($this->credencials['token']['access_token']);
+			$c->setUrl($this->credencials['url']);
+			$c->setCompanyId($this->credencials['company_id']);
+
+			return $c->getAll();
+		}
+		else
+			return false;
+	}
+
+
+	/**
+	* Get Supplier by Id
+	* @param int $id Supplier Id
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=199 
+	**/
+	public function getSupplierById(int $id = 0)
+	{
+		if($this->start()){
+			$c = new Suppliers();
+			$c->setAccessToken($this->credencials['token']['access_token']);
+			$c->setUrl($this->credencials['url']);
+			$c->setCompanyId($this->credencials['company_id']);
+			$c->setId($id);
+
+			return $c->getById();
+		}
+		else
+			return false;
+	}
+
+
+	/**
+	* Get Supplier by Vat
+	* @param string $vat Supplier Vat // '123456789'
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=201
+	**/
+	public function getSupplierByVat(string $vat = null)
+	{
+		if($this->start()){
+			$c = new Suppliers();
+			$c->setAccessToken($this->credencials['token']['access_token']);
+			$c->setUrl($this->credencials['url']);
+			$c->setCompanyId($this->credencials['company_id']);
+			$c->setVat($vat);
+			
+			return $c->getByVat();
+		}
+		else
+			return false;
+	}
+
+	/**
+	* Update Supplier by Id
+	* @param array $a Supplier information
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=205
+	**/
+	public function updateSupplierById(array $a = [])
+	{
+		if($this->start()){
+			$c = new Suppliers();
+			$c->setAccessToken($this->credencials['token']['access_token']);
+			$c->setUrl($this->credencials['url']);
+			$c->setCompanyId($this->credencials['company_id']);
+			$c->setId($a['id']);
+			$c->setVat($a['vat']);
+			$c->setNumber($a['number']);
+			$c->setName($a['name']);
+			$c->setLanguageId($a['language_id']);
+			$c->setAddress($a['address']);
+			$c->setZipCode($a['zip_code']);
+			$c->setCity($a['city']);
+			$c->setCountryId($a['country_id']);
+			$c->setEmail($a['email']);
+			$c->setWebsite($a['website']);
+			$c->setPhone($a['phone']);
+			$c->setFax($a['fax']);
+			$c->setContactName($a['contact_name']);
+			$c->setContactEmail($a['contact_email']);
+			$c->setContactPhone($a['contact_phone']);
+			$c->setNotes($a['notes']);
+			$c->setMaturityDateId($a['maturity_date_id']);
+			$c->setPaymentDay($a['payment_day']);
+			$c->setDiscount($a['discount']);
+			$c->setCreditLimit($a['credit_limit']);
+			$c->setQtyCopiesDocument($a['qty_copies_document']);
+			$c->setPaymentMethodId($a['payment_method_id']);
+			$c->setDeliveryMethodId($a['delivery_method_id']);
+			$c->setFieldNotes($a['field_notes']);
+
+			return $c->update();
+		}
+
+		else
+			return false;
+	}
+
+	/**
+	* Create Supplier in the Company 
+	* @param array $a Supplier information 
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=204
+	**/
+	public function setSupplier(array $a = []){
+		if($this->start()){
+			$c = new Suppliers();
+			$c->setAccessToken($this->credencials['token']['access_token']);
+			$c->setUrl($this->credencials['url']);
+			$c->setCompanyId($this->credencials['company_id']);
+			$c->setVat($a['vat']);
+			$c->setNumber($a['number']);
+			$c->setName($a['name']);
+			$c->setLanguageId($a['language_id']);
+			$c->setAddress($a['address']);
+			$c->setZipCode($a['zip_code']);
+			$c->setCity($a['city']);
+			$c->setCountryId($a['country_id']);
+			$c->setEmail($a['email']);
+			$c->setWebsite($a['website']);
+			$c->setPhone($a['phone']);
+			$c->setFax($a['fax']);
+			$c->setContactName($a['contact_name']);
+			$c->setContactEmail($a['contact_email']);
+			$c->setContactPhone($a['contact_phone']);
+			$c->setNotes($a['notes']);
+			$c->setSalesmanId($a['salesman_id']);
+			$c->setPriceClassId($a['price_class_id']);
+			$c->setMaturityDateId($a['maturity_date_id']);
+			$c->setPaymentDay($a['payment_day']);
+			$c->setDiscount($a['discount']);
+			$c->setCreditLimit($a['credit_limit']);
+			$c->setQtyCopiesDocument($a['qty_copies_document']);
+			$c->setPaymentMethodId($a['payment_method_id']);
+			$c->setDeliveryMethodId($a['delivery_method_id']);
+			$c->setFieldNotes($a['field_notes']);
+
+			return $c->insert();
+		}
+		
+		else
+			return false;
+	}
+
+	/**
+	* Delete Supplier from the Company 
+	* @param int $supplier_id 
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=206
+	**/
+	public function deleteSupplier(int $id = 0)
+	{
+			if($this->start()){
+			$c = new Suppliers();
+			$c->setAccessToken($this->credencials['token']['access_token']);
+			$c->setUrl($this->credencials['url']);
+			$c->setCompanyId($this->credencials['company_id']);
+			$c->setId($id);
+			
+			return $c->delete();
 		}
 		else
 			return false;

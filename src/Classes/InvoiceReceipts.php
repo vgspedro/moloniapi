@@ -57,7 +57,10 @@ class InvoiceReceipts extends Authentication{
 				'order' => 0, //int
 				'cumulative' => 0, //int
 			],
-			'child_products' => [ //array
+			
+            //NOT DONE START
+
+            'child_products' => [ //array
 				'product_id' => 0, //int required
 				'name' => 'name', // string required
 				'summary' => 'c_p summary', // string
@@ -81,7 +84,10 @@ class InvoiceReceipts extends Authentication{
 					'cumulative' => 0, // int
 				]
 			],
-		],
+            
+            //NOT DONE END
+        
+        ],
 
 		'payments' => [ //array required
 			'payment_method_id' => 0, // int required
@@ -109,6 +115,190 @@ class InvoiceReceipts extends Authentication{
 		'generate_mb_reference' => '', // int
 	]
 	*/
+
+    private $products_taxes_tax_id;
+    
+    public function getProductsTaxesTaxId()
+    {
+        return $this->products_taxes_tax_id;
+    }
+
+    public function setProductsTaxesTaxId(int $products_taxes_tax_id = 0)
+    {
+        $this->products_taxes_tax_id = $products_taxes_tax_id;
+    }
+
+    private $products_taxes_value;
+    
+    public function getProductsTaxesValue()
+    {
+        return $this->products_taxes_value;
+    }
+
+    public function setProductsTaxesValue(float $products_taxes_value = 0.0)
+    {
+        $this->products_taxes_value = $products_taxes_value;
+    }
+
+
+    private $products_taxes_order;
+    
+    public function getProductsTaxesOrder()
+    {
+        return $this->products_taxes_order;
+    }
+
+    public function setProductsTaxesOrder(int $products_taxes_order = 0)
+    {
+        $this->products_taxes_order = $products_taxes_order;
+    }
+
+
+    private $products_taxes_cumulative;
+    
+    public function getProductsTaxesCumulative()
+    {
+        return $this->products_taxes_cumulative;
+    }
+
+    public function setProductsTaxesCumulative(int $products_taxes_cumulative = 0)
+    {
+        $this->products_taxes_cumulative = $products_taxes_cumulative;
+    }
+
+
+
+    private $products_warehouse_id;
+
+    public function getProductsWarehouseId()
+    {
+        return $this->products_warehouse_id;
+    }
+
+    public function setProductsWarehouseId(int $products_warehouse_id = 0)
+    {
+        $this->products_warehouse_id = $products_warehouse_id;
+    }
+
+    private $products_exemption_reason;
+
+    public function getProductsExemptionReason()
+    {
+        return $this->products_exemption_reason;
+    }
+
+    public function setProductsExemptionReason(string $products_exemption_reason = null)
+    {
+        $this->products_exemption_reason = $products_exemption_reason;
+    }
+
+    private $products_origin_id;
+
+    public function getProductsOriginId()
+    {
+        return $this->products_origin_id;
+    }
+
+    public function setProductsOriginId(int $products_origin_id = 0)
+    {
+        $this->products_origin_id = $products_origin_id;
+    }
+
+    private $products_order;
+
+    public function getProductsOrder()
+    {
+        return $this->products_order;
+    }
+
+    public function setProductsOrder(int $products_order = 0)
+    {
+        $this->products_order = $products_order;
+    }
+
+    private $products_deduction_id;
+
+    public function getProductsDeductionId()
+    {
+        return $this->products_deduction_id;
+    }
+
+    public function setProductsDeductionId(int $products_deduction_id = 0)
+    {
+        $this->products_deduction_id = $products_deduction_id;
+    }
+
+    private $products_discount;
+
+    public function getProductsDiscount()
+    {
+        return $this->products_discount;
+    }
+
+    public function setProductsDiscount(float $products_discount = 0.0)
+    {
+        $this->products_discount = $products_discount;
+    }
+
+    private $products_price;
+
+    public function getProductsPrice()
+    {
+        return $this->products_price;
+    }
+
+    public function setProductsPrice(float $products_price = 0.0)
+    {
+        $this->products_price = $products_price;
+    }
+
+    private $products_qty;
+
+    public function getProductsQty()
+    {
+        return $this->products_qty;
+    }
+
+    public function setProductsQty(float $products_qty = 0.0)
+    {
+        $this->products_qty = $products_qty;
+    }
+
+    private $products_summary;
+
+    public function getProductsSummary()
+    {
+        return $this->products_summary;
+    }
+
+    public function setProductsSummary(string $products_summary = null)
+    {
+        $this->products_summary = $products_summary;
+    }
+
+    private $products_name;
+
+    public function getProductsName()
+    {
+        return $this->products_name;
+    }
+
+    public function setProductsName(string $products_name = null)
+    {
+        $this->products_name = $products_name;
+    }
+
+    private $products_product_id;
+
+    public function getProductsProductId()
+    {
+        return $this->products_product_id;
+    }
+
+    public function setProductsProductId(int $products_product_id= 0)
+    {
+        $this->products_product_id = $products_product_id;
+    }
 
  	private $id;
 
@@ -653,7 +843,7 @@ class InvoiceReceipts extends Authentication{
     }
 
 
-    //If the InvoiveReceipt has Associated Documentns build the array to update or insert
+    //If the InvoiveReceipt has Associated Documents build the array to update or insert
 	private function hasAssociatedDocuments(){
 		return $this->getAssociatedDocumentsAssociatedId() > 0 && $this->getAssociatedDocumentsValue() > 0 ?
 	 		[
@@ -663,7 +853,19 @@ class InvoiceReceipts extends Authentication{
 	 	:
 	 		[];
 	}
-
+    
+    //If the InvoiveReceipt has ProductTaxes build the array to update or insert
+    private function hasProductSTaxes(){
+        return $this->getProductsTaxesTaxId() > 0 ?
+            [
+                'tax_id' =>  $this->getProductsTaxesTaxId(), //int required
+                'value' =>  $this->getProductsTaxesValue(), // float
+                'order' =>  $this->getProductsTaxesOrder(), //int
+                'cumulative' =>  $this->getProductsTaxesCumulative() //int
+            ]
+        :
+            [];
+    }
 
 	/**
 	* Count InvoiceReceipts of the Company 
@@ -759,11 +961,27 @@ class InvoiceReceipts extends Authentication{
 			'associated_documents' => $this->hasAssociatedDocuments(), // array
 			'related_documents_notes' => $this->getRelateDocumentsNotes(), // string
 
+            'products' => [ // array required
+                'product_id' => $this->getProductsProductId(), // int required
+                'name' => $this->getProductsName(), // string required
+                'summary' => $this->getProductsSummary(), // string
+                'qty' => $this->getProductsQty(), // float required
+                'price' => $this->getProductsPrice(), // float required
+                'discount' => $this->getProductsDiscount(), // float
+                'deduction_id' => $this->getProductsDeductionId(), //int
+                'order' => $this->getProductsOrder(), //int
+                'origin_id' => $this->getProductsOriginId(), //int
+                'exemption_reason' => $this->getProductsExemptionReason(), // string
+                'warehouse_id' => $this->getProductsWarehouseId(), //int
+                'taxes' => $this->hasProductsTaxes(), //array            
+            ],
+
 			'payments' => [ //array required
 				'payment_method_id' => $this->getPaymentMethodId(), // int required
 				'date' => $this->getPaymentDate(), // datetime required
 				'value' => $this->getPaymentValue(), // float required
 				'notes' => $this->getPaymentNotes(), // string
+
 			],
 
 
@@ -815,6 +1033,20 @@ class InvoiceReceipts extends Authentication{
 			'associated_documents' => $this->hasAssociatedDocuments(), // array
 			'related_documents_notes' => $this->getRelateDocumentsNotes(), // string
 
+            'products' => [ // array required
+                'product_id' => $this->getProductsProductId(), // int required
+                'name' => $this->getProductsName(), // string required
+                'summary' => $this->getProductsSummary(), // string
+                'qty' => $this->getProductsQty(), // float required
+                'price' => $this->getProductsPrice(), // float required
+                'discount' => $this->getProductsDiscount(), // float
+                'deduction_id' => $this->getProductsDeductionId(), //int
+                'order' => $this->getProductsOrder(), //int
+                'origin_id' => $this->getProductsOriginId(), //int
+                'exemption_reason' => $this->getProductsExemptionReason(), // string
+                'warehouse_id' => $this->getProductsWarehouseId(), //int
+                'taxes' => $this->hasProductsTaxes(), //array
+            ],
 
 			'payments' => [ //array required
 				'payment_method_id' => $this->getPaymentMethodId(), // int required

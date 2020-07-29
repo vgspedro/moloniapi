@@ -111,7 +111,7 @@ class Documents extends Authentication{
 
     public function getDocumentSetId()
     {
-        return $this->document_set__id;
+        return $this->document_set_id;
     }
 
     public function setDocumentSetId(int $document_set_id = 0)
@@ -126,7 +126,7 @@ class Documents extends Authentication{
         return $this->salesman_id;
     }
 
-    public function setSalesman_id(int $salesman_id = 0)
+    public function setSalesmanId(int $salesman_id = 0)
     {
         $this->salesman_id = $salesman_id;
     }
@@ -189,6 +189,18 @@ class Documents extends Authentication{
     public function setId(int $id = 0)
     {
         $this->id = $id;
+    }
+
+    private $language_id;
+
+    public function getLanguageId()
+    {
+        return $this->language_id;
+    }
+
+    public function setLanguageId(int $language_id = 0)
+    {
+        $this->language_id = $language_id;
     }
 
 	/**
