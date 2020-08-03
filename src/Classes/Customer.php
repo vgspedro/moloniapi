@@ -18,7 +18,7 @@ class Customer extends Authentication{
 	/**
 	Customer array data structure
 	[
-		'customer_id' => 0, // int required ON UPDATE only $this->getCustomers()
+		'customer_id' => 0, // int required ON UPDATE only $this->getAll()
 		'vat' => '100200300', //string required
 		'number' => 'our client reference', // string (max 20) required
 		'name' => 'Name of fiscal number owner', //string required
@@ -37,21 +37,19 @@ class Customer extends Authentication{
 		'notes' => '',// string
 		'salesman_id' => 0, // int
 		'price_class_id' => 0 , // int
-		'maturity_date_id' => 0, // int required MaturityDates->getMaturityDates()
+		'maturity_date_id' => 0, // int required MaturityDates->getAll()
 		'payment_day' => 0, // int
 		'discount' => 0.0, // float
 		'credit_limit' => 0.0, // float,
 		'copies'=> [
-			'document_type_id' => 0, // int required DocumentType->getDocumentType()
+			'document_type_id' => 0, // int required DocumentType->getAll()
 			'copies' => 3, // int required
 		],
-		'payment_method_id' =>  0, // int required PaymentMethod->getPaymentMethod()
+		'payment_method_id' =>  0, // int required PaymentMethod->getAll()
 		'delivery_method_id' => 0, // int,
 		'field_notes' => '',// string
 	]
 	**/
-
-
 
 	private $id;
 

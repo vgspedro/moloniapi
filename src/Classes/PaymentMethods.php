@@ -82,7 +82,7 @@ class PaymentMethods extends Authentication{
 		return parent::curl(parent::getPath('insert'),[
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName(),
-			'is_numeric' => $this->getIsMumeric()
+			'is_numeric' => $this->getIsNumeric()
 		]);
 	}
 
@@ -110,7 +110,7 @@ class PaymentMethods extends Authentication{
 			'company_id' => parent::getCompanyId(),
 			'payment_method_id' => $this->getId(),
 			'name' => $this->getName(),
-			'is_numeric' => $this->getIsMumeric()
+			'is_numeric' => $this->getIsNumeric()
 		]);
 	}
 

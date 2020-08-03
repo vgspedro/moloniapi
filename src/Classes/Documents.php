@@ -198,7 +198,7 @@ class Documents extends Authentication{
         return $this->language_id;
     }
 
-    public function setLanguageId(int $language_id = 0)
+    public function setLanguageId(int $language_id = 1)
     {
         $this->language_id = $language_id;
     }

@@ -17,7 +17,7 @@ class DeliveryMethods extends Authentication{
 
 	/** DeliveryMethods array data structure
 	[
-		'delivery_method_id' => 0,//int required ON UPDATE only $this->getDeliveryMethods()
+		'delivery_method_id' => 0,//int required ON UPDATE only $this->getAll()
 		'name' => 'delivery name', //string required
 	]
 	*/
@@ -45,7 +45,6 @@ class DeliveryMethods extends Authentication{
     {
         $this->name = $name;
     }
-
 
 
 	/**
@@ -93,7 +92,7 @@ class DeliveryMethods extends Authentication{
 	**/
 	public function insert()
 	{
-		return parent::curl(parent::getPath('delete'), [
+		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 			'name' => $this->getName()
 		]);

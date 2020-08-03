@@ -33,6 +33,24 @@ class Taxes extends Authentication{
 
 	*/
 
+    const RED_ = 'RED';
+    const INT_ = 'INT';
+    const NOR_ = 'NOR';
+    const ISE_ = 'ISE';
+    const OUT_ = 'OUT';
+
+    private $value;
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setValue(int $value = 0)
+    {
+        $this->value = $value;
+    }
+
 	private $active_by_default;
 
     public function getActiveByDefault()
@@ -100,8 +118,13 @@ class Taxes extends Authentication{
         return $this->vat_type;
     }
 
-    public function setVatType(int $vat_type = 0)
+    public function setVatType(string $vat_type = self::NOR_)
     {
+
+        if (!in_array($vat_type, array(self::NOR_, self::RED_, self::INT_,self::ISE_,self::OUT_ ))) {
+            return('Invalid Vat Type');
+        }
+
         $this->vat_type = $vat_type;
     }
 
