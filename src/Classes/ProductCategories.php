@@ -85,7 +85,6 @@ class ProductCategories extends Authentication{
         $this->pos_enabled = $pos_enabled;
     }
 
-
 	/**
 	* List Product Categories in the Company 
 	* @return json 
