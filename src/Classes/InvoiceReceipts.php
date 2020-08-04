@@ -975,7 +975,6 @@ class InvoiceReceipts extends Authentication{
                 'warehouse_id' => $this->getProductsWarehouseId(), //int
                 'taxes' => $this->hasProductsTaxes(), //array            
             ],
-
 			'payments' => [ //array required
 				'payment_method_id' => $this->getPaymentMethodId(), // int required
 				'date' => $this->getPaymentDate(), // datetime required
@@ -983,8 +982,6 @@ class InvoiceReceipts extends Authentication{
 				'notes' => $this->getPaymentNotes(), // string
 
 			],
-
-
 			'exchange_currency_id' => $this->getExchangeCurrencyId(), //int
 			'exchange_rate' => $this->getExchangeRate(), //float 
 			'delivery_method_id' => $this->getDeliveryMethodId(),//int'
