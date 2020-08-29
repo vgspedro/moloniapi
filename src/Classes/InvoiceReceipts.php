@@ -3,6 +3,8 @@
 namespace VgsPedro\MoloniApi\Classes;
 
 use \VgsPedro\MoloniApi\Authentication;
+use \VgsPedro\MoloniApi\Classes\Product;
+use \VgsPedro\MoloniApi\Classes\Taxes;
 
 /**
 * A class for CRUD the Invoice Receipts requests
@@ -299,6 +301,10 @@ class InvoiceReceipts extends Authentication{
     {
         $this->products_product_id = $products_product_id;
     }
+
+
+
+
 
  	private $id;
 
@@ -842,6 +848,72 @@ class InvoiceReceipts extends Authentication{
         $this->payment_notes = $payment_notes;
     }
 
+    private $products;
+
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    public function setProducts(array $prods_id = [])
+    {
+        $products = [];
+
+        $p = new Product();
+
+        foreach($prods_id as $prod_id){     
+            $p->setCompanyId(parent::getCompanyId());
+            $p->setAccessToken(parent::getAccessToken());
+            $p->setUrl(parent::getUrl());
+            $p->setWithInvisible(0);
+            $p->setId($prod_id);
+            $products[] = $p->getById();
+        }
+        
+        $f = 0;
+        foreach($products as $el){
+            $pr[] = [
+                'product_id' => $el->product_id, // int required
+                'name' => $el->name, // string required
+                'summary' => $el->summary, // string
+                'qty' => 1, // float required
+                'price' => $el->price, // float required
+                'discount' => 0.0, // float
+                'deduction_id' => 0, //int
+                'order' => $f, //int
+                'origin_id' => 0, //int
+                'exemption_reason' => $el->exemption_reason ? $el->exemption_reason : 'M01' , // string required
+                'warehouse_id' => ($el->warehouses ? $el->warehouses[0]->warehouse_id : 0), //int
+                'taxes' => $el->taxes ? $el->taxes[0] : [], //array       
+            ];
+            $f++;
+        }
+        $this->products = $pr;
+    }
+
+    private $products_taxes;
+
+    public function getProductsTaxes()
+    {
+        return $this->products_taxes;
+    }
+
+
+    public function setProductsTaxes(array $taxes = [])
+    {
+        $t = [];      
+        
+        foreach ($taxes as $tax)
+            $t[] = [
+                'tax_id' => $this->getProductsTaxesTaxId(), //int required
+                'value' => $this->getProductsTaxesValue(), // float
+                'order' => $this->getProductsTaxesOrder(), //int
+                'cumulative' => $this->getProductsTaxesCumulative() //int
+            ];
+
+        $this->products = $p;
+
+    }
 
     //If the InvoiveReceipt has Associated Documents build the array to update or insert
 	private function hasAssociatedDocuments(){
@@ -853,18 +925,10 @@ class InvoiceReceipts extends Authentication{
 	 	:
 	 		[];
 	}
-    
+
     //If the InvoiveReceipt has ProductTaxes build the array to update or insert
-    private function hasProductSTaxes(){
-        return $this->getProductsTaxesTaxId() > 0 ?
-            [
-                'tax_id' =>  $this->getProductsTaxesTaxId(), //int required
-                'value' =>  $this->getProductsTaxesValue(), // float
-                'order' =>  $this->getProductsTaxesOrder(), //int
-                'cumulative' =>  $this->getProductsTaxesCumulative() //int
-            ]
-        :
-            [];
+    private function hasProductsTaxes(){
+        return $this->getProductsTaxes();
     }
 
 	/**
@@ -950,7 +1014,7 @@ class InvoiceReceipts extends Authentication{
         	'maturity_date_id' => $this->getMaturityDateId(), //int
         	'document_set_id' => $this->getDocumentSetId(), // int required
         	'customer_id' => $this->getCustomerId(), // int required
-			'alternate_address_id' => getAlternateAddressId(), // int
+			'alternate_address_id' => $this->getAlternateAddressId(), // int
 			'your_reference' => $this->getYourReference(), // string
     		'our_reference' => $this->getOurReference(), // string
     		'financial_discount' => $this->getFinancialDiscount(), // float
@@ -961,21 +1025,10 @@ class InvoiceReceipts extends Authentication{
 			'associated_documents' => $this->hasAssociatedDocuments(), // array
 			'related_documents_notes' => $this->getRelateDocumentsNotes(), // string
 
-            'products' => [ // array required
-                'product_id' => $this->getProductsProductId(), // int required
-                'name' => $this->getProductsName(), // string required
-                'summary' => $this->getProductsSummary(), // string
-                'qty' => $this->getProductsQty(), // float required
-                'price' => $this->getProductsPrice(), // float required
-                'discount' => $this->getProductsDiscount(), // float
-                'deduction_id' => $this->getProductsDeductionId(), //int
-                'order' => $this->getProductsOrder(), //int
-                'origin_id' => $this->getProductsOriginId(), //int
-                'exemption_reason' => $this->getProductsExemptionReason(), // string
-                'warehouse_id' => $this->getProductsWarehouseId(), //int
-                'taxes' => $this->hasProductsTaxes(), //array            
-            ],
-			'payments' => [ //array required
+            
+            'products' => $this->getProducts(), // array required
+			
+            'payments' => [ //array required
 				'payment_method_id' => $this->getPaymentMethodId(), // int required
 				'date' => $this->getPaymentDate(), // datetime required
 				'value' => $this->getPaymentValue(), // float required
@@ -986,7 +1039,7 @@ class InvoiceReceipts extends Authentication{
 			'exchange_rate' => $this->getExchangeRate(), //float 
 			'delivery_method_id' => $this->getDeliveryMethodId(),//int'
 			'delivery_datetime' => $this->getDeliveryDatetime(),//datetime'
-			'delivery_departure_address' => $this->getDeliveryDepartureAdress(),// string
+			'delivery_departure_address' => $this->getDeliveryDepartureAddress(),// string
 			'delivery_departure_city' => $this->getDeliveryDepartureCity(), //string
 			'delivery_departure_zip_code' => $this->getDeliveryDepartureZipCode(), //string
 			'delivery_departure_country' => $this->getDeliveryDepartureCountry(), //string
@@ -1019,7 +1072,7 @@ class InvoiceReceipts extends Authentication{
         	'maturity_date_id' => $this->getMaturityDateId(), //int
         	'document_set_id' => $this->getDocumentSetId(), // int required
         	'customer_id' => $this->getCustomerId(), // int required
-			'alternate_address_id' => getAlternateAddressId(), // int
+			'alternate_address_id' => $this->getAlternateAddressId(), // int
 			'your_reference' => $this->getYourReference(), // string
     		'our_reference' => $this->getOurReference(), // string
     		'financial_discount' => $this->getFinancialDiscount(), // float
@@ -1030,22 +1083,9 @@ class InvoiceReceipts extends Authentication{
 			'associated_documents' => $this->hasAssociatedDocuments(), // array
 			'related_documents_notes' => $this->getRelateDocumentsNotes(), // string
 
-            'products' => [ // array required
-                'product_id' => $this->getProductsProductId(), // int required
-                'name' => $this->getProductsName(), // string required
-                'summary' => $this->getProductsSummary(), // string
-                'qty' => $this->getProductsQty(), // float required
-                'price' => $this->getProductsPrice(), // float required
-                'discount' => $this->getProductsDiscount(), // float
-                'deduction_id' => $this->getProductsDeductionId(), //int
-                'order' => $this->getProductsOrder(), //int
-                'origin_id' => $this->getProductsOriginId(), //int
-                'exemption_reason' => $this->getProductsExemptionReason(), // string
-                'warehouse_id' => $this->getProductsWarehouseId(), //int
-                'taxes' => $this->hasProductsTaxes(), //array
-            ],
-
-			'payments' => [ //array required
+            'products' => $this->getProducts(), // array required
+			
+            'payments' => [ //array required
 				'payment_method_id' => $this->getPaymentMethodId(), // int required
 				'date' => $this->getPaymentDate(), // datetime required
 				'value' => $this->getPaymentValue(), // float required
@@ -1056,7 +1096,7 @@ class InvoiceReceipts extends Authentication{
 			'exchange_rate' => $this->getExchangeRate(), //float 
 			'delivery_method_id' => $this->getDeliveryMethodId(),//int'
 			'delivery_datetime' => $this->getDeliveryDatetime(),//datetime'
-			'delivery_departure_address' => $this->getDeliveryDepartureAdress(),// string
+			'delivery_departure_address' => $this->getDeliveryDepartureAddress(),// string
 			'delivery_departure_city' => $this->getDeliveryDepartureCity(), //string
 			'delivery_departure_zip_code' => $this->getDeliveryDepartureZipCode(), //string
 			'delivery_departure_country' => $this->getDeliveryDepartureCountry(), //string

@@ -121,9 +121,8 @@ class Taxes extends Authentication{
     public function setVatType(string $vat_type = self::NOR_)
     {
 
-        if (!in_array($vat_type, array(self::NOR_, self::RED_, self::INT_,self::ISE_,self::OUT_ ))) {
+        if (!in_array($vat_type, array(self::NOR_, self::RED_, self::INT_,self::ISE_,self::OUT_ )))
             return('Invalid Vat Type');
-        }
 
         $this->vat_type = $vat_type;
     }

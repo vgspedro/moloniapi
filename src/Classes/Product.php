@@ -375,15 +375,19 @@ class Product extends Authentication{
 
     //If the product has Taxes build the array to update or insert
 	private function hasTaxes(){
-		return $this->getTaxesTaxId() > 0 && $this->getTaxesValue() > 0 && $this->getTaxesOrder() && $this->getTaxesCumulative() > 0 ?
-			[
+		
+        $t = [];
+        
+        if($this->getTaxesTaxId() > 0 && $this->getTaxesValue() > 0 && $this->getTaxesOrder() && $this->getTaxesCumulative() > 0)
+            $t[] = [
 				'tax_id' => $this->getTaxesTaxId(),
             	'value' => $this->getTaxesValue(),
             	'order' => $this->getTaxesOrder(),
             	'cumulative' => $this->getTaxesCumulative()
-			]
-		:	
-			[];
+			];
+
+        return $t;
+
 	} 
 
     //If the product has Suppliers build the array to update or insert
@@ -494,6 +498,7 @@ class Product extends Authentication{
 	**/
 	public function insert()
 	{
+
 		return parent::curl(parent::getPath('insert'), [
 			'company_id' => parent::getCompanyId(),
 		    'category_id' => $this->getCategoryId(),
@@ -540,7 +545,7 @@ class Product extends Authentication{
 		    'pos_favorite' => $this->getPosFavorite(),
 		    'at_product_category' => $this->getAtProductCategory(),
 		    'exemption_reason' => $this->getExemptionReason(),
-			'taxes' => $this->hasTaxes(),
+			'taxes' => $this->getTaxes(),
 		    'suppliers' => $this->hasSuppliers(),  
 		    'properties' => $this->hasProperties()
 		]);

@@ -89,8 +89,6 @@ class Authentication
         $this->client_secret = $client_secret;
     }
 
-
-
     /**
     *Get the current path for request
     *@param string action 
@@ -115,6 +113,7 @@ class Authentication
 
 	protected function curl(string $url, $post = null)
 	{
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -127,33 +126,17 @@ class Authentication
 
 		// Check if any error occurred
 		if (curl_errno($ch)){
-
 			$err = curl_error($ch);
 			curl_close($ch);
-
-		   	return [
-		   		'status' => 0,
-		   		'data' => $err,
-		   	];
+		   	return $err;
 		}
 
 		$result = curl_exec($ch);
 		curl_close($ch);
  		
  		$r = json_decode($result);
-
 		//Check if user validation is wrong
-		if (isset($r->error))
-		 	return [
-	  			'status' => 0,
-	        	'data' => $r,
-	    ];
-    
-        return [
-            'status' => 1,
-            'data' => $r
-        ];
-
+		return isset($r->error) ? $r->error : $r;
     }
 
 
