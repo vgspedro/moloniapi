@@ -7,7 +7,7 @@
 
 This library is installed via [Composer](http://getcomposer.org/).
 
-composer require vgspedro/moloniapi:dev-master
+composer require vgspedro/moloniapi
 
 ## Symfony framework
 
