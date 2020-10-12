@@ -81,6 +81,8 @@ use \VgsPedro\MoloniApi\Classes\ProductCategories;
 use \VgsPedro\MoloniApi\Classes\Taxes;
 use \VgsPedro\MoloniApi\Classes\Documents;
 use \VgsPedro\MoloniApi\Classes\InvoiceReceipts;
+use \VgsPedro\MoloniApi\Classes\Suppliers;
+use \VgsPedro\MoloniApi\Classes\DocumentSets;
 
 class InvoiceMoloni
 {
@@ -1375,7 +1377,7 @@ class InvoiceMoloni
 			$ir->setCompanyId($this->credencials['company_id']);
 			$ir->setAccessToken($this->credencials['token']['access_token']);
 			$ir->setValue($p['value']);
-			$ir->setId($p['$id']);
+			$ir->setId($p['id']);
 
 			return $ir->generateMBReference();
 		}
@@ -1452,6 +1454,103 @@ class InvoiceMoloni
 		else
 			return false;
 	}
+
+
+	#####
+	## DOCUMENTSETS METHODS
+	#####
+	/**
+	* List DocumentSets
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=274
+	**/
+	public function getDocumentSets()
+	{
+		if($this->start()){
+			$ds = new DocumentSets();
+			$ds->setCompanyId($this->credencials['company_id']);
+			$ds->setAccessToken($this->credencials['token']['access_token']);
+			$ds->setUrl($this->credencials['url']);
+
+			return $d->getAll();
+		}
+		else
+			return false;
+	}
+
+
+
+	/**
+	* Update DocumentSets in the Company 
+	* @param array $d DocumentSets required
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=276
+	**/
+	public function updateDocumentSets(array $d = [])
+	{
+		if($this->start()){
+			$ds = new DocumentSets();
+			$ds->setCompanyId($this->credencials['company_id']);
+			$ds->setAccessToken($this->credencials['token']['access_token']);
+			$ds->setUrl($this->credencials['url']);
+			$ds->setName($d['name']);// string required
+		    $ds->getCashVatSchemeIndicator($d['cash_vat_scheme_indicator']);
+            $ds->getTemplateId($d['template_id']);
+          	$ds->getActiveByDefault($d['active_by_default']);
+			$ds->setId($p['id']); // int required
+
+			return $ds->update();
+		}
+		else
+			return false;
+	}
+
+	/**
+	* Insert DocumentSets in the Company 
+	* @param array $d DocumentSets required
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=275
+	**/
+	public function insertDocumentSets(array $d = [])
+	{
+		if($this->start()){
+			$ds = new DocumentSets();
+			$ds->setCompanyId($this->credencials['company_id']);
+			$ds->setAccessToken($this->credencials['token']['access_token']);
+			$ds->setUrl($this->credencials['url']);
+			$ds->setName($d['name']);// string required
+		    $ds->getCashVatSchemeIndicator($d['cash_vat_scheme_indicator']);
+            $ds->getTemplateId($d['template_id']);
+          	$ds->getActiveByDefault($d['active_by_default']);
+
+			return $ds->insert();
+		}
+		else
+			return false;
+	}
+
+	/**
+	* Delete DocumentSets in the Company 
+	* @param int $id DocumentSets required
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=277
+	**/
+	public function deleteDocumentSets(int $id = 0)
+	{
+		if($this->start()){
+			$ds = new DocumentSets();
+			$ds->setCompanyId($this->credencials['company_id']);
+			$ds->setAccessToken($this->credencials['token']['access_token']);
+			$ds->setUrl($this->credencials['url']);
+			$ds->setId($id);
+
+			return $ds->delete();
+		}
+		else
+			return false;
+	}
+
+
 
 }
 
