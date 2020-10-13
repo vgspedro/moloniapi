@@ -128,15 +128,22 @@ class Authentication
 		if (curl_errno($ch)){
 			$err = curl_error($ch);
 			curl_close($ch);
-		   	return $err;
+		   	return[
+                'status' => 0,
+                'data' => $err
+            ];
 		}
 
 		$result = curl_exec($ch);
 		curl_close($ch);
  		
  		$r = json_decode($result);
-		//Check if user validation is wrong
-		return isset($r->error) ? $r->error : $r;
+		return 
+        [
+            'status' => 1,
+            'data' => $r
+        ];
+
     }
 
 
