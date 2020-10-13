@@ -83,6 +83,7 @@ use \VgsPedro\MoloniApi\Classes\Documents;
 use \VgsPedro\MoloniApi\Classes\InvoiceReceipts;
 use \VgsPedro\MoloniApi\Classes\Suppliers;
 use \VgsPedro\MoloniApi\Classes\DocumentSets;
+use \VgsPedro\MoloniApi\Classes\IdentificationTemplates;
 
 class InvoiceMoloni
 {
@@ -1550,7 +1551,118 @@ class InvoiceMoloni
 			return false;
 	}
 
+	#####
+	## INDENTIFICATIONTEMPLATES METHODS
+	#####
+	/**
+	* List IdentificationTemplates
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=270
+	**/
+	public function getIdentificationTemplates()
+	{
+		if($this->start()){
+			$it = new IdentificationTemplates();
+			$it->setCompanyId($this->credencials['company_id']);
+			$it->setAccessToken($this->credencials['token']['access_token']);
+			$it->setUrl($this->credencials['url']);
 
+			return $d->getAll();
+		}
+		else
+			return false;
+	}
+
+
+	/**
+	* Update IdentificationTemplates in the Company 
+	* @param array $d IdentificationTemplates required
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=272
+	**/
+	public function updateIdentificationTemplates(array $d = [])
+	{
+		if($this->start()){
+			$it = new IdentificationTemplates();
+			$it->setCompanyId($this->credencials['company_id']);
+			$it->setAccessToken($this->credencials['token']['access_token']);
+			$it->setUrl($this->credencials['url']);
+			$it->setName($d['name']);
+			$it->getBusinessName($d['business_name']);
+            $it->getEmail($d['email']);
+            $it->getAddress($d['address']);
+            $it->getCity($d['city']);
+            $it->getZipCode($d['zip_code']);
+            $it->getCountryId($d['country_id']);
+            $it->getPhone($d['phone']);
+            $it->getFax($d['fax']);
+            $it->getWebsite($d['website']);
+            $it->getNotes($d['notes']);
+            $it->getDocumentsFootnote($d['documents_footnote']);
+            $it->getEmailSenderName($d['email_sender_name']);
+            $it->getEmailSenderAddress($d['email_sender_address']);
+            $it->setId($d['template_id']);
+
+			return $it->update();
+		}
+		else
+			return false;
+	}
+
+	/**
+	* Insert IdentificationTemplates in the Company 
+	* @param array $d IdentificationTemplates required
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=271
+	**/
+	public function insertIdentificationTemplates(array $d = [])
+	{
+		if($this->start()){
+			$it = new IdentificationTemplates();
+			$it->setCompanyId($this->credencials['company_id']);
+			$it->setAccessToken($this->credencials['token']['access_token']);
+			$it->setUrl($this->credencials['url']);
+			$it->setName($d['name']);
+			$it->getBusinessName($d['business_name']);
+            $it->getEmail($d['email']);
+            $it->getAddress($d['address']);
+            $it->getCity($d['city']);
+            $it->getZipCode($d['zip_code']);
+            $it->getCountryId($d['country_id']);
+            $it->getPhone($d['phone']);
+            $it->getFax($d['fax']);
+            $it->getWebsite($d['website']);
+            $it->getNotes($d['notes']);
+            $it->getDocumentsFootnote($d['documents_footnote']);
+            $it->getEmailSenderName($d['email_sender_name']);
+            $it->getEmailSenderAddress($d['email_sender_address']);
+		 
+			return $it->insert();
+		}
+		else
+			return false;
+	}
+
+	/**
+	* Delete IdentificationTemplates in the Company 
+	* @param int $id IdentificationTemplates required
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=273
+	**/
+	public function deleteIdentificationTemplates(int $id = 0)
+	{
+		if($this->start()){
+			$it = new IdentificationTemplates();
+			$it->setCompanyId($this->credencials['company_id']);
+			$it->setAccessToken($this->credencials['token']['access_token']);
+			$it->setUrl($this->credencials['url']);
+			$it->setId($id);
+
+			return $it->delete();
+		}
+		else
+			return false;
+	}
 
 }
 
