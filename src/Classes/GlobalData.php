@@ -69,4 +69,16 @@ class GlobalData extends Authentication{
 		return parent::curl($url, ['country_id' => $this->getCountryId()]);
 	}
 
+	/**
+	* Get list of Tax Exemptions available in Moloni
+	* @return json
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=261
+	**/
+	public function getTaxExemptions()
+	{
+		$url = parent::getUrl().'/taxExemptions'.static::ACCESS.''.parent::getAccessToken();
+		return parent::curl($url);
+	}
+
+
 }

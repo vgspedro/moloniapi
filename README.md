@@ -341,6 +341,29 @@ class InvoiceMoloni
 			return false;
 	}
 
+	/**
+	* List Tax Exemptions available in Moloni
+	* @return json 
+	* https://www.moloni.pt/dev/index.php?action=getApiDocSub&s_id=261
+	**/
+	public function getTaxExemptions()
+	{
+		if($this->start()){
+			$g = new GlobalData();
+			$g->setAccessToken($this->credencials['token']['access_token']);
+			$g->setUrl($this->credencials['url']);
+
+			return $g->getTaxExemptions();
+		}
+		else
+			return false;
+	}
+
+
+
+
+
+
 	#####
 	## CUSTOMERS METHODS
 	#####
