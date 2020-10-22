@@ -19,10 +19,12 @@ class ProductStocks extends Authentication{
 	Product Stocks array data structure
 
     $product_stocks = [
+        'product_stock_id' => 0 // int required ON UPDATE ONLY
     	'product_id' => 0, //int required
         'movement_date' => ' yyyy-mm-dd hh:mm:mm', //date  required
         'qty' => 1, // int required
         'warehouse_id' => 1, // int
+        'document_id_id' => 1, // int
         'notes' => 'comentário', //string
     ];
 	*/
@@ -75,6 +77,18 @@ class ProductStocks extends Authentication{
         $this->warehouse_id = $warehouse_id;
     }
 
+    private $document_id;
+
+    public function getDocumentId()
+    {
+        return $this->document_id;
+    }
+
+    public function setDocumentId(int $document_id = 0)
+    {
+        $this->document_id = $document_id;
+    }
+
     public function getId()
     {
         return $this->id;
@@ -122,6 +136,7 @@ class ProductStocks extends Authentication{
             'movement_date' => $this->getMovementDate(),
             'qty' => $this->getQty(),
             'warehouse_id' => $this->getWarehouseId(),
+            'document_id' => $this->getDocumentId(),
             'notes' =>$this->getNotes()
 		]);
 
@@ -140,6 +155,7 @@ class ProductStocks extends Authentication{
             'product_id' => $this->getProductId(),
             'movement_date' => $this->getMovementDate(),
             'qty' => $this->getQty(),
+            'document_id' => $this->getDocumentId(),
             'warehouse_id' => $this->getWarehouseId(),
             'notes' =>$this->getNotes()
 		]);
@@ -155,7 +171,7 @@ class ProductStocks extends Authentication{
 	{
 		return parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(),
-			'tax_id' => $this->getId()
+			'product_stock_id' => $this->getId()
 		]);
 	}
 
