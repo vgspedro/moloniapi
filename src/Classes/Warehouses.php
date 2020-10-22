@@ -52,7 +52,7 @@ class Warehouses  extends Authentication{
         return $this->title;
     }
 
-    public function setTitle(string $title = 0)
+    public function setTitle(string $title = null)
     {
         $this->title = $title;
     }
