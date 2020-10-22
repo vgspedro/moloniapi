@@ -19,7 +19,7 @@ class Warehouses  extends Authentication{
 	Warehouses array data structure
 	[
 		'warehouse_id' => 0, // int required ON UPDATE only $this->getAll()
-		'title' => 1, //int required
+		'title' => 'Armazem x', //string required
 		'is_default' => 1, //int
 		'code' => 'cod', // string required,
         'address' => 'Fiscal Address', // string required
@@ -52,7 +52,7 @@ class Warehouses  extends Authentication{
         return $this->title;
     }
 
-    public function setTitle(int $title = 0)
+    public function setTitle(string $title = 0)
     {
         $this->title = $title;
     }

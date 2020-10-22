@@ -24,7 +24,7 @@ class ProductStocks extends Authentication{
         'movement_date' => ' yyyy-mm-dd hh:mm:mm', //date  required
         'qty' => 1, // int required
         'warehouse_id' => 1, // int
-        'document_id_id' => 1, // int
+        'document_id' => 1, // int
         'notes' => 'comentário', //string
     ];
 	*/
