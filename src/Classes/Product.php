@@ -46,9 +46,37 @@ class Product extends Authentication{
         'properties' => [ //array not required 
             'property_id' => 0,// int required
             'value' => '',// string required
+        ],
+        'warehouses' => [ //array not required
+            'warehouse_id' => 0,// int required
+            'stock' => 0.0 // float required
         ]
     ];
 */
+
+
+    private $warehouses_warehouse_id;
+
+    public function getWarehousesWarehouseId()
+    {
+        return $this->warehouses_warehouse_id;
+    }
+    public function setWarehousesWarehouseId(int $warehouses_warehouse_id = 0)
+    {
+        $this->warehouses_warehouse_id = $warehouses_warehouse_id;
+    }
+
+    private $warehouses_warehouse_stock;
+
+    public function getWarehousesWarehouseStock()
+    {
+        return $this->warehouses_warehouse_stock;
+    }
+
+    public function setWarehousesWarehouseStock(float $warehouses_warehouse_stock = 0.0)
+    {
+        $this->warehouses_warehouse_stock = $warehouses_warehouse_stock;
+    }
 
     private $id;
 
@@ -375,19 +403,16 @@ class Product extends Authentication{
 
     //If the product has Taxes build the array to update or insert
 	private function hasTaxes(){
-		
-        $t = [];
-        
-        if($this->getTaxesTaxId() > 0 && $this->getTaxesValue() > 0 && $this->getTaxesOrder() && $this->getTaxesCumulative() > 0)
-            $t[] = [
+
+        return $this->getTaxesTaxId() > 0 ?
+            [
 				'tax_id' => $this->getTaxesTaxId(),
             	'value' => $this->getTaxesValue(),
             	'order' => $this->getTaxesOrder(),
             	'cumulative' => $this->getTaxesCumulative()
-			];
-
-        return $t;
-
+			]
+        :
+            null;
 	} 
 
     //If the product has Suppliers build the array to update or insert
@@ -400,8 +425,21 @@ class Product extends Authentication{
             	'referenceint' => $this->getSuppliersReferenceInt()
 			]
 		:	
-			[];
-	} 
+			null;
+	}
+
+    //If the product has Warehouses, build the array to update or insert
+    private function hasWarehouses(){
+        
+        return $this->getWarehousesWarehouseId() > 0 ?
+            [
+                'warehouse_id' => $this->getWarehousesWarehouseId(),
+                'stock' => $this->getWarehousesWarehouseStock(),
+            ]
+        :
+            null;
+    } 
+
 
     //If the product has Properties build the array to update or insert
 	private function hasProperties(){
@@ -411,7 +449,7 @@ class Product extends Authentication{
    			 'value' =>  $this->getPropertiesValue()
 			]
 		:	
-			[];
+			null;
 	} 
 
 	/**
@@ -499,7 +537,7 @@ class Product extends Authentication{
 	public function insert()
 	{
 
-		return parent::curl(parent::getPath('insert'), [
+		return parent::curl(parent::getPath('insert'),[
 			'company_id' => parent::getCompanyId(),
 		    'category_id' => $this->getCategoryId(),
 		    'type' => $this->getType(),
@@ -517,8 +555,10 @@ class Product extends Authentication{
 		    'exemption_reason' => $this->getExemptionReason(),
 		    'taxes' => $this->hasTaxes(),
 		    'suppliers' => $this->hasSuppliers(),  
-		    'properties' => $this->hasProperties()
+		    'properties' => $this->hasProperties(),
+            'warehouses' => $this->hasWarehouses()
 		]);
+
 	}
 
 	/**
@@ -528,7 +568,7 @@ class Product extends Authentication{
 	**/
 	public function update()
 	{
-		return parent::curl(parent::getPath('update'), [
+		return parent::curl(parent::getPath('update'),[
 			'company_id' => parent::getCompanyId(),
 			'category_id' => $this->getCategoryId(),
 			'product_id' => $this->getId(),
@@ -545,12 +585,12 @@ class Product extends Authentication{
 		    'pos_favorite' => $this->getPosFavorite(),
 		    'at_product_category' => $this->getAtProductCategory(),
 		    'exemption_reason' => $this->getExemptionReason(),
-			'taxes' => $this->getTaxes(),
+			'taxes' => $this->hasTaxes(),
 		    'suppliers' => $this->hasSuppliers(),  
-		    'properties' => $this->hasProperties()
+		    'properties' => $this->hasProperties(),
+            'warehouses' => $this->hasWarehouses()
 		]);
-		
-	}
+    }
 
 	/**
 	* Delete Product by Id
