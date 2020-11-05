@@ -404,7 +404,8 @@ class Product extends Authentication{
     //If the product has Taxes build the array to update or insert
 	private function hasTaxes(){
 
-        return $this->getTaxesTaxId() > 0 ?
+    
+        $r[] = $this->getTaxesTaxId() > 0 ?
             [
 				'tax_id' => $this->getTaxesTaxId(),
             	'value' => $this->getTaxesValue(),
@@ -412,44 +413,53 @@ class Product extends Authentication{
             	'cumulative' => $this->getTaxesCumulative()
 			]
         :
-            null;
+        [];
+
+        return $r;
 	} 
 
     //If the product has Suppliers build the array to update or insert
 	private function hasSuppliers(){
 		
-		return $this->getSuppliersSupplierId() > 0 ?
+		$r[] = $this->getSuppliersSupplierId() > 0 ?
 			[
 				'supplier_id' => $this->getSuppliersSupplierId(),
             	'cost_price' => $this->getSuppliersCostPrice(),
             	'referenceint' => $this->getSuppliersReferenceInt()
 			]
 		:	
-			null;
-	}
+		[];
+	
+        return $r;
+    }
 
     //If the product has Warehouses, build the array to update or insert
     private function hasWarehouses(){
         
-        return $this->getWarehousesWarehouseId() > 0 ?
+        $r[] = $this->getWarehousesWarehouseId() > 0 ?
             [
                 'warehouse_id' => $this->getWarehousesWarehouseId(),
                 'stock' => $this->getWarehousesWarehouseStock(),
             ]
         :
-            null;
+        [];
+    
+        return $r;
     } 
 
 
     //If the product has Properties build the array to update or insert
 	private function hasProperties(){
-		return $this->getPropertiesPropertyId() > 0 ?
+		
+        $r[] = $this->getPropertiesPropertyId() > 0 ?
 			[
    			'property_id' => $this->getPropertiesPropertyId(),
    			 'value' =>  $this->getPropertiesValue()
 			]
 		:	
-			null;
+        [];
+    
+        return $r;
 	} 
 
 	/**
