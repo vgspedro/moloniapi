@@ -204,8 +204,8 @@ class Documents extends Authentication{
     }
 
 	/**
-	* List All DocumentTypes 
-	* @return json 
+	* List All DocumentTypes
+	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=226
 	**/
 	public function getAllDocumentTypes()
@@ -217,8 +217,8 @@ class Documents extends Authentication{
 	}
 
 	/**
-	* List DocumentTypes of Company 
-	* @return json 
+	* List DocumentTypes of Company
+	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=227
 	**/
 	public function getAll()
@@ -241,8 +241,8 @@ class Documents extends Authentication{
 	}
 
 	/**
-	* Get DocumentType by search of Company 
-	* @return json 
+	* Get DocumentType by search of Company
+	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=228
 	**/
 	public function getById()
@@ -265,9 +265,29 @@ class Documents extends Authentication{
 		]);
 	}
 
-	/**
-	* Get PDF link of DocumentType 
-	* @return json 
+
+    /**
+    * Get PDF link of DocumentType
+    ++++++++++++++++++++++++++
+    Obter o link directo para descarregar o ficheiro PDF de 1 documento
+    Existe uma forma não documentada de obter o link directo para fazer download do documento que suporta 5 parâmetros, a partir da informação do getPDFLink
+
+    Quando chama o getPDFLink obtem a seguinte informação:
+    "url": "https://www.moloni.com/downloads/?h=b75b2d99c08c56480da0c5dff4900b4a&d=189279574";
+
+    Aqui vai retirar 2 parâmetros que necessita:
+    h: hash
+    d: documente id
+
+    A partir destes 2 dados tem que construir a seguinte string/url que depois pode usar para criar o link directo:
+    https://www.moloni.com/downloads/index.php?action=getDownload&h=b75b2d99c08c56480da0c5dff4900b4a&d=189279574&e=teste@moloni.com&i=1&t=n
+
+    Que leva 5 parâmetros:
+    h: mesma hash que obtem acima
+    d: mesmo document_id que obtém acima
+    e: endereço de e-mail que deseja associar ao log que fica registado/associado ao documento de quem fez o download (Fica sempre associado um e-mail do download e normalmente é o do cliente para quem é enviado o documento)
+    i: idioma em que quer o documento (1: PT, 2: EN, 3: ES)"
+	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=278
 	**/
 	public function getPDFLink()
