@@ -92,12 +92,21 @@ class InvoiceReceipts extends Authentication{
 					'cumulative' => 0, // int
 				]
 			],
+<<<<<<< HEAD
 
 
 
         ],
 
 
+=======
+            
+          
+        
+        ],
+
+	
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
 		'exchange_currency_id' => 0, //  int
 		'exchange_rate' => 0.0, //  float
 		'delivery_method_id' => 0, //  int
@@ -116,7 +125,11 @@ class InvoiceReceipts extends Authentication{
 		'notes' => '', //  string
 		'status' => '', //  int
 		'generate_mb_reference' => '', // int
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
         //NOT DONE END
 
 	]
@@ -654,6 +667,7 @@ class InvoiceReceipts extends Authentication{
     }
 
     private function hasProducts(){
+<<<<<<< HEAD
         $r = [];
         $t = [];
 
@@ -661,6 +675,15 @@ class InvoiceReceipts extends Authentication{
 
         foreach ($this->getProducts() as $prod){
 
+=======
+        $r = [];    
+        $t = [];
+        
+        $counter = 0;
+        
+        foreach ($this->getProducts() as $prod){
+        
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
             $r[] = [
                 'product_id' => $prod['product_id'], // int required
                 'name' => $prod['name'], // string required
@@ -672,17 +695,29 @@ class InvoiceReceipts extends Authentication{
                 //'origin_id' => $this->getProductsOriginId(), //int
                 'exemption_reason' => $prod['exemption_reason'], // string
                 //'warehouse_id' => $this->getProductsWarehouseId(), //int
+<<<<<<< HEAD
                 'taxes' => $prod['taxes']
                 /*[[//array
+=======
+                'taxes' => [//array
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
                     'tax_id' => $prod['taxes']['tax_id'], //int required
                     'value' => $prod['taxes']['value'], // float
                     'order' => $counter+1, //int
                     'cumulative' => $prod['taxes']['cumulative'], //int
+<<<<<<< HEAD
                 ]]*/
             ];
         $counter ++;
         }
 
+=======
+                ]
+            ];
+        $counter ++;
+        }
+        
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
         return $r;
     }
 
@@ -701,8 +736,13 @@ class InvoiceReceipts extends Authentication{
 
 
 /**
+<<<<<<< HEAD
     * Create InvoiceReceipts in the Company
     * @return json
+=======
+    * Create InvoiceReceipts in the Company 
+    * @return json 
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=376
     **/
     public function insert()
@@ -717,8 +757,13 @@ class InvoiceReceipts extends Authentication{
             'your_reference' => $this->getYourReference(), // string
             'our_reference' => $this->getOurReference(), // string
             'products' => $this->hasProducts(), // array required
+<<<<<<< HEAD
             'payments' => $this->hasPayments(),//array required
             'status' => $this->getStatus()// int
+=======
+            'payments' => $this->hasPayments()//array required
+
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
             /*
             'financial_discount' => $this->getFinancialDiscount(), // float
             'eac_id' => $this->getEacId(), // int
@@ -729,7 +774,11 @@ class InvoiceReceipts extends Authentication{
             'related_documents_notes' => $this->getRelateDocumentsNotes(), // string
             'alternate_address_id' => $this->getAlternateAddressId(), // int
             'exchange_currency_id' => $this->getExchangeCurrencyId(), //int
+<<<<<<< HEAD
             'exchange_rate' => $this->getExchangeRate(), //float
+=======
+            'exchange_rate' => $this->getExchangeRate(), //float 
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
             'delivery_method_id' => $this->getDeliveryMethodId(),//int'
             'delivery_datetime' => $this->getDeliveryDatetime(),//datetime'
             'delivery_departure_address' => $this->getDeliveryDepartureAddress(),// string
@@ -823,7 +872,11 @@ class InvoiceReceipts extends Authentication{
 		]);
 	}
 
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
 	/**
 	* Update InvoiceReceipts by Id
 	* @return json

@@ -42,20 +42,81 @@ class InvoicingController extends AbstractController
       return $this->render('admin/payment/native.html', [
       	
 		//Call the methods from the Service $moloni;
+   		
+   		'moloni' => [
+                'moloni_get_product_categories' => $moloni->getProductCategories(0), //ok
+                'moloni_get_document_sets' => $moloni->getDocumentSets(),
+                'moloni_get_customers' => $moloni->getCustomers(),
+                'moloni_get_payments' => $moloni->getPaymentMethods(),
+                'moloni_get_products' => $moloni->getProducts(3137658), // ok
+                'moloni_get_taxes' => $moloni->getTaxes(),
+                'moloni_get_maturity_dates' => $moloni->getMaturityDates(), //ok
+                'moloni_doc' => $moloni->getInvoiceReceipt($this->ir_id()),
+                //'moloni_set_ir' => $moloni->setInvoiceReceipt($this->ir()), //ok
+            ],
 
-      	'moloni' => [
-      		'moloni_get_taxes' => $moloni->getTaxes(),
-      		'moloni_set_taxes' => $moloni->setTax($tax),
-      		'moloni_update_taxes' => $moloni->updateTax($tax_up),
-      		'moloni_delete_tax' => $moloni->deleteTax(2000939),
-      		'moloni_get_countries' => $moloni->getCountries(),
-      		'moloni_get_languages' => $moloni->getLanguages(),
-      		'moloni_get_currencies' => $moloni->getCurrencies(),
-      		'moloni_get_fiscal_zones' => $moloni->getFiscalZones(1)
-            ]
         ]);
     }
 }
+
+
+ private function ir(){ 
+        
+        $products[] = [ // array required
+            'product_id' => 67197245, // int required
+            'name' => 'Café Curto', // string required
+            'summary' => 'Café Curto', // string
+            'qty' => 1, // float required
+            'price' =>  0.80, // float required
+            'discount' => 0.0, // float
+            'exemption_reason' => 'M99', // string
+            'taxes' => [//array
+                'tax_id' => 2072430, //int required
+                'value' => 0.0, // float
+                'order' => 0, //int
+                'cumulative' => 0, //int
+            ]          
+        ];
+
+        $products[] = [ // array required
+            'product_id' => 67197248, // int required
+            'name' => 'Café Longo', // string required
+            'summary' => 'Café Longo', // string
+            'qty' => 1, // float required
+            'price' =>  1.20, // float required
+            'discount' => 0.0, // float
+            'exemption_reason' => 'M99', // string
+            'taxes' => [//array
+                'tax_id' => 2072430, //int required
+                'value' => 0.0, // float
+                'order' => 0, //int
+                'cumulative' => 0, //int
+            ]          
+        ];
+
+        $payments[] = [ //array required
+            'payment_method_id' => 1067724, // int required
+            'date' => '2020-11-11 19:18:00', // datetime required
+            'value' => 2.00, // float required
+            'notes' => '' // string
+        ];
+
+
+        return [
+            'date' => '2020-11-11', // date required
+            'expiration_date' => '2020-11-11', // date required
+            'maturity_date_id' => 969687,// int
+            'document_set_id' => 332328, // int required the document
+            'customer_id' => 35347396, // int required
+            'our_reference string' => '', // string
+            'your_reference string' => 0, // string
+            'products' => $products,
+            'payments' => $payments,
+            'status' => 0
+        ];
+    }
+    
+
 
 ```
 
@@ -1418,19 +1479,29 @@ class InvoiceMoloni
 	**/
 	public function setInvoiceReceipt(array $p = [])
 	{
-		if($this->start()){
-			$ir = new InvoiceReceipt();
-			$ir->setCompanyId($this->credencials['company_id']);
-			$ir->setAccessToken($this->credencials['token']['access_token']);
-			$ir->setUrl($this->credencials['url']);
-			$ir->setName($p['name']);// string required
-			$ir->setShortName($p['short_name']);// string required
 
+		if($this->start()){
+			$ir = new InvoiceReceipts();
+			$ir->setCompanyId($this->credencials['company_id']); //required int
+			$ir->setAccessToken($this->credencials['token']['access_token']); //required 
+			$ir->setUrl($this->credencials['url']);
+			$ir->setDate($p['date']); // date required
+        	$ir->setExpirationDate($p['expiration_date']); // date required
+        	$ir->setMaturityDateId(isset($p['maturity_date_id']) ? $p['maturity_date_id'] : 0 ); //int
+        	$ir->setDocumentSetId($p['document_set_id']); // int required
+        	$ir->setCustomerId($p['customer_id']); // int required
+			$ir->setYourReference(isset($p['your_reference']) ? $p['your_reference'] : ''); // string
+    		$ir->setOurReference(isset($p['our_reference']) ? $p['our_reference']: ''); // string
+			$ir->setProducts($p['products']); //required array
+			$ir->setStatus($p['status']);// 0 : 1; required
+			$ir->setPayments($p['payments']); //required array
+			
 			return $ir->insert();
 		}
 		else
 			return false;
 	}
+
 
 	/**
 	* Update Invoice Receipt in the Company 
