@@ -92,46 +92,6 @@ class InvoiceReceipts extends Authentication{
 					'cumulative' => 0, // int
 				]
 			],
-<<<<<<< HEAD
-
-
-
-        ],
-
-
-=======
-            
-          
-        
-        ],
-
-	
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
-		'exchange_currency_id' => 0, //  int
-		'exchange_rate' => 0.0, //  float
-		'delivery_method_id' => 0, //  int
-		'delivery_datetime' => '2020-07-30', //  date
-		'delivery_departure_address' => '', //  string
-		'delivery_departure_city' => '', //  string
-		'delivery_departure_zip_code' => '', //  string
-		'delivery_departure_country' => 0, //  int
-		'delivery_destination_address' => '', //  string
-		'delivery_destination_city' => '', //  string
-		'delivery_destination_zip_code' => '', //  string
-		'delivery_destination_country' => 0, //  int
-		'vehicle_id' => 0, //  int
-		'vehicle_name' => 0, //  string
-		'vehicle_number_plate' => '00-00-TT', //  string
-		'notes' => '', //  string
-		'status' => '', //  int
-		'generate_mb_reference' => '', // int
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
-        //NOT DONE END
-
 	]
 	*/
 
@@ -667,7 +627,7 @@ class InvoiceReceipts extends Authentication{
     }
 
     private function hasProducts(){
-<<<<<<< HEAD
+
         $r = [];
         $t = [];
 
@@ -675,15 +635,6 @@ class InvoiceReceipts extends Authentication{
 
         foreach ($this->getProducts() as $prod){
 
-=======
-        $r = [];    
-        $t = [];
-        
-        $counter = 0;
-        
-        foreach ($this->getProducts() as $prod){
-        
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
             $r[] = [
                 'product_id' => $prod['product_id'], // int required
                 'name' => $prod['name'], // string required
@@ -695,33 +646,18 @@ class InvoiceReceipts extends Authentication{
                 //'origin_id' => $this->getProductsOriginId(), //int
                 'exemption_reason' => $prod['exemption_reason'], // string
                 //'warehouse_id' => $this->getProductsWarehouseId(), //int
-<<<<<<< HEAD
+
                 'taxes' => $prod['taxes']
-                /*[[//array
-=======
-                'taxes' => [//array
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
-                    'tax_id' => $prod['taxes']['tax_id'], //int required
-                    'value' => $prod['taxes']['value'], // float
-                    'order' => $counter+1, //int
-                    'cumulative' => $prod['taxes']['cumulative'], //int
-<<<<<<< HEAD
-                ]]*/
             ];
-        $counter ++;
+
+            $counter ++;
+
         }
 
-=======
-                ]
-            ];
-        $counter ++;
-        }
-        
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
         return $r;
     }
 
-    //If the InvoiveReceipt has Associated Documents build the array to update or insert
+    //If the Invoice Receipt has Associated Documents build the array to update or insert
 	private function hasAssociatedDocuments(){
 		return $this->getAssociatedDocumentsAssociatedId() > 0 && $this->getAssociatedDocumentsValue() > 0 ?
 	 		[
@@ -732,17 +668,10 @@ class InvoiceReceipts extends Authentication{
 	 		[];
 	}
 
-
-
-
-/**
-<<<<<<< HEAD
+    /**
     * Create InvoiceReceipts in the Company
     * @return json
-=======
-    * Create InvoiceReceipts in the Company 
-    * @return json 
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
+
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=376
     **/
     public function insert()
@@ -757,45 +686,8 @@ class InvoiceReceipts extends Authentication{
             'your_reference' => $this->getYourReference(), // string
             'our_reference' => $this->getOurReference(), // string
             'products' => $this->hasProducts(), // array required
-<<<<<<< HEAD
             'payments' => $this->hasPayments(),//array required
             'status' => $this->getStatus()// int
-=======
-            'payments' => $this->hasPayments()//array required
-
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
-            /*
-            'financial_discount' => $this->getFinancialDiscount(), // float
-            'eac_id' => $this->getEacId(), // int
-            'salesman_id' => $this->getSalesmanId(), // int
-            'salesman_commission' => $this->getSalesmanCommission(), // float
-            'special_discount' => $this->getSpecialDiscount(), // float
-            'associated_documents' => $this->hasAssociatedDocuments(), // array
-            'related_documents_notes' => $this->getRelateDocumentsNotes(), // string
-            'alternate_address_id' => $this->getAlternateAddressId(), // int
-            'exchange_currency_id' => $this->getExchangeCurrencyId(), //int
-<<<<<<< HEAD
-            'exchange_rate' => $this->getExchangeRate(), //float
-=======
-            'exchange_rate' => $this->getExchangeRate(), //float 
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
-            'delivery_method_id' => $this->getDeliveryMethodId(),//int'
-            'delivery_datetime' => $this->getDeliveryDatetime(),//datetime'
-            'delivery_departure_address' => $this->getDeliveryDepartureAddress(),// string
-            'delivery_departure_city' => $this->getDeliveryDepartureCity(), //string
-            'delivery_departure_zip_code' => $this->getDeliveryDepartureZipCode(), //string
-            'delivery_departure_country' => $this->getDeliveryDepartureCountry(), //string
-            'delivery_destination_address' => $this->getDeliveryDestinationAddress(),// string
-            'delivery_destination_city' => $this->getDeliveryDestinationCity(), //string
-            'delivery_destination_zip_code' => $this->getDeliveryDestinationZipCode(), //string
-            'delivery_destination_country' => $this->getDeliveryDestinationCountry(), //string
-            'vehicle_id' => $this->getVehicleId(),// int
-            'vehicle_name' => $this->getVehicleName(),// string
-            'vehicle_number_plate' => $this->getVehicleNumberPlate(),// string
-            'notes' => $this->getNotes(), // string
-            'status' => $this->getStatus(),// int
-            'generate_mb_reference' => $this->getGenerateMbReference()// int
-            */
         ]);
     }
 
@@ -872,11 +764,6 @@ class InvoiceReceipts extends Authentication{
 		]);
 	}
 
-<<<<<<< HEAD
-
-=======
-	
->>>>>>> 142e0377e1ca2035cb0ea49d12117c5b447a5f85
 	/**
 	* Update InvoiceReceipts by Id
 	* @return json
