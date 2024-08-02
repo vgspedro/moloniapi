@@ -138,62 +138,64 @@ class Authentication
 		curl_close($ch);
  		
  		$r = json_decode($result);
-		return 
-        [
-            'status' => 1,
-            'data' => $r
-        ];
-
-    }
-
-
-
-    /**
-    *Future development ?
-    *Get code errors and show info to user
-    **/
-    private function translateMessage(array $informations = []){
         
-        if(is_string($informations[0])){
+        if( (strpos($url, 'getPDFLink') !== false)) {
+            return ($r->url ?? false) ? [
+                'status' => 1,
+                'message' => 'success',
+                'data' => $r
+            ] : [
+                'status' => 0,
+                'message' => 'check',
+                'data' => 'not_found'
+            ];
+        }
+        
+        elseif( (strpos($url, 'getOne') !== false)) {
+            return (!empty($r)) ? [
+                'status' => 1,
+                'message' => 'success',
+                'data' => $r
+            ] : [
+                'status' => 0,
+                'message' => 'check',
+                'data' => 'not_found'
+            ];
+        }
 
-        $r = [];
+        elseif((strpos($url, 'getAll') !== false) || (strpos($url, 'getBy') !== false) || (strpos($url, 'count') !== false) )
+            return [
+                'status' => 1,
+                'message' => 'success',
+                'data' => $r
+            ];
 
-        foreach ($informations as $info)
-        {
-            switch ($info) {
-                case "1 name":
-                    $r[]= "1 name = Campo nome não pode estar em branco";
-                    break;
-                case "1 number":
-                    $r[] = "1 number = Campo number não pode estar em branco";
-                    break;
-                case "2 maturity_date_id 1 0":
-                    $r[] = "2 maturity_date_id 1 0 = Defina um prazo de vencimento nas configurações do plugin";
-                    break;
-                case "2 unit_id 1 0":
-                    $r[] = "2 maturity_unit_id 1 0 = Unidade de medida errada";
-                    break;
-                case "1 exemption_reason":
-                    $r[] = "1 exemption_reason = Um dos artigos requer uma razão de isenção";
-                    break;
-                case "5 exemption_reason":
-                    $r[] = "5 exemption_reason = Um dos artigos não tem uma razão de isenção definida";
-                    break;
-                case "5 document_set_id":
-                    $r[] = "5 document_set_id = Não está definida a série onde quer emitir o documento";
-                    break;
-                case "2 price 0 null null 0":
-                    $r[] = "2 price 0 null null 0 = Um dos artigos tem o preço igual a 0";
-                    break;
-                case "2 category_id 1 0":
-                    $r[] = "2 category_id 1 0 = Um dos artigos não tem uma categoria definida.";
-                    break;
+        elseif((strpos($url, 'insert') !== false) || (strpos($url, 'update') !== false) || (strpos($url, 'delete') !== false)) {
+            if(is_array($r)){
+                return [
+                    'status' => 2,
+                    'message' => 'check',
+                    'data' => $r
+                ];
+            }
+            else{
+                return ($r->valid) ? [
+                    'status' => 1,
+                    'message' => 'success',
+                    'data' => $r
+                ] : [
+                    'status' => 0,
+                    'message' => 'check',
+                    'data' => $r
+                ];
             }
         }
 
-        return $r;
-    }
-    
-    return $informations;
+        return[
+            'status' => 1,
+            'message' => ' success',
+            'data' => $r
+        ];
+
     }
 }
