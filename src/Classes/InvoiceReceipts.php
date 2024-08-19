@@ -717,29 +717,44 @@ class InvoiceReceipts extends Authentication{
 		]);
 	}
 
-	/**
-	* List InvoiceReceipts of Company
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=374
-	**/
-	public function getAll()
-	{
-		return parent::curl(parent::getPath('getAll'), [
-			'company_id' => parent::getCompanyId(), //int required
-			'qty' => $this->getQty(), //int
-			'offset' => $this->getOffset(), //int
-			'customer_id' => $this->getCustomerId(), // int
-       		'supplier_id' => $this->getSupplierId(), // int
-        	'salesman_id' => $this->getSalesmanId(), //int
-        	'document_set_id' => $this->getDocumentSetId(), // int
-        	'number' => $this->getNumber(), //int
-        	'date' => $this->getDate(), // date
-        	'expiration_date' => $this->getExpirationDate(), // date
-        	'year' => $this->getYear(), // int
-        	'your_reference' => $this->getYourReference(), // string
-    		'our_reference' => $this->getOurReference() // string
-		]);
-	}
+
+    /**
+    * List InvoiceReceipts of Company
+    * @return json
+    * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=374
+    **/
+    public function getAll()
+    {
+
+        $params = ['company_id' => parent::getCompanyId(), //int required
+            'qty' => $this->getQty(), //int
+            'offset' => $this->getOffset(), //int
+        ];
+
+        if(!is_null($this->getCustomerId()))
+            $params['customer_id'] = $this->getCustomerId(); // int
+        if(!is_null($this->getSupplierId()))
+            $params['supplier_id'] = $this->getSupplierId(); // int
+        if(!is_null($this->getSalesmanId()))
+            $params['salesman_id'] = $this->getSalesmanId(); //int
+        if(!is_null($this->getDocumentSetId()))
+            $params['document_set_id'] = $this->getDocumentSetId(); // int
+        if(!is_null($this->getNumber()))
+            $params['number'] = $this->getNumber(); //int
+        if(!is_null($this->getDate()))
+            $params['date'] = $this->getDate(); // date
+        if(!is_null($this->getExpirationDate()))
+            $params['expiration_date'] = $this->getExpirationDate(); // date
+        if(!is_null($this->getYear()))
+            $params['year'] = $this->getYear(); // int
+        if(!is_null($this->getYourReference()))
+            $params['your_reference'] = $this->getYourReference(); // string
+        if(!is_null($this->getOurReference()))
+            $params['our_reference'] = $this->getOurReference(); // string
+
+        return parent::curl(parent::getPath('getAll'), $params);
+    }
+
 
 	/**
 	* Get a InvoiceReceipt by Id
