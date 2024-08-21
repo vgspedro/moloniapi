@@ -634,7 +634,9 @@ class InvoiceReceipts extends Authentication{
         $counter = 0;
 
         foreach ($this->getProducts() as $prod){
-
+            
+            $prod['taxes'][0]['order'] = $counter +1;
+            
             $r[] = [
                 'product_id' => $prod['product_id'], // int required
                 'name' => $prod['name'], // string required
@@ -646,14 +648,12 @@ class InvoiceReceipts extends Authentication{
                 //'origin_id' => $this->getProductsOriginId(), //int
                 'exemption_reason' => $prod['exemption_reason'], // string
                 //'warehouse_id' => $this->getProductsWarehouseId(), //int
-
                 'taxes' => $prod['taxes']
             ];
 
             $counter ++;
 
         }
-
         return $r;
     }
 
@@ -671,12 +671,11 @@ class InvoiceReceipts extends Authentication{
     /**
     * Create InvoiceReceipts in the Company
     * @return json
-
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=376
     **/
     public function insert()
     {
-        return parent::curl(parent::getPath('insert'), [
+        $params = [
             'company_id' => parent::getCompanyId(), //int required
             'date' => $this->getDate(), // date required
             'expiration_date' => $this->getExpirationDate(), // date required
@@ -688,11 +687,10 @@ class InvoiceReceipts extends Authentication{
             'products' => $this->hasProducts(), // array required
             'payments' => $this->hasPayments(),//array required
             'status' => $this->getStatus()// int
-        ]);
+        ];
+
+        return parent::curl(parent::getPath('insert'), $params);
     }
-
-
-
 
 
 	/**
