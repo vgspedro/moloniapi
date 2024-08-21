@@ -607,7 +607,7 @@ class InvoiceReceipts extends Authentication{
             'payment_method_id' => $this->getPayments()[0]['payment_method_id'], // int required
             'date' => $this->getPayments()[0]['date'], // datetime required
             'value' => $this->getPayments()[0]['value'], // float required
-            'notes' => $this->getPayments()[0]['notes'], // string
+            'notes' => $this->getPayments()[0]['notes'] ?? '', // string
             ]
         :
         [];
