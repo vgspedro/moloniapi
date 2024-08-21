@@ -7,18 +7,18 @@ use \VgsPedro\MoloniApi\Classes\Product;
 use \VgsPedro\MoloniApi\Classes\Taxes;
 
 /**
-* A class for CRUD the Invoice Receipts requests
+* A class for CRUD the Invoices requests
 */
 
-class InvoiceReceipts extends Authentication{
+class Invoices extends Authentication{
 
 	/** @const entity api url */
-	const ENTITY = '/invoiceReceipts/';
+	const ENTITY = '/invoices/';
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
 	/**
-	InvoiceReceipts array data structure
+	Invoices array data structure
 	[
 		'document_id' => // int required ON UPDATE only
 		'date' => '2020-07-30', // date required
@@ -657,7 +657,7 @@ class InvoiceReceipts extends Authentication{
         return $r;
     }
 
-    //If the Invoice Receipt has Associated Documents build the array to update or insert
+    //If the Invoice has Associated Documents build the array to update or insert
 	private function hasAssociatedDocuments(){
 		return $this->getAssociatedDocumentsAssociatedId() > 0 && $this->getAssociatedDocumentsValue() > 0 ?
 	 		[
@@ -669,9 +669,8 @@ class InvoiceReceipts extends Authentication{
 	}
 
     /**
-    * Create InvoiceReceipts in the Company
+    * Create Invoices in the Company
     * @return json
-
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=376
     **/
     public function insert()
@@ -696,7 +695,7 @@ class InvoiceReceipts extends Authentication{
 
 
 	/**
-	* Count InvoiceReceipts of the Company
+	* Count Invoices of the Company
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=379
 	**/
@@ -719,7 +718,7 @@ class InvoiceReceipts extends Authentication{
 
 
     /**
-    * List InvoiceReceipts of Company
+    * List Invoices of Company
     * @return json
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=374
     **/
@@ -757,7 +756,7 @@ class InvoiceReceipts extends Authentication{
 
 
 	/**
-	* Get a InvoiceReceipt by Id
+	* Get a Invoice by Id
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=375
 	**/
@@ -780,7 +779,7 @@ class InvoiceReceipts extends Authentication{
 	}
 
 	/**
-	* Update InvoiceReceipts by Id
+	* Update Invoices by Id
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=377
 	**/
@@ -838,7 +837,7 @@ class InvoiceReceipts extends Authentication{
 	}
 
 	/**
-	* Delete a Tax from the Company
+	* Delete a Invoice from the Company
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=378
 	**/
@@ -864,5 +863,4 @@ class InvoiceReceipts extends Authentication{
 			'value' => $this->getValue(), // float required
 		]);
 	}
-
 }

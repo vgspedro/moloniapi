@@ -7,18 +7,18 @@ use \VgsPedro\MoloniApi\Classes\Product;
 use \VgsPedro\MoloniApi\Classes\Taxes;
 
 /**
-* A class for CRUD the Invoice Receipts requests
+* A class for CRUD the Receipts requests
 */
 
-class InvoiceReceipts extends Authentication{
+class Receipts extends Authentication{
 
 	/** @const entity api url */
-	const ENTITY = '/invoiceReceipts/';
+	const ENTITY = '/receipts/';
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
 	/**
-	InvoiceReceipts array data structure
+	Receipts array data structure
 	[
 		'document_id' => // int required ON UPDATE only
 		'date' => '2020-07-30', // date required
@@ -669,9 +669,8 @@ class InvoiceReceipts extends Authentication{
 	}
 
     /**
-    * Create InvoiceReceipts in the Company
+    * Create Receipts in the Company
     * @return json
-
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=376
     **/
     public function insert()
@@ -691,12 +690,8 @@ class InvoiceReceipts extends Authentication{
         ]);
     }
 
-
-
-
-
 	/**
-	* Count InvoiceReceipts of the Company
+	* Count Receipts of the Company
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=379
 	**/
@@ -717,9 +712,8 @@ class InvoiceReceipts extends Authentication{
 		]);
 	}
 
-
     /**
-    * List InvoiceReceipts of Company
+    * List Receipts of Company
     * @return json
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=374
     **/
@@ -757,7 +751,7 @@ class InvoiceReceipts extends Authentication{
 
 
 	/**
-	* Get a InvoiceReceipt by Id
+	* Get a Receipt by Id
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=375
 	**/
@@ -780,7 +774,7 @@ class InvoiceReceipts extends Authentication{
 	}
 
 	/**
-	* Update InvoiceReceipts by Id
+	* Update Receipts by Id
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=377
 	**/
@@ -834,11 +828,10 @@ class InvoiceReceipts extends Authentication{
 			'generate_mb_reference' => $this->getGenerateMbReference()// int
 
 		]);
-
 	}
 
 	/**
-	* Delete a Tax from the Company
+	* Delete a Receipt from the Company
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=378
 	**/
@@ -849,20 +842,4 @@ class InvoiceReceipts extends Authentication{
 			'document_id' => $this->getId() // int required
 		]);
 	}
-
-	/**
-	* Generates a new ATM reference associated with this document, at the requested amount.
-	* You need to have an ATM reference generation system set up in the company, and the document in question must be closed (status = 1).
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=438
-	**/
-	public function generateMBReference()
-	{
-		return  parent::curl(parent::getPath('generateMBReference'), [
-			'company_id' => parent::getCompanyId(), //int required
-			'document_id' => $this->getId(), // int required
-			'value' => $this->getValue(), // float required
-		]);
-	}
-
 }

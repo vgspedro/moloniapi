@@ -7,91 +7,88 @@ use \VgsPedro\MoloniApi\Classes\Product;
 use \VgsPedro\MoloniApi\Classes\Taxes;
 
 /**
-* A class for CRUD the Invoice Receipts requests
+* A class for CRUD the Credit Notes requests
 */
 
-class InvoiceReceipts extends Authentication{
+class CreditNotes extends Authentication{
 
 	/** @const entity api url */
-	const ENTITY = '/invoiceReceipts/';
+	const ENTITY = '/creditNotes/';
 	/** @const access api url */
 	const ACCESS = '/?access_token=';
 
 	/**
-	InvoiceReceipts array data structure
+	CreditNotes array data structure
 	[
-		'document_id' => // int required ON UPDATE only
-		'date' => '2020-07-30', // date required
-		'expiration_date' => '2020-07-30', // date required
-		'maturity_date_id' => 0,// int
-		'document_set_id' => 0, // int required
-		'customer_id' => 0, // int required
-		'alternate_address_id' => 0, // int
-		'our_reference string' => 'ref', // string
-		'your_reference string' => 0, // string
-		'financial_discount' => 0.0, // float
-		'eac_id' => 0, // int
-		'salesman_id' => 0, // int
-		'salesman_commission' => 0.0, // float
-		'special_discount' => 0.0, // float float
-		'associated_documents'  => [ // array
-			'associated_id int' => 0.0, // int required
-			'value' => 0.0, // float required
-			],
-		'related_documents_notes' => 'doc notes', // string
-        'payments' => [ //array required
-            'payment_method_id' => 0, // int required
-            'date' => '2020-07-30 00:00:01', // datetime required
-            'value ' => 0.0, // float required
-            'notes' => 'p notes', // string
+        'document_id' => // int required ON UPDATE only
+	    'document_set_id' => 0, // int required
+        'date' => '2020-07-30', // date required
+    	'customer_id' => 0, // int required
+        'alternate_address_id' => 0, // int
+        'our_reference string' => 'ref', // string
+        'your_reference string' => 0, // string
+        'financial_discount' => 0.0, // float
+        'salesman_id' => 0, // int
+        'salesman_commission' => 0.0, // float
+        'associated_documents'  => [ // array
+            'associated_id int' => 0.0, // int required
+            'value' => 0.0, // float required
         ],
+        'rappel'  => [ // array
+            'date_start' => '2020-01-01', //date required
+            'date_end' => '2020-01-01', //date required
+        ],
+        'related_documents_notes' => 'doc notes', // string
+        'products' => [ // array required
+            'product_id' => 0, // int required
+            'name' => 'name', // string required
+            'summary' => 'summary', // string
+            'qty' => 0.0, // float required
+            'price' => 5.0, // float required
+            'discount' => 5.0, // float
+            'deduction_id' => 0, //int
+            'order' => 0, //int
+            'origin_id' => 0, //int
+            'exemption_reason' => 0, // string
+            'warehouse_id' => 0, //int
 
-		'products' => [ // array required
-			'product_id' => 0, // int required
-			'name' => 'name', // string required
-			'summary' => 'summary', // string
-			'qty' => 0.0, // float required
-			'price' => 5.0, // float required
-			'discount' => 5.0, // float
-			'deduction_id' => 0, //int
-			'order' => 0, //int
-			'origin_id' => 0, //int
-			'exemption_reason' => 0, // string
-			'warehouse_id' => 0, //int
-
-			'taxes' => [ //array
-				'tax_id' => 0, //int required
-				'value' => 0.0, // float
-				'order' => 0, //int
-				'cumulative' => 0, //int
-			],
+            'taxes' => [ //array
+                'tax_id' => 0, //int required
+                'value' => 0.0, // float
+                'order' => 0, //int
+                'cumulative' => 0, //int
+            ],
 
             //NOT DONE START
 
             'child_products' => [ //array
-				'product_id' => 0, //int required
-				'name' => 'name', // string required
-				'summary' => 'c_p summary', // string
-				'qty' => 0.0, // float required
-				'price float' => 0.0, // float required
-				'discount' => 0.0, // float
-				'deduction_id' => 0, // int
-				'order' => 0, // int
-				'origin_id' => 0, // int
-				'exemption_reason' => '', // string
-				'warehouse_id' => 0, // int
+                'product_id' => 0, //int required
+                'name' => 'name', // string required
+                'summary' => 'c_p summary', // string
+                'qty' => 0.0, // float required
+                'price float' => 0.0, // float required
+                'discount' => 0.0, // float
+                'deduction_id' => 0, // int
+                'order' => 0, // int
+                'origin_id' => 0, // int
+                'exemption_reason' => '', // string
+                'warehouse_id' => 0, // int
 
-				'properties' => [ //array
-					'title' => '', // string
-					'value' => '', // string
-				],
-				'taxes' => [ // array
-					'tax_id' => 0, // int required
-					'value' => 0.0, // float
-					'order' => 0, // int
-					'cumulative' => 0, // int
-				]
-			],
+                'properties' => [ //array
+                    'title' => '', // string
+                    'value' => '', // string
+                ],
+                'taxes' => [ // array
+                    'tax_id' => 0, // int required
+                    'value' => 0.0, // float
+                    'order' => 0, // int
+                    'cumulative' => 0, // int
+                ]
+            ],	
+        'exchange_currency_id' => '0', // int required
+		'exchange_rate' => 0.0,// float
+		'notes' => '', // string
+		'status' => 0, // int
 	]
 	*/
 
@@ -657,7 +654,7 @@ class InvoiceReceipts extends Authentication{
         return $r;
     }
 
-    //If the Invoice Receipt has Associated Documents build the array to update or insert
+    //If the Credit Notes has Associated Documents build the array to update or insert
 	private function hasAssociatedDocuments(){
 		return $this->getAssociatedDocumentsAssociatedId() > 0 && $this->getAssociatedDocumentsValue() > 0 ?
 	 		[
@@ -668,35 +665,9 @@ class InvoiceReceipts extends Authentication{
 	 		[];
 	}
 
-    /**
-    * Create InvoiceReceipts in the Company
-    * @return json
-
-    * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=376
-    **/
-    public function insert()
-    {
-        return parent::curl(parent::getPath('insert'), [
-            'company_id' => parent::getCompanyId(), //int required
-            'date' => $this->getDate(), // date required
-            'expiration_date' => $this->getExpirationDate(), // date required
-            'maturity_date_id' => $this->getMaturityDateId(), //int
-            'document_set_id' => $this->getDocumentSetId(), // int required
-            'customer_id' => $this->getCustomerId(), // int required
-            'your_reference' => $this->getYourReference(), // string
-            'our_reference' => $this->getOurReference(), // string
-            'products' => $this->hasProducts(), // array required
-            'payments' => $this->hasPayments(),//array required
-            'status' => $this->getStatus()// int
-        ]);
-    }
-
-
-
-
-
+  
 	/**
-	* Count InvoiceReceipts of the Company
+	* Count CreditNotes of the Company
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=379
 	**/
@@ -719,7 +690,7 @@ class InvoiceReceipts extends Authentication{
 
 
     /**
-    * List InvoiceReceipts of Company
+    * List CreditNotes of Company
     * @return json
     * https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=374
     **/
@@ -780,64 +751,6 @@ class InvoiceReceipts extends Authentication{
 	}
 
 	/**
-	* Update InvoiceReceipts by Id
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=377
-	**/
-	public function update()
-	{
-		return parent::curl(parent::getPath('update'), [
-			'company_id' => parent::getCompanyId(), // int required
-			'document_id' => $this->getId(), // int required
-			'date' => $this->getDate(), // date required
-        	'expiration_date' => $this->getExpirationDate(), // date required
-        	'maturity_date_id' => $this->getMaturityDateId(), //int
-        	'document_set_id' => $this->getDocumentSetId(), // int required
-        	'customer_id' => $this->getCustomerId(), // int required
-			'alternate_address_id' => $this->getAlternateAddressId(), // int
-			'your_reference' => $this->getYourReference(), // string
-    		'our_reference' => $this->getOurReference(), // string
-    		'financial_discount' => $this->getFinancialDiscount(), // float
-			'eac_id' => $this->getEacId(), // int
-			'salesman_id' => $this->getSalesmanId(), // int
-			'salesman_commission' => $this->getSalesmanCommission(), // float
-			'special_discount' => $this->getSpecialDiscount(), // float
-			'associated_documents' => $this->hasAssociatedDocuments(), // array
-			'related_documents_notes' => $this->getRelateDocumentsNotes(), // string
-
-            'products' => $this->getProducts(), // array required
-
-            'payments' => [ //array required
-				'payment_method_id' => $this->getPaymentMethodId(), // int required
-				'date' => $this->getPaymentDate(), // datetime required
-				'value' => $this->getPaymentValue(), // float required
-				'notes' => $this->getPaymentNotes(), // string
-			],
-
-			'exchange_currency_id' => $this->getExchangeCurrencyId(), //int
-			'exchange_rate' => $this->getExchangeRate(), //float
-			'delivery_method_id' => $this->getDeliveryMethodId(),//int'
-			'delivery_datetime' => $this->getDeliveryDatetime(),//datetime'
-			'delivery_departure_address' => $this->getDeliveryDepartureAddress(),// string
-			'delivery_departure_city' => $this->getDeliveryDepartureCity(), //string
-			'delivery_departure_zip_code' => $this->getDeliveryDepartureZipCode(), //string
-			'delivery_departure_country' => $this->getDeliveryDepartureCountry(), //string
-			'delivery_destination_address' => $this->getDeliveryDestinationAddress(),// string
-			'delivery_destination_city' => $this->getDeliveryDestinationCity(), //string
-			'delivery_destination_zip_code' => $this->getDeliveryDestinationZipCode(), //string
-			'delivery_destination_country' => $this->getDeliveryDestinationCountry(), //string
-			'vehicle_id' => $this->getVehicleId(),// int
-			'vehicle_name' => $this->getVehicleName(),// string
-			'vehicle_number_plate' => $this->getVehicleNumberPlate(),// string
-			'notes' => $this->getNotes(), // string
-			'status' => $this->getStatus(),// int
-			'generate_mb_reference' => $this->getGenerateMbReference()// int
-
-		]);
-
-	}
-
-	/**
 	* Delete a Tax from the Company
 	* @return json
 	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=378
@@ -847,21 +760,6 @@ class InvoiceReceipts extends Authentication{
 		return  parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(), // int required
 			'document_id' => $this->getId() // int required
-		]);
-	}
-
-	/**
-	* Generates a new ATM reference associated with this document, at the requested amount.
-	* You need to have an ATM reference generation system set up in the company, and the document in question must be closed (status = 1).
-	* @return json
-	* https://www.moloni.pt/dev/index.php?action=getApiDocDetail&id=438
-	**/
-	public function generateMBReference()
-	{
-		return  parent::curl(parent::getPath('generateMBReference'), [
-			'company_id' => parent::getCompanyId(), //int required
-			'document_id' => $this->getId(), // int required
-			'value' => $this->getValue(), // float required
 		]);
 	}
 
