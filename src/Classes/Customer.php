@@ -387,6 +387,42 @@ class Customer extends Authentication{
         $this->field_notes = $field_notes;
     }
 
+    private $search;
+
+    public function getSearch()
+    {
+        return $this->search;
+    }
+
+    public function setSearch(string $search = null )
+    {
+        $this->search = $search;
+    }
+
+    private $qty;
+
+    public function getQty()
+    {
+        return $this->qty;
+    }
+
+    public function setQty(int $qty = 0)
+    {
+        $this->qty = $qty;
+    }
+
+    private $offset;
+
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    public function setOffset(int $offset = 0)
+    {
+        $this->offset = $offset;
+    }
+
 	/**
 	* Count all Customers of the Company 
 	* @return json
@@ -472,11 +508,29 @@ class Customer extends Authentication{
 	**/
 	public function getByVat()
 	{
-		return  parent::curl(parent::getPath('getByVat'), [
+		return parent::curl(parent::getPath('getByVat'), [
 			'company_id' => parent::getCompanyId(),
 			'vat' => $this->getVat()
 		]);
 	}
+
+    /**
+    * Get Customer by number, fiscal number or name
+    * @return json 
+    * https://www.moloni.pt/dev/entities/customers/getbysearch/
+    **/
+    public function getBySearch()
+    {
+        $params = ['company_id' => parent::getCompanyId(), //int required
+            'qty' => $this->getQty(),
+            'offset' => $this->getOffset() ?? 0
+        ];
+
+        if(!is_null($this->getSearch()))
+            $params['search'] = $this->getSearch();
+
+        return parent::curl(parent::getPath('getBySearch'), $params);
+    }
 
 	/**
 	* Update Customer by Id
