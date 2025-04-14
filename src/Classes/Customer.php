@@ -532,6 +532,21 @@ class Customer extends Authentication{
         return parent::curl(parent::getPath('getBySearch'), $params);
     }
 
+    /**
+    * Count all Customers by search of the Company 
+    * @return json
+    * https://www.moloni.pt/dev/entities/customers/countbysearch/
+    **/
+    public function getCountBySearch()
+    {   
+        $params = ['company_id' => parent::getCompanyId()];
+
+        if(!is_null($this->getSearch()))
+            $params['search'] = $this->getSearch();
+
+        return parent::curl(parent::getPath('countBySearch'), $params);
+    }
+
 	/**
 	* Update Customer by Id
 	* @return json 
