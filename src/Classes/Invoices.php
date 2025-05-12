@@ -607,7 +607,7 @@ class Invoices extends Authentication{
             'payment_method_id' => $this->getPayments()[0]['payment_method_id'], // int required
             'date' => $this->getPayments()[0]['date'], // datetime required
             'value' => $this->getPayments()[0]['value'], // float required
-            'notes' => $this->getPayments()[0]['notes'], // string
+            'notes' => $this->getPayments()[0]['notes'] ?? '', // string
             ]
         :
         [];
@@ -675,7 +675,7 @@ class Invoices extends Authentication{
     **/
     public function insert()
     {
-        return parent::curl(parent::getPath('insert'), [
+        $params = [
             'company_id' => parent::getCompanyId(), //int required
             'date' => $this->getDate(), // date required
             'expiration_date' => $this->getExpirationDate(), // date required
@@ -687,12 +687,10 @@ class Invoices extends Authentication{
             'products' => $this->hasProducts(), // array required
             'payments' => $this->hasPayments(),//array required
             'status' => $this->getStatus()// int
-        ]);
+        ];
+
+        return parent::curl(parent::getPath('insert'), $params);
     }
-
-
-
-
 
 	/**
 	* Count Invoices of the Company
