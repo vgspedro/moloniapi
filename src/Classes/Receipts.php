@@ -321,9 +321,9 @@ class Receipts extends Authentication{
         if($this->getExchangeRate() !== null)
             $optional['exchange_rate'] = $this->getExchangeRate();
         if($this->getNotes() !== null)
-            $optional['notes'] = $this->getNotes()// int
+            $optional['notes'] = $this->getNotes();// int
         if($this->getStatus() !== null)
-            $optional['status'] = $this->getStatus()// int
+            $optional['status'] = $this->getStatus();// int
 
         if(!empty($optional))
             $required = array_merge($required, $optional);
@@ -430,9 +430,9 @@ class Receipts extends Authentication{
         if($this->getExchangeRate() !== null)
             $optional['exchange_rate'] = $this->getExchangeRate();
         if($this->getNotes() !== null)
-             $optional['notes'] = $this->getNotes()// int
+             $optional['notes'] = $this->getNotes();// int
         if($this->getStatus() !== null)
-             $optional['status'] = $this->getStatus()// int
+             $optional['status'] = $this->getStatus();// int
 
         if(!empty($optional))
             $required = array_merge($required, $optional);
