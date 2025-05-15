@@ -449,7 +449,7 @@ class Receipts extends Authentication{
 	{
 		return  parent::curl(parent::getPath('delete'), [
 			'company_id' => parent::getCompanyId(), // int required
-			'document_id' => $this->getId() // int required
+			'document_id' => $this->getDocumentId() // int required
 		]);
 	}
 }
